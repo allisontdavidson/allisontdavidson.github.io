@@ -1,0 +1,44 @@
+---
+title: "All About Themes"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: TRUE
+    toc_depth: 3
+    number_sections: TRUE
+    theme: lumen
+---
+
+```{r, include = FALSE}
+require(mosaic)
+```
+
+Themes are going to be helpful to adjust the default. There are built-in themes already available - but you can also adjust specific elements.
+
+# Globally set a theme
+
+To globally set a theme, use theme_set( ) in an R Chunk. All subsequent graphs will use that theme as default.
+
+## Global Theme Example
+
+```{r}
+theme_set(theme_bw())
+
+gf_point(mpg~disp, data = mtcars)
+```
+
+# Manually set a theme
+
+To manually set a theme, use the gf_theme( ) layer on any plot.
+
+## Manual theme example
+
+```{r}
+gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(theme_minimal())
+```
+
+# All ggplot themes
+
+Here is a [list](https://ggplot2.tidyverse.org/reference/ggtheme.html) of all themes available and a preview of what they look like.

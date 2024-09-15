@@ -13,7 +13,7 @@
 
 <title>All About Themes</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -374,12 +374,17 @@ div.tocify {
 </div>
 
 
-<p>Themes are going to be helpful to adjust the default. There are built-in themes already available - but you can also adjust specific elements.</p>
+<p>Themes are going to be helpful to adjust the default. There are
+built-in themes already available - but you can also adjust specific
+elements.</p>
 <div id="globally-set-a-theme" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Globally set a theme</h1>
-<p>To globally set a theme, use theme_set( ) in an R Chunk. All subsequent graphs will use that theme as default.</p>
+<h1><span class="header-section-number">1</span> Globally set a
+theme</h1>
+<p>To globally set a theme, use theme_set( ) in an R Chunk. All
+subsequent graphs will use that theme as default.</p>
 <div id="global-theme-example" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Global Theme Example</h2>
+<h2><span class="header-section-number">1.1</span> Global Theme
+Example</h2>
 <pre class="r"><code>theme_set(theme_bw())
 
 gf_point(mpg~disp, data = mtcars)</code></pre>
@@ -387,10 +392,12 @@ gf_point(mpg~disp, data = mtcars)</code></pre>
 </div>
 </div>
 <div id="manually-set-a-theme" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Manually set a theme</h1>
+<h1><span class="header-section-number">2</span> Manually set a
+theme</h1>
 <p>To manually set a theme, use the gf_theme( ) layer on any plot.</p>
 <div id="manual-theme-example" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Manual theme example</h2>
+<h2><span class="header-section-number">2.1</span> Manual theme
+example</h2>
 <pre class="r"><code>gf_point(mpg~disp, data = mtcars) %&gt;%
   gf_theme(theme_minimal())</code></pre>
 <p><img src="themes_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
@@ -398,7 +405,9 @@ gf_point(mpg~disp, data = mtcars)</code></pre>
 </div>
 <div id="all-ggplot-themes" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> All ggplot themes</h1>
-<p>Here is a <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">list</a> of all themes available and a preview of what they look like.</p>
+<p>Here is a <a
+href="https://ggplot2.tidyverse.org/reference/ggtheme.html">list</a> of
+all themes available and a preview of what they look like.</p>
 </div>
 
 
