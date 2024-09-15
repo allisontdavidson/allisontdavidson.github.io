@@ -1,26 +1,24 @@
 {
-    "id": "D0283639",
-    "path": "C:/Users/Allison/Desktop/RefiningDataViz/allisontdavidson.github.io/docs/RefiningDataViz/index.Rmd",
+    "id": "961F3C75",
+    "path": "C:/Users/Allison/Desktop/RefiningDataViz/allisontdavidson.github.io/docs/index.Rmd",
     "project_path": "index.Rmd",
     "type": "r_markdown",
-    "hash": "2855295961",
+    "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1726420672925.0,
+    "created": 1726421102123.0,
     "source_on_save": false,
     "relative_order": 2,
     "properties": {
         "source_window_id": "",
-        "Source": "Source",
-        "cursorPosition": "6,81",
-        "scrollLine": "0"
+        "Source": "Source"
     },
     "folds": "",
     "lastKnownWriteTime": 1726420705,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1726420705820,
+    "last_content_update": 1726420705,
     "read_only": false,
     "read_only_alternatives": []
 }
