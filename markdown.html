@@ -11,7 +11,7 @@
 
 
 
-<title>Refining a Visualization</title>
+<title>Misc Markdown Help</title>
 
 <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -328,6 +328,7 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Refinement 1</li>
     <li>
       <a href="themes.html">Themes</a>
     </li>
@@ -344,6 +345,9 @@ div.tocify {
     <li class="dropdown-header">Tip 2</li>
   </ul>
 </li>
+<li>
+  <a href="markdown.html">Other Markdown Help</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -356,43 +360,37 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Refining a Visualization</h1>
+<h1 class="title toc-ignore">Misc Markdown Help</h1>
 
 </div>
 
 
-<div id="welcome" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Welcome!</h1>
-<p>This is a collection of tips/tricks I have accumulated over the last
-several years exploring visualizations. Please let me know if something
-is not working or if I should add something! Always looking to improve
-this collection.</p>
+<p>The following items are miscellaneous tips or ideas to help with
+formatting your Markdown document. Additional resources include <a
+href="https://bookdown.org/yihui/rmarkdown/">R Markdown: The Definitive
+Guide</a></p>
+<div id="wrap-code-for-pdf-documents" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Wrap code for PDF
+documents</h1>
+<p>Sometimes you’ll notice after you knit your document (especially to
+PDF) that your code is not all visible. To fix this, add the following
+in the beginning R Chunk:</p>
+<p>knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy =
+TRUE)</p>
+<div class="float">
+<img src="wrapPDFtext.png" alt="RChunk text to wrap code" />
+<div class="figcaption">RChunk text to wrap code</div>
 </div>
-<div id="preamble" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Preamble</h1>
-<p>All refinements are using the ggformula way of graphing. This
-collection of tips will <strong>not</strong> include a lot of
-information of creating the basic graph. As such, I am including a few
-links that may be helpful below.</p>
-<div id="list-of-all-ggformula-commands" class="section level2"
-number="2.1">
-<h2><span class="header-section-number">2.1</span> List of all ggformula
-commands</h2>
-<p>The <a
-href="https://www.mosaic-web.org/ggformula/reference/index.html">ggormula
-reference page</a> includes information and examples on all functions
-available. Many are types of graphs, but not exclusively. They also have
-several articles that walk through ways of graphing in a very visual
-way.</p>
 </div>
-<div id="additional-resources" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> Additional
-Resources</h2>
-<p>Additionally, Claus O. Wilke has a great resource discussing many <a
-href="https://clauswilke.com/dataviz/">Fundamentals of Data
-Visualization</a> made freely available.</p>
-<p>Lastly, the <a href="https://r-graph-gallery.com/index.html">R Graph
-Gallery</a> gives many examples (and code) of graphs available.</p>
+<div id="table-of-contents" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Table of Contents</h1>
+<p>To Add a table of contents to your markdown document, use toc: TRUE
+in your title headings.</p>
+<div class="float">
+<img src="TableOfContents.jpg"
+alt="Adding a table of contents to a Markdown document" />
+<div class="figcaption">Adding a table of contents to a Markdown
+document</div>
 </div>
 </div>
 

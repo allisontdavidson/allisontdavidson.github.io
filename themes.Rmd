@@ -43,7 +43,7 @@ gf_point(mpg~disp, data = mtcars) %>%
 
 Here is a [list](https://ggplot2.tidyverse.org/reference/ggtheme.html) of all themes available and a preview of what they look like.
 
-```{r}
+```{r, message=FALSE, warning = FALSE}
 require(gridExtra)
 
 gray = gf_point(mpg~disp, data = mtcars) %>%
@@ -85,4 +85,11 @@ test = gf_point(mpg~disp, data = mtcars) %>%
 
 grid.arrange(gray, bw, linedraw, light, dark, minimal, classic, void, test, nrow = 3 )
 ```
+
+# Adjusting Default Themes
+
+If you want to adjust a thematic aspect of a graph, the order of your layers is going to matter. For example, you'll want to either globally set your overall theme or adjust with a theme layer. Then, you can add a separate layer to adjust a theme element. It will not work to add this to the same theme layer you use to set the theme!
+
+## Adjusting theme elements
+
 

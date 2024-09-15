@@ -35,8 +35,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -321,45 +319,34 @@ div.tocify {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Home</a>
-</li>
-<li>
-  <a href="themes.html">Themes</a>
+  <a href="index.html">Intro</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fa fa-gear"></span>
-     
-    More
+    Refinements
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Heading 1</li>
     <li>
-      <a href="page-a.html">Page A</a>
+      <a href="themes.html">Themes</a>
     </li>
-    <li>
-      <a href="page-b.html">Page B</a>
-    </li>
-    <li class="divider"></li>
-    <li class="dropdown-header">Heading 2</li>
-    <li>
-      <a href="page-c.html">Page C</a>
-    </li>
-    <li>
-      <a href="page-d.html">Page D</a>
-    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Wranging Data
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Tip 1</li>
+    <li class="dropdown-header">Tip 2</li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://example.com">
-    <span class="fa fa-question fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -408,15 +395,9 @@ example</h2>
 <p>Here is a <a
 href="https://ggplot2.tidyverse.org/reference/ggtheme.html">list</a> of
 all themes available and a preview of what they look like.</p>
-<pre class="r"><code>require(gridExtra)</code></pre>
-<pre><code>## Loading required package: gridExtra</code></pre>
-<pre><code>## Warning: package &#39;gridExtra&#39; was built under R version 4.2.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;gridExtra&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     combine</code></pre>
-<pre class="r"><code>gray = gf_point(mpg~disp, data = mtcars) %&gt;%
+<pre class="r"><code>require(gridExtra)
+
+gray = gf_point(mpg~disp, data = mtcars) %&gt;%
   gf_theme(theme_gray()) %&gt;%
   gf_labs(title = &quot;theme_gray&quot;)
 
@@ -455,6 +436,19 @@ test = gf_point(mpg~disp, data = mtcars) %&gt;%
 
 grid.arrange(gray, bw, linedraw, light, dark, minimal, classic, void, test, nrow = 3 )</code></pre>
 <p><img src="themes_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="adjusting-default-themes" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Adjusting Default
+Themes</h1>
+<p>If you want to adjust a thematic aspect of a graph, the order of your
+layers is going to matter. For example, you’ll want to either globally
+set your overall theme or adjust with a theme layer. Then, you can add a
+separate layer to adjust a theme element. It will not work to add this
+to the same theme layer you use to set the theme!</p>
+<div id="adjusting-theme-elements" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Adjusting theme
+elements</h2>
+</div>
 </div>
 
 

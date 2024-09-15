@@ -1,0 +1,27 @@
+---
+title: "Misc Markdown Help"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: TRUE
+    toc_depth: 3
+    number_sections: TRUE
+    theme: lumen
+---
+
+The following items are miscellaneous tips or ideas to help with formatting your Markdown document. Additional resources include [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+
+# Wrap code for PDF documents
+
+Sometimes you'll notice after you knit your document (especially to PDF) that your code is not all visible. To fix this, add the following in the beginning R Chunk:
+
+knitr::opts_chunk\$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
+
+![RChunk text to wrap code](wrapPDFtext.png)
+
+# Table of Contents
+
+To Add a table of contents to your markdown document, use toc: TRUE in your title headings.
+
+![Adding a table of contents to a Markdown document](TableOfContents.jpg)

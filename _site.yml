@@ -2,27 +2,20 @@ name: "Refining Visualizations"
 navbar:
   title: "Refining Visualizations"
   left:
-    - text: "Home"
+    - text: "Intro"
       href: index.html
-    - text: "Themes"
-      href: themes.html
-    - text: "More"
-      icon: fa-gear
+    - text: "Refinements"
       menu:
-        - text: "Heading 1"
-        - text: "Page A"
-          href: page-a.html
-        - text: "Page B"
-          href: page-b.html
-        - text: "---------"
-        - text: "Heading 2"
-        - text: "Page C"
-          href: page-c.html
-        - text: "Page D"
-          href: page-d.html
-  right:
-    - icon: fa-question fa-lg
-      href: https://example.com
-      
+        - text: "Refinement 1"
+        - text: "Themes"
+          href: themes.html
+    - text: "Wranging Data"
+      menu: 
+        - text: "Tip 1"
+        - text: "Tip 2"
+    - text: "Other Markdown Help"
+      href: markdown.html
+
+
       
       
