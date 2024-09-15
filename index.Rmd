@@ -1,7 +1,29 @@
 ---
 title: "Refining a Visualization"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: TRUE
+    toc_depth: 3
+    number_sections: TRUE
+    theme: lumen
 ---
 
-Welcome!  
+# Welcome!
 
-This is a collection of tips/tricks I have accumulated over the last several years exploring visualizations.  I have tried organizing these, but they are by all mean not exclusive.  Please let me know if something is not working or if I should add something!
+This is a collection of tips/tricks I have accumulated over the last several years exploring visualizations. Please let me know if something is not working or if I should add something! Always looking to improve this collection.
+
+# Preamble
+
+All refinements are using the ggformula way of graphing. This collection of tips will **not** include a lot of information of creating the basic graph. As such, I am including a few links that may be helpful below.
+
+## List of all ggformula commands
+
+The [ggormula reference page](https://www.mosaic-web.org/ggformula/reference/index.html) includes information and examples on all functions available. Many are types of graphs, but not exclusively.  They also have several articles that walk through ways of graphing in a very visual way.
+
+## Additional Resources
+
+Additionally, Claus O. Wilke has a great resource discussing many [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/) made freely available.
+
+Lastly, the [R Graph Gallery](https://r-graph-gallery.com/index.html) gives many examples (and code) of graphs available.
