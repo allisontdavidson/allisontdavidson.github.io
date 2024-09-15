@@ -1,6 +1,6 @@
-name: "Refining Visualizations"
+name: "Data Visualization"
 navbar:
-  title: "Refining Visualizations"
+  title: "Data Visualization"
   left:
     - text: "Intro"
       href: index.html
