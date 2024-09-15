@@ -408,6 +408,53 @@ example</h2>
 <p>Here is a <a
 href="https://ggplot2.tidyverse.org/reference/ggtheme.html">list</a> of
 all themes available and a preview of what they look like.</p>
+<pre class="r"><code>require(gridExtra)</code></pre>
+<pre><code>## Loading required package: gridExtra</code></pre>
+<pre><code>## Warning: package &#39;gridExtra&#39; was built under R version 4.2.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;gridExtra&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     combine</code></pre>
+<pre class="r"><code>gray = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_gray()) %&gt;%
+  gf_labs(title = &quot;theme_gray&quot;)
+
+bw = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_bw()) %&gt;%
+  gf_labs(title = &quot;theme_bw&quot;)
+
+linedraw = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_linedraw()) %&gt;%
+  gf_labs(title = &quot;theme_linedraw&quot;)
+
+light = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_light()) %&gt;%
+  gf_labs(title = &quot;theme_light&quot;)
+
+dark = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_dark()) %&gt;%
+  gf_labs(title = &quot;theme_dark&quot;)
+
+minimal = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_minimal()) %&gt;%
+  gf_labs(title = &quot;theme_minimal&quot;)
+
+classic = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_labs(title = &quot;theme_classic&quot;)
+
+void = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_void()) %&gt;%
+  gf_labs(title = &quot;theme_void&quot;)
+
+test = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_test()) %&gt;%
+  gf_labs(title = &quot;theme_test&quot;)
+
+
+grid.arrange(gray, bw, linedraw, light, dark, minimal, classic, void, test, nrow = 3 )</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 
 
