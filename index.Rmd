@@ -18,9 +18,15 @@ This is meant to be a collection of tips and tricks I have accumulated over year
 
 All refinements are using the ggformula way of graphing. This collection of tips will **not** include a lot of information of creating the basic graph. As such, I am including a few links that may be helpful below.
 
+## Packages Used
+
+At the very least, all of these commands are going to need the mosaic package. All ggformula commands will run with the mosaic package loaded. Several other packages will be used throughout the document. Some key ones to know are:
+
+-   forcats (ordering factors by a statistic)
+
 ## List of all ggformula commands
 
-The [ggormula reference page](https://www.mosaic-web.org/ggformula/reference/index.html) includes information and examples on all functions available. Many are types of graphs, but not exclusively.  They also have several articles that walk through ways of graphing in a very visual way.
+The [ggormula reference page](https://www.mosaic-web.org/ggformula/reference/index.html) includes information and examples on all functions available. Many are types of graphs, but not exclusively. They also have several articles that walk through ways of graphing in a very visual way.
 
 ## Additional Resources
 

@@ -6,9 +6,16 @@ navbar:
       href: index.html
     - text: "Refinements"
       menu:
-        - text: "Refinement 1"
+        - text: "Axis Labels"
+          href: axislabels.html
+        - text: "Axis Scales"
+          href: scales.html
+        - text: "Subsets & Zooming"
+          href: subsets.html
         - text: "Themes"
           href: themes.html
+        - text: "Facets"
+          href: facets.html
     - text: "Wranging Data"
       menu: 
         - text: "Tip 1"

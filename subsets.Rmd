@@ -1,0 +1,78 @@
+---
+title: "Subsets and Zooming"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: TRUE
+    toc_depth: 3
+    number_sections: TRUE
+    theme: lumen
+---
+
+```{r, include=FALSE}
+require(mosaic)
+```
+
+
+Sometimes you want to adjust the data you see by only graphing a subset of your dataset. In order to subset your data within a graph command, you'll want to consider what type of data you have.
+
+# Subsetting Continuous Data
+
+**Single variable equal to a number:** subset(DatasetName, Age == 10)
+
+**Single variable in relation to a number:** subset(DatasetName, Age \< 10)
+
+**Single variable between 2 values:** subset(DatasetName, Age \> 3 & Age \< 10)
+
+```{r}
+theme_set(theme_minimal())
+
+gf_point(hwy~displ, data = mpg, alpha = 0.5) %>%
+  gf_labs(title = "All Data")
+
+gf_point(hwy~displ, data = subset(mpg, year == 1999), alpha = 0.5) %>%
+  gf_labs(title = "Only Year = 1999")
+
+gf_point(hwy~displ, data = subset(mpg, year > 1999), alpha = 0.5) %>%
+  gf_labs(title = "Only After 1999")
+
+gf_point(hwy~displ, data = subset(mpg, displ <3 | displ >6), alpha = 0.5) %>%
+  gf_labs(title = "Displacement on Either End (OR)")
+
+gf_point(hwy~displ, data = subset(mpg, displ > 3 & displ < 6), alpha = 0.5) %>%
+  gf_labs(title = "Displacement Between Two Values (AND)")
+```
+
+# Subsetting Cateogrical (Discrete) Data
+
+```{r}
+gf_point(hwy~displ, data = subset(mpg, class == "compact"), color = ~manufacturer, show.legend = FALSE) %>%
+  gf_facet_wrap(~manufacturer) %>%
+  gf_labs(title = "Facet Wrap")
+```
+
+
+
+# Multiple Subsets
+
+AND: subset(DatasetName, year == 1999 & class == "compact")
+
+OR: subset(DatasetName, year == 1999 | class == "compact")
+
+List:  subset(DatasetName, manufacturer %in% c("audi", "chevrolet", "dodge"))
+
+```{r}
+gf_point(hwy~displ, data = subset(mpg, year == 1999 & class == "compact"), color = ~manufacturer, show.legend = FALSE) %>%
+  gf_facet_wrap(~manufacturer) %>%
+  gf_labs(title = "Facet Wrap: AND")
+
+gf_point(hwy~displ, data = subset(mpg, year == 1999 | class == "compact"), color = ~manufacturer, show.legend = FALSE) %>%
+  gf_facet_wrap(~manufacturer) %>%
+  gf_labs(title = "Facet Wrap: OR")
+
+gf_point(hwy~displ, data = subset(mpg, manufacturer %in% c("audi", "chevrolet", "dodge")), color = ~manufacturer, show.legend = FALSE) %>%
+  gf_facet_wrap(~manufacturer) %>%
+  gf_labs(title = "Facet Wrap: List")
+```
+
