@@ -11,7 +11,7 @@
 
 
 
-<title>Axis Scales</title>
+<title>Adjusting Axis Scales</title>
 
 <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -35,6 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -329,16 +331,19 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="axislabels.html">Axis Labels</a>
+      <a href="axislabels.html">Outside Labels</a>
     </li>
     <li>
-      <a href="scales.html">Axis Scales</a>
+      <a href="scales.html">Adjusting Scales (Axis)</a>
     </li>
     <li>
-      <a href="subsets.html">Subsets &amp; Zooming</a>
+      <a href="subsets.html">Subsets</a>
     </li>
     <li>
       <a href="themes.html">Themes</a>
+    </li>
+    <li>
+      <a href="facets.html">Facets</a>
     </li>
   </ul>
 </li>
@@ -349,16 +354,28 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Tip 1</li>
-    <li class="dropdown-header">Tip 2</li>
+    <li class="dropdown-header">Items Coming Soon</li>
+    <li class="dropdown-header">Items Coming Soon</li>
   </ul>
 </li>
 <li>
-  <a href="markdown.html">Other Markdown Help</a>
+  <a href="markdown.html">Markdown Help</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-solid fa-star"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="50visualizations.html">50 Visualizations</a>
+    </li>
+  </ul>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -368,12 +385,202 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Axis Scales</h1>
+<h1 class="title toc-ignore">Adjusting Axis Scales</h1>
 
 </div>
 
 
+<p>There are 2 ways of adjusting scales (in terms of how they treat
+data). One way is called “without clipping” where all data is preserved,
+but we adjust the axis to essentially zoom in or out while keeping all
+data preserved. Alternatively, we can adjust “with clipping” where all
+data not in the area specified is no longer accounted for. This will
+matter if you’re overlaying things like linear model trendlines. The
+images below come from the ggplot2 cheat-sheet and I think illustrate
+things well.</p>
+<p><img src="NoClipping.jpg" alt="No Clipping" /> <img
+src="WithClipping.jpg" alt="With Clipping" /></p>
+<div id="adjust-scales-without-clipping" class="section level1"
+number="1">
+<h1><span class="header-section-number">1</span> Adjust Scales Without
+Clipping</h1>
+<p>To adjust scales without removing unseen data points, use a
+gf_refine( ) statment with coord_cartesian( ) specifications.</p>
+<p>%&gt;% gf_refine(coord_cartesian(xlim = c(0, 100), ylim = c(10,
+20)))</p>
+<div class="float">
+<img src="NoClipping.jpg" alt="No Clipping" />
+<div class="figcaption">No Clipping</div>
+</div>
+<div id="example-without-clipping" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Example Without
+Clipping</h2>
+<pre class="r"><code>original = gf_point(Salary~Age, data = SalaryGender, color = ~as.factor(PhD)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, title = &quot;All Data&quot;) %&gt;%
+  gf_refine(scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;))) %&gt;%
+  gf_lm()
 
+noclipping = gf_point(Salary~Age, data = SalaryGender, color = ~as.factor(PhD)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, title = &quot;Zoom In Without Clipping&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    coord_cartesian(xlim = c(40, 80))) %&gt;%
+  gf_lm()
+
+grid.arrange(original, noclipping, nrow = 1)</code></pre>
+<pre><code>## Warning: Using the `size` aesthetic with geom_line was deprecated in ggplot2 3.4.0.
+## ℹ Please use the `linewidth` aesthetic instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+</div>
+<div id="adjust-scales-with-clipping" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Adjust Scales With
+Clipping</h1>
+<p>There are a few ways you can adjust the scales with clipping. For
+example, you can merely create a subset and only use that data (by
+default, clipping out the other data). Alternatively you can use a
+gf_lims( ) command OR a scale_x_continuous( ) command within a refine
+statement.</p>
+<div class="float">
+<img src="WithClipping.jpg" alt="With Clipping" />
+<div class="figcaption">With Clipping</div>
+</div>
+<div id="example-with-clipping" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Example With
+Clipping</h2>
+<p><strong>Option 1:</strong> gf_lims(x = c(40,80)) or gf_lims(x = c(65,
+NA), y = c(3, NA))</p>
+<p><strong>Option 2:</strong> gf_refine()</p>
+<pre class="r"><code>clipping1 = gf_point(Salary~Age, data = SalaryGender, color = ~as.factor(PhD)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, title = &quot;Zoom In With Clipping&quot;, subtitle = &quot;Using gf_lims()&quot;) %&gt;%
+  gf_refine(scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;))) %&gt;%
+  gf_lm() %&gt;%
+  gf_lims(x = c(40,80))
+
+grid.arrange(noclipping, clipping1, nrow = 1)</code></pre>
+<pre><code>## Warning: Removed 33 rows containing non-finite outside the scale range
+## (`stat_lm()`).</code></pre>
+<pre><code>## Warning: Removed 33 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>clipping2 = gf_point(Salary~Age, data = SalaryGender, color = ~as.factor(PhD)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, title = &quot;Zoom In With Clipping&quot;, subtitle = &quot;Using gf_refine()&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    scale_x_continuous(limits = c(40,80))) %&gt;%
+  gf_lm()
+
+grid.arrange(noclipping, clipping2, nrow = 1)</code></pre>
+<pre><code>## Warning: Removed 33 rows containing non-finite outside the scale range (`stat_lm()`).
+## Removed 33 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+</div>
+</div>
+<div id="adjusting-categorical-scales" class="section level1"
+number="3">
+<h1><span class="header-section-number">3</span> Adjusting Categorical
+Scales</h1>
+<p>Adjusting an axis if we have categorical data is a bit odd. We do so
+the same way we adjust a no-clipping continuous axis, but have to
+realize that the first cateogry on our x-axis is at 1. So the boxplot
+(below) has a default x-range from (1,2). If we want to have a wider
+range, we can spread to (0,3)</p>
+<pre class="r"><code>SalaryGender$Gender = recode(SalaryGender$Gender, &#39;0&#39; = &quot;Female&quot;, &#39;1&#39; = &quot;Male&quot;)
+
+gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Close to Default&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    coord_cartesian(xlim = c(1,2))) </code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Spread X Axis Out&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    coord_cartesian(xlim = c(0,3))) </code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+</div>
+<div id="reverse-scales" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Reverse Scales</h1>
+<p>Reversing scales will have different codes based on the type of data
+you have. The general code to reverse scales is:</p>
+<div id="reverse-continuous-discrete-scales" class="section level2"
+number="4.1">
+<h2><span class="header-section-number">4.1</span> Reverse Continuous
+&amp; Discrete Scales</h2>
+<p><strong>Continuous:</strong> gf_refine( scale_y_reverse( ) )</p>
+<p><strong>Discrete:</strong> gf_refine( scale_y_discrete( limits = rev
+) )</p>
+<pre class="r"><code>original = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Original&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;))) 
+
+y.reverse = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Reverse Y&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    scale_y_reverse()) # Reverse Y axis continuous scale
+
+x.reverse = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Reverse X&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    scale_x_discrete(limits = rev)) # Reverse X axis discrete scale
+
+both.reverse = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Reverse Y and X&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    scale_y_reverse(), # Reverse Y axis continuous scale
+    scale_x_discrete(limits = rev)) # Reverse X axis discrete scale
+
+grid.arrange(original, y.reverse, x.reverse, both.reverse, nrow = 2)</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="reverse-legend" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Reverse Legend</h2>
+<p>More details on Legends will be in a different section, but there are
+ways to reverse legends.</p>
+<p>gf_theme( guides( fill = guide_legend( reverse = TRUE ) ) )</p>
+<pre class="r"><code>original.legend = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Original Legend&quot;) %&gt;%
+  gf_refine(scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;))) 
+
+reverse.legend = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Reverse Legend&quot;) %&gt;%
+  gf_refine(scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;))) %&gt;%
+  gf_theme(guides( color = guide_legend( reverse = TRUE)))
+
+grid.arrange(original.legend, reverse.legend, nrow = 1)</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+</div>
+<div id="scale-breaks" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Scale Breaks</h1>
+<p>To adjust scale breaks, use the breaks command inside the
+scale_XXX_continuous command.</p>
+<p><strong>Sequence:</strong> gf_refine(scale_x_continuous(breaks =
+c(seq(1:13))))</p>
+<p><strong>Specific Values:</strong> gf_refine(scale_x_continuous(breaks
+= c(1950, 2000)))</p>
+<pre class="r"><code>gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Breaks as Sequence&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    scale_y_continuous(breaks = c(seq(0,200, by = 20))))</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Breaks Specific Values&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    scale_y_continuous(breaks = c(0, 100, 150)))</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+</div>
 
 
 

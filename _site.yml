@@ -6,11 +6,11 @@ navbar:
       href: index.html
     - text: "Refinements"
       menu:
-        - text: "Axis Labels"
+        - text: "Axis Labels & Legends"
           href: axislabels.html
-        - text: "Axis Scales"
+        - text: "Adjusting Scales (Axis)"
           href: scales.html
-        - text: "Subsets & Zooming"
+        - text: "Subsets"
           href: subsets.html
         - text: "Themes"
           href: themes.html
@@ -18,11 +18,13 @@ navbar:
           href: facets.html
     - text: "Wranging Data"
       menu: 
-        - text: "Tip 1"
-        - text: "Tip 2"
-    - text: "Other Markdown Help"
+        - text: "Items Coming Soon"
+        - text: "Items Coming Soon"
+    - text: "Markdown Help"
       href: markdown.html
+  right:
+    - icon: fa-solid fa-star
+      menu:
+        - text: "50 Visualizations"
+          href: 50visualizations.html
 
-
-      
-      

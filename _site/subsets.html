@@ -11,7 +11,7 @@
 
 
 
-<title>Subsets and Zooming</title>
+<title>Subsets</title>
 
 <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -35,6 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -329,16 +331,19 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="axislabels.html">Axis Labels</a>
+      <a href="axislabels.html">Outside Labels</a>
     </li>
     <li>
-      <a href="scales.html">Axis Scales</a>
+      <a href="scales.html">Adjusting Scales (Axis)</a>
     </li>
     <li>
-      <a href="subsets.html">Subsets &amp; Zooming</a>
+      <a href="subsets.html">Subsets</a>
     </li>
     <li>
       <a href="themes.html">Themes</a>
+    </li>
+    <li>
+      <a href="facets.html">Facets</a>
     </li>
   </ul>
 </li>
@@ -354,11 +359,23 @@ div.tocify {
   </ul>
 </li>
 <li>
-  <a href="markdown.html">Other Markdown Help</a>
+  <a href="markdown.html">Markdown Help</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-solid fa-star"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="50visualizations.html">50 Visualizations</a>
+    </li>
+  </ul>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -368,7 +385,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Subsets and Zooming</h1>
+<h1 class="title toc-ignore">Subsets</h1>
 
 </div>
 
@@ -418,18 +435,30 @@ number="2">
 <p>OR: subset(DatasetName, year == 1999 | class == “compact”)</p>
 <p>List: subset(DatasetName, manufacturer %in% c(“audi”, “chevrolet”,
 “dodge”))</p>
+<div id="multiple-subsets-and" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Multiple Subsets:
+AND</h2>
 <pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, year == 1999 &amp; class == &quot;compact&quot;), color = ~manufacturer, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~manufacturer) %&gt;%
   gf_labs(title = &quot;Facet Wrap: AND&quot;)</code></pre>
 <p><img src="subsets_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="multiple-subsets-or" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Multiple Subsets:
+OR</h2>
 <pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, year == 1999 | class == &quot;compact&quot;), color = ~manufacturer, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~manufacturer) %&gt;%
   gf_labs(title = &quot;Facet Wrap: OR&quot;)</code></pre>
-<p><img src="subsets_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<p><img src="subsets_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="multiple-subsets-list" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Multiple Subsets:
+List</h2>
 <pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, manufacturer %in% c(&quot;audi&quot;, &quot;chevrolet&quot;, &quot;dodge&quot;)), color = ~manufacturer, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~manufacturer) %&gt;%
   gf_labs(title = &quot;Facet Wrap: List&quot;)</code></pre>
-<p><img src="subsets_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
+<p><img src="subsets_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
 </div>
 
 

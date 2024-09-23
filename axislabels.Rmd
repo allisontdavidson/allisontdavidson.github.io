@@ -1,5 +1,5 @@
 ---
-title: "Axis Labels"
+title: "Outside Labels"
 output: 
   html_document:
     toc: TRUE
@@ -10,5 +10,212 @@ output:
     theme: lumen
 ---
 
+```{r, include = FALSE}
+require(mosaic)
+require(Lock5Data)
+data(SalaryGender)
+require(gridExtra)
+theme_set(theme_minimal())
+require(forcats)
+```
+
+Outside labels refers to labeling all items on the "outside" of the graph. These include X and Y axis labels, titles, subtitles, captions, and legend titles. Things NOT included are labeling elements inside the graph (e.g. labeling specific points, specific lines, areas, etc.)
+
+To adjust outside labels, we'll use the [gf_labs( )](https://www.mosaic-web.org/ggformula/reference/gf_aux.html) command.
+
+# General Labels
+
+```{r}
+theme_set(theme_minimal())
+
+gf_point(Sepal.Length~Sepal.Width, data = iris, color = ~Species) %>%
+  gf_labs(
+    y = "Sepal Length", 
+    x = "Sepal Width", 
+    color = "Species\nName", 
+    title = "Setosa have significantly different sized sepal",
+    subtitle = "While Versicolor & Virginica are more similar",
+    caption = "Iris Dataset")
+```
+
+# Notes on Labels
+
+Note that to split labels onto multiple lines, use '\\n' (example in color label above)
+
+Other items that can be labeled are:
+
+-   fill = "label fill legend"
+
+-   size = "label size legend"
+
+-   alt = "add alt text to the plot"
+
+# Adjusting Default Labels
+
+Sometimes the categorical labels are not what we want. For example, in the Lock5Data SalaryGender, PhD and Gender are coded as 0 and 1. This is not very clear.
+
+Here are some ways to adjust those labels.
+
+There are a couple problems with having the 0 and 1 labels for Gender. First, the default treating is going to be numeric - which is not ideal.
+
+```{r}
+gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%
+  gf_labs(x = "Gender", title = "Gender as Numeric") 
+```
+
+At the very least, we want Gender treated as a factor. We can use the as.factor( ) command to force RStudio to read Gender as a factor. This is better, but still unclear.
+
+```{r}
+gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%
+  gf_labs(x = "Gender", title = "Gender as 0 and 1 Factor") 
+
+```
+
+## Adjust labels (but not data itself)
+
+One option is to use scale_x_discrete(labels = c("0" = "F", "1" = "M")) to adjust the labels given. This will adjust what R puts on the x-axis, but it doesn't actually make Gender a factor with F and M. R Still treats it as a number. Thus, we still have to have as.factor(Gender) to get separate boxes.
+
+```{r}
+no.factor.gender = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%
+  gf_labs(x = "Gender", title = "Using scale_x_discrete Labels") %>%
+  gf_refine(scale_x_discrete(labels = c("0" = "F", "1" = "M"))) 
+
+as.factor.gender = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%
+  gf_labs(x = "Gender", title = "Using scale_x_discrete Labels") %>%
+  gf_refine(scale_x_discrete(labels = c("0" = "F", "1" = "M"))) 
+
+grid.arrange(no.factor.gender, as.factor.gender, nrow = 1)
+```
+
+To adjust multiple labels, just adjust your scale_XXX_discrete( ) accordingly. An example below adjusts the x axis and color lables.
+
+```{r}
+gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %>%
+  gf_labs(color = "PhD", x = "Gender", title = "Adjust Gender & PhD Labels") %>%
+  gf_refine(
+    scale_x_discrete(labels = c("0" = "Female", "1" = "Male")),
+    scale_color_discrete(labels = c("0" = "No PhD", "1" = "PhD")),
+    coord_cartesian(xlim = c(1,2))) 
+```
+
+## Adjust labels by adjusting the data
+
+Our last way of adjusting the labels is to recode the variable itself. This WILL allow R to now treat Gender as a factor instead of as 0 and 1.
+
+Note, you need to put the code to adjust your variable *before* the code for your graph as R will run these sequentially when you knit your document.
+
+```{r}
+SalaryGender$Gender = recode(SalaryGender$Gender, '0' = "Female", '1' = "Male")
+
+gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%
+  gf_labs(color = "PhD", x = "Gender", title = "Gender with Labels Adjusted") 
+
+```
+
+## Abbreviate labels
+
+There are a few ways we can auto-abbreviate some labels.  [This](https://www.andrewheiss.com/blog/2022/06/23/long-labels-ggplot/) blog post has a lot of great ideas.  
+
+**Default length (4):** scale_x_discrete(labels = abbreviate)
+
+**Specify min length:** scale_x_discrete(labels = function(x) abbreviate(x, minlength = 1))
+
+```{r}
+gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%
+  gf_labs(color = "PhD", x = "Gender", title = "Abbreviated Labels") %>%
+  gf_refine(scale_x_discrete(labels = abbreviate))
+
+gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%
+  gf_labs(color = "PhD", x = "Gender", title = "Minlength Abbreviation") %>%
+  gf_refine(scale_x_discrete(labels = function(x) abbreviate(x, minlength = 1)))
+```
+
+```{r}
+gf_point(cty~reorder(manufacturer, displ), data = mpg) %>%
+  gf_labs(x = "Manufacturer") %>%
+  gf_refine(scale_x_discrete(labels = abbreviate))
+```
+
+
+
+## Dodge Labels
+
+We can automatically dodge the labels and make them offset across multiple rows with the guide_axis(n.dodge = N) function in scale_x_*().  
+
+```{r}
+gf_point(cty~reorder(manufacturer, displ), data = mpg) %>%
+  gf_labs(x = "Manufacturer") %>%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2)))
+```
+
+
+## Wrap Text
+
+Another option is to automatically wrap the text (if there are spaces between words).
+
+scale_x_discrete(labels = label_wrap(10)
+
+# Legends
+
+There are many things you can do with legends.  This chapter of the [ggplot2](https://ggplot2-book.org/scales-colour) book covers many more ideas than just what is listed below.
+
+## Adjusting Legend Position
+
+Use gf_theme(legend.position = "bottom") to adjust where the legend goes.  Choice are bottom, top, left, or right.
+
+```{r}
+gf_count(cyl~class, data = mpg, color = ~class) %>%
+  gf_refine(scale_size(range = c(0.01, 12))) %>%
+  gf_labs(title = "Legends at Bottom") %>%
+  gf_theme(legend.position = "bottom")
+
+gf_count(cyl~class, data = mpg, color = ~class) %>%
+  gf_refine(scale_size(range = c(0.01, 12))) %>%
+  gf_labs(title = "Legends at Top") %>%
+  gf_theme(legend.position = "top")
+```
+
+
+## Removing All Legends
+
+You can remove all legends from a single graph using the show.legend = FALSE option or using gf_theme(legend.position = "none")
+
+```{r}
+gf_count(cyl~class, data = mpg, color = ~class) %>%
+  gf_refine(scale_size(range = c(0.01, 12))) %>%
+  gf_labs(title = "Show All Legends") 
+
+gf_count(cyl~class, data = mpg, color = ~class, show.legend = FALSE) %>%
+  gf_refine(scale_size(range = c(0.01, 12))) %>%
+  gf_labs(title = "Remove All Legends: show.legend = FALSE")
+
+gf_count(cyl~class, data = mpg, color = ~class) %>%
+  gf_refine(scale_size(range = c(0.01, 12))) %>%
+  gf_labs(title = "Remove All Legends: legend.position") %>%
+  gf_theme(legend.position = "none")
+
+```
+
+## Removing Some Legends
+
+In order to remove just some legends, specify which legend(s) to remove using the guides(color = FALSE) command in a gf_theme( ) statement.
+
+
+```{r}
+gf_count(cyl~class, data = mpg, color = ~class) %>%
+  gf_theme(guides(color = FALSE)) %>%
+  gf_refine(scale_size(range = c(0.01, 12)))%>%
+  gf_labs(title = "Remove Just Color Legend")
+
+gf_count(cyl~class, data = mpg, color = ~class) %>%
+  gf_theme(guides(size = FALSE)) %>%
+  gf_refine(scale_size(range = c(0.01, 12)))%>%
+  gf_labs(title = "Remove Just Size Legend")
+
+gf_count(cyl~class, data = mpg, color = ~class) %>%
+  gf_theme(guides(size = FALSE, color = FALSE)) %>%
+  gf_refine(scale_size(range = c(0.01, 12)))%>%
+  gf_labs(title = "Remove both in guides command")
+```
 
 

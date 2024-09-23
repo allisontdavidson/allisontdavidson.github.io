@@ -1,5 +1,5 @@
 ---
-title: "Subsets and Zooming"
+title: "Subsets"
 output: 
   html_document:
     toc: TRUE
@@ -62,15 +62,26 @@ OR: subset(DatasetName, year == 1999 | class == "compact")
 
 List:  subset(DatasetName, manufacturer %in% c("audi", "chevrolet", "dodge"))
 
+## Multiple Subsets: AND
+
 ```{r}
 gf_point(hwy~displ, data = subset(mpg, year == 1999 & class == "compact"), color = ~manufacturer, show.legend = FALSE) %>%
   gf_facet_wrap(~manufacturer) %>%
   gf_labs(title = "Facet Wrap: AND")
 
+```
+
+## Multiple Subsets: OR
+
+```{r}
 gf_point(hwy~displ, data = subset(mpg, year == 1999 | class == "compact"), color = ~manufacturer, show.legend = FALSE) %>%
   gf_facet_wrap(~manufacturer) %>%
   gf_labs(title = "Facet Wrap: OR")
+```
 
+## Multiple Subsets: List
+
+```{r}
 gf_point(hwy~displ, data = subset(mpg, manufacturer %in% c("audi", "chevrolet", "dodge")), color = ~manufacturer, show.legend = FALSE) %>%
   gf_facet_wrap(~manufacturer) %>%
   gf_labs(title = "Facet Wrap: List")

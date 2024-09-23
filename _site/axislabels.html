@@ -11,7 +11,7 @@
 
 
 
-<title>Axis Labels</title>
+<title>Outside Labels</title>
 
 <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -35,6 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -329,16 +331,19 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="axislabels.html">Axis Labels</a>
+      <a href="axislabels.html">Axis Labels &amp; Legends</a>
     </li>
     <li>
-      <a href="scales.html">Axis Scales</a>
+      <a href="scales.html">Adjusting Scales (Axis)</a>
     </li>
     <li>
-      <a href="subsets.html">Subsets &amp; Zooming</a>
+      <a href="subsets.html">Subsets</a>
     </li>
     <li>
       <a href="themes.html">Themes</a>
+    </li>
+    <li>
+      <a href="facets.html">Facets</a>
     </li>
   </ul>
 </li>
@@ -349,16 +354,28 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Tip 1</li>
-    <li class="dropdown-header">Tip 2</li>
+    <li class="dropdown-header">Items Coming Soon</li>
+    <li class="dropdown-header">Items Coming Soon</li>
   </ul>
 </li>
 <li>
-  <a href="markdown.html">Other Markdown Help</a>
+  <a href="markdown.html">Markdown Help</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-solid fa-star"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="50visualizations.html">50 Visualizations</a>
+    </li>
+  </ul>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -368,12 +385,217 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Axis Labels</h1>
+<h1 class="title toc-ignore">Outside Labels</h1>
 
 </div>
 
 
+<p>Outside labels refers to labeling all items on the “outside” of the
+graph. These include X and Y axis labels, titles, subtitles, captions,
+and legend titles. Things NOT included are labeling elements inside the
+graph (e.g. labeling specific points, specific lines, areas, etc.)</p>
+<p>To adjust outside labels, we’ll use the <a
+href="https://www.mosaic-web.org/ggformula/reference/gf_aux.html">gf_labs(
+)</a> command.</p>
+<div id="general-labels" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> General Labels</h1>
+<pre class="r"><code>theme_set(theme_minimal())
 
+gf_point(Sepal.Length~Sepal.Width, data = iris, color = ~Species) %&gt;%
+  gf_labs(
+    y = &quot;Sepal Length&quot;, 
+    x = &quot;Sepal Width&quot;, 
+    color = &quot;Species\nName&quot;, 
+    title = &quot;Setosa have significantly different sized sepal&quot;,
+    subtitle = &quot;While Versicolor &amp; Virginica are more similar&quot;,
+    caption = &quot;Iris Dataset&quot;)</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="notes-on-labels" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Notes on Labels</h1>
+<p>Note that to split labels onto multiple lines, use ‘\n’ (example in
+color label above)</p>
+<p>Other items that can be labeled are:</p>
+<ul>
+<li><p>fill = “label fill legend”</p></li>
+<li><p>size = “label size legend”</p></li>
+<li><p>alt = “add alt text to the plot”</p></li>
+</ul>
+</div>
+<div id="adjusting-default-labels" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Adjusting Default
+Labels</h1>
+<p>Sometimes the categorical labels are not what we want. For example,
+in the Lock5Data SalaryGender, PhD and Gender are coded as 0 and 1. This
+is not very clear.</p>
+<p>Here are some ways to adjust those labels.</p>
+<p>There are a couple problems with having the 0 and 1 labels for
+Gender. First, the default treating is going to be numeric - which is
+not ideal.</p>
+<pre class="r"><code>gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(x = &quot;Gender&quot;, title = &quot;Gender as Numeric&quot;) </code></pre>
+<pre><code>## Warning: Continuous x aesthetic
+## ℹ did you forget `aes(group = ...)`?</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>At the very least, we want Gender treated as a factor. We can use the
+as.factor( ) command to force RStudio to read Gender as a factor. This
+is better, but still unclear.</p>
+<pre class="r"><code>gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(x = &quot;Gender&quot;, title = &quot;Gender as 0 and 1 Factor&quot;) </code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<div id="adjust-labels-but-not-data-itself" class="section level2"
+number="3.1">
+<h2><span class="header-section-number">3.1</span> Adjust labels (but
+not data itself)</h2>
+<p>One option is to use scale_x_discrete(labels = c(“0” = “F”, “1” =
+“M”)) to adjust the labels given. This will adjust what R puts on the
+x-axis, but it doesn’t actually make Gender a factor with F and M. R
+Still treats it as a number. Thus, we still have to have
+as.factor(Gender) to get separate boxes.</p>
+<pre class="r"><code>no.factor.gender = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(x = &quot;Gender&quot;, title = &quot;Using scale_x_discrete Labels&quot;) %&gt;%
+  gf_refine(scale_x_discrete(labels = c(&quot;0&quot; = &quot;F&quot;, &quot;1&quot; = &quot;M&quot;))) 
+
+as.factor.gender = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(x = &quot;Gender&quot;, title = &quot;Using scale_x_discrete Labels&quot;) %&gt;%
+  gf_refine(scale_x_discrete(labels = c(&quot;0&quot; = &quot;F&quot;, &quot;1&quot; = &quot;M&quot;))) 
+
+grid.arrange(no.factor.gender, as.factor.gender, nrow = 1)</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>To adjust multiple labels, just adjust your scale_XXX_discrete( )
+accordingly. An example below adjusts the x axis and color lables.</p>
+<pre class="r"><code>gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Adjust Gender &amp; PhD Labels&quot;) %&gt;%
+  gf_refine(
+    scale_x_discrete(labels = c(&quot;0&quot; = &quot;Female&quot;, &quot;1&quot; = &quot;Male&quot;)),
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    coord_cartesian(xlim = c(1,2))) </code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="adjust-labels-by-adjusting-the-data" class="section level2"
+number="3.2">
+<h2><span class="header-section-number">3.2</span> Adjust labels by
+adjusting the data</h2>
+<p>Our last way of adjusting the labels is to recode the variable
+itself. This WILL allow R to now treat Gender as a factor instead of as
+0 and 1.</p>
+<p>Note, you need to put the code to adjust your variable
+<em>before</em> the code for your graph as R will run these sequentially
+when you knit your document.</p>
+<pre class="r"><code>SalaryGender$Gender = recode(SalaryGender$Gender, &#39;0&#39; = &quot;Female&quot;, &#39;1&#39; = &quot;Male&quot;)
+
+gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Gender with Labels Adjusted&quot;) </code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="abbreviate-labels" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Abbreviate
+labels</h2>
+<p>There are a few ways we can auto-abbreviate some labels. <a
+href="https://www.andrewheiss.com/blog/2022/06/23/long-labels-ggplot/">This</a>
+blog post has a lot of great ideas.</p>
+<p><strong>Default length (4):</strong> scale_x_discrete(labels =
+abbreviate)</p>
+<p><strong>Specify min length:</strong> scale_x_discrete(labels =
+function(x) abbreviate(x, minlength = 1))</p>
+<pre class="r"><code>gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Abbreviated Labels&quot;) %&gt;%
+  gf_refine(scale_x_discrete(labels = abbreviate))</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Minlength Abbreviation&quot;) %&gt;%
+  gf_refine(scale_x_discrete(labels = function(x) abbreviate(x, minlength = 1)))</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(cty~reorder(manufacturer, displ), data = mpg) %&gt;%
+  gf_labs(x = &quot;Manufacturer&quot;) %&gt;%
+  gf_refine(scale_x_discrete(labels = abbreviate))</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="dodge-labels" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Dodge Labels</h2>
+<p>We can automatically dodge the labels and make them offset across
+multiple rows with the guide_axis(n.dodge = N) function in
+scale_x_*().</p>
+<pre class="r"><code>gf_point(cty~reorder(manufacturer, displ), data = mpg) %&gt;%
+  gf_labs(x = &quot;Manufacturer&quot;) %&gt;%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2)))</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="wrap-text" class="section level2" number="3.5">
+<h2><span class="header-section-number">3.5</span> Wrap Text</h2>
+<p>Another option is to automatically wrap the text (if there are spaces
+between words).</p>
+<p>scale_x_discrete(labels = label_wrap(10)</p>
+</div>
+</div>
+<div id="legends" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Legends</h1>
+<p>There are many things you can do with legends. This chapter of the <a
+href="https://ggplot2-book.org/scales-colour">ggplot2</a> book covers
+many more ideas than just what is listed below.</p>
+<div id="adjusting-legend-position" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Adjusting Legend
+Position</h2>
+<p>Use gf_theme(legend.position = “bottom”) to adjust where the legend
+goes. Choice are bottom, top, left, or right.</p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Legends at Bottom&quot;) %&gt;%
+  gf_theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Legends at Top&quot;) %&gt;%
+  gf_theme(legend.position = &quot;top&quot;)</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+</div>
+<div id="removing-all-legends" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Removing All
+Legends</h2>
+<p>You can remove all legends from a single graph using the show.legend
+= FALSE option or using gf_theme(legend.position = “none”)</p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Show All Legends&quot;) </code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class, show.legend = FALSE) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Remove All Legends: show.legend = FALSE&quot;)</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Remove All Legends: legend.position&quot;) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-12-3.png" width="672" /></p>
+</div>
+<div id="removing-some-legends" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Removing Some
+Legends</h2>
+<p>In order to remove just some legends, specify which legend(s) to
+remove using the guides(color = FALSE) command in a gf_theme( )
+statement.</p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_theme(guides(color = FALSE)) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12)))%&gt;%
+  gf_labs(title = &quot;Remove Just Color Legend&quot;)</code></pre>
+<pre><code>## Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use &quot;none&quot; instead as
+## of ggplot2 3.3.4.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_theme(guides(size = FALSE)) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12)))%&gt;%
+  gf_labs(title = &quot;Remove Just Size Legend&quot;)</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_theme(guides(size = FALSE, color = FALSE)) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12)))%&gt;%
+  gf_labs(title = &quot;Remove both in guides command&quot;)</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-13-3.png" width="672" /></p>
+</div>
+</div>
 
 
 

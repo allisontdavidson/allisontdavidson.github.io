@@ -25,3 +25,19 @@ knitr::opts_chunk\$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
 To Add a table of contents to your markdown document, use toc: TRUE in your title headings.
 
 ![Adding a table of contents to a Markdown document](TableOfContents.jpg)
+
+# Adjusting Figure Size
+
+There are two main ways to adjust the figure size in a Markdown. One is to adjust all figures within a specific type of document (e.g. PDF). Another is to adjust the figure size of all figures within a specific R Chunk.
+
+## Global Figure Size Adjustment
+
+To adjust the figure size globally, you can specify figure height & width within the top portion of your markdown. The default is a figure height of 3 and width of 5.
+
+![Adjusting Global Figure Size](GlobalFigureSize.jpg)
+
+## Figure Size Adjustment for Specific R Chunk
+
+Alternatively, you can adjust specific figures within an R Chunk by specifying the figure height or width in the R Chunk settings.
+
+![Adjust a figure height within an R Chunk](FigureHeightRChunk.jpg)
