@@ -1,0 +1,95 @@
+---
+title: "All About Themes"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: TRUE
+    toc_depth: 3
+    number_sections: TRUE
+    theme: lumen
+---
+
+```{r, include = FALSE}
+require(mosaic)
+```
+
+Themes are going to be helpful to adjust the default. There are built-in themes already available - but you can also adjust specific elements.
+
+# Globally set a theme
+
+To globally set a theme, use theme_set( ) in an R Chunk. All subsequent graphs will use that theme as default.
+
+## Global Theme Example
+
+```{r}
+theme_set(theme_bw())
+
+gf_point(mpg~disp, data = mtcars)
+```
+
+# Manually set a theme
+
+To manually set a theme, use the gf_theme( ) layer on any plot.
+
+## Manual theme example
+
+```{r}
+gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(theme_minimal())
+```
+
+# All ggplot themes
+
+Here is a [list](https://ggplot2.tidyverse.org/reference/ggtheme.html) of all themes available and a preview of what they look like.
+
+```{r, message=FALSE, warning = FALSE}
+require(gridExtra)
+
+gray = gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(theme_gray()) %>%
+  gf_labs(title = "theme_gray")
+
+bw = gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(theme_bw()) %>%
+  gf_labs(title = "theme_bw")
+
+linedraw = gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(theme_linedraw()) %>%
+  gf_labs(title = "theme_linedraw")
+
+light = gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(theme_light()) %>%
+  gf_labs(title = "theme_light")
+
+dark = gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(theme_dark()) %>%
+  gf_labs(title = "theme_dark")
+
+minimal = gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(theme_minimal()) %>%
+  gf_labs(title = "theme_minimal")
+
+classic = gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(theme_classic()) %>%
+  gf_labs(title = "theme_classic")
+
+void = gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(theme_void()) %>%
+  gf_labs(title = "theme_void")
+
+test = gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(theme_test()) %>%
+  gf_labs(title = "theme_test")
+
+
+grid.arrange(gray, bw, linedraw, light, dark, minimal, classic, void, test, nrow = 3 )
+```
+
+# Adjusting Default Themes
+
+If you want to adjust a thematic aspect of a graph, the order of your layers is going to matter. For example, you'll want to either globally set your overall theme or adjust with a theme layer. Then, you can add a separate layer to adjust a theme element. It will not work to add this to the same theme layer you use to set the theme!
+
+## Adjusting theme elements
+
+
