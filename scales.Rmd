@@ -178,3 +178,32 @@ gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 
     scale_color_discrete(labels = c("0" = "No PhD", "1" = "PhD")),
     scale_y_continuous(breaks = c(0, 100, 150)))
 ```
+
+
+# Scales with Time
+
+Use as.Date( ) within gf_lims( ) function.
+Example:  gf_lims(x = c(as.Date("2015-01-01"), as.Date("2015-04-30")))
+
+## Adjusting limits
+ 
+Without clipping: 
+
+```{r}
+gf_point(births~date, data = Births78) %>%
+  gf_refine(coord_cartesian(xlim = c(as.Date("1978-01-01"), as.Date("1978-04-30"))))
+
+gf_point(births~date, data = Births78) %>%
+  gf_refine(scale_x_date())
+
+```
+
+## Adjusting Breaks
+
+
+Date Breaks and Lables:  
+Use scale_x_date(date_breaks = “8 months”, date_labels = “%b %y”)
+date_breaks: can be any number of days, weeks, months, etc. (and you can also add date_minor_breaks = “ “ 
+date_labels: %b is the abbreviated month (other examples are %m as month number or %B full month name) and %y is the 2-digit year (other examples are %Y for 4-digit year, or %d as 2-digit day, %e is day followed by comma, etc.) 
+
+https://sscc.wisc.edu/sscc/pubs/dwr/dates.html 

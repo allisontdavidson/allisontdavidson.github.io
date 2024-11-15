@@ -345,6 +345,9 @@ div.tocify {
     <li>
       <a href="facets.html">Facets</a>
     </li>
+    <li>
+      <a href="Legends.html">Legends</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -580,6 +583,33 @@ c(seq(1:13))))</p>
     scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
     scale_y_continuous(breaks = c(0, 100, 150)))</code></pre>
 <p><img src="scales_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+</div>
+<div id="scales-with-time" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Scales with Time</h1>
+<p>Use as.Date( ) within gf_lims( ) function. Example: gf_lims(x =
+c(as.Date(“2015-01-01”), as.Date(“2015-04-30”)))</p>
+<div id="adjusting-limits" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Adjusting limits</h2>
+<p>Without clipping:</p>
+<pre class="r"><code>gf_point(births~date, data = Births78) %&gt;%
+  gf_refine(coord_cartesian(xlim = c(as.Date(&quot;1978-01-01&quot;), as.Date(&quot;1978-04-30&quot;))))</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(births~date, data = Births78) %&gt;%
+  gf_refine(scale_x_date())</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+</div>
+<div id="adjusting-breaks" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Adjusting Breaks</h2>
+<p>Date Breaks and Lables:<br />
+Use scale_x_date(date_breaks = “8 months”, date_labels = “%b %y”)
+date_breaks: can be any number of days, weeks, months, etc. (and you can
+also add date_minor_breaks = “ “ date_labels: %b is the abbreviated
+month (other examples are %m as month number or %B full month name) and
+%y is the 2-digit year (other examples are %Y for 4-digit year, or %d as
+2-digit day, %e is day followed by comma, etc.)</p>
+<p><a href="https://sscc.wisc.edu/sscc/pubs/dwr/dates.html"
+class="uri">https://sscc.wisc.edu/sscc/pubs/dwr/dates.html</a></p>
+</div>
 </div>
 
 

@@ -11,7 +11,7 @@
 
 
 
-<title>Data Visualization</title>
+<title>Legends</title>
 
 <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -388,95 +388,75 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Data Visualization</h1>
+<h1 class="title toc-ignore">Legends</h1>
 
 </div>
 
 
-<div id="welcome" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Welcome!</h1>
-<p>This is meant to be a collection of tips and tricks I have
-accumulated over years exploring visualizations. Please let me know if
-something is not working or if I should add something! Always looking to
-improve this collection.</p>
+<p>There are many things you can do with legends. This chapter of the <a
+href="https://ggplot2-book.org/scales-colour">ggplot2</a> book covers
+many more ideas than just what is listed below.</p>
+<div id="adjusting-legend-position" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Adjusting Legend
+Position</h1>
+<p>Use gf_theme(legend.position = “bottom”) to adjust where the legend
+goes. Choice are bottom, top, left, or right.</p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Legends at Bottom&quot;) %&gt;%
+  gf_theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Legends at Top&quot;) %&gt;%
+  gf_theme(legend.position = &quot;top&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
 </div>
-<div id="preamble" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Preamble</h1>
-<p>All refinements are using the ggformula way of graphing. This
-collection of tips will <strong>not</strong> include a lot of
-information of creating the basic graph. As such, I am including a few
-links that may be helpful below.</p>
-<div id="packages-used" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Packages Used</h2>
-<p>At the very least, all of these commands are going to need the mosaic
-package. All ggformula commands will run with the mosaic package loaded.
-Several other packages will be used throughout the document. Some key
-ones to know are:</p>
-<ul>
-<li>mosaic (mentioned above)</li>
-<li>forcats (ordering factors by a statistic)</li>
-<li>Lock5Data (selection of many datasets)</li>
-<li>gridextra (arranging multiple graphs together)</li>
-</ul>
+<div id="removing-all-legends" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Removing All
+Legends</h1>
+<p>You can remove all legends from a single graph using the show.legend
+= FALSE option or using gf_theme(legend.position = “none”)</p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Show All Legends&quot;) </code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class, show.legend = FALSE) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Remove All Legends: show.legend = FALSE&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Remove All Legends: legend.position&quot;) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
 </div>
-<div id="list-of-all-ggformula-commands" class="section level2"
-number="2.2">
-<h2><span class="header-section-number">2.2</span> List of all ggformula
-commands</h2>
-<p>The <a
-href="https://www.mosaic-web.org/ggformula/reference/index.html">ggormula
-reference page</a> includes information and examples on all functions
-available. Many are types of graphs, but not exclusively. They also have
-several articles that walk through ways of graphing in a very visual
-way.</p>
-</div>
-<div id="additional-resources" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> Additional
-Resources</h2>
-<div id="graphing-introductions" class="section level3" number="2.3.1">
-<h3><span class="header-section-number">2.3.1</span> Graphing
-Introductions</h3>
-<p>Additionally, Claus O. Wilke has a great resource discussing many <a
-href="https://clauswilke.com/dataviz/">Fundamentals of Data
-Visualization</a> made freely available.</p>
-<p>Lastly, the <a href="https://r-graph-gallery.com/index.html">R Graph
-Gallery</a> gives many examples (and code) of graphs available.</p>
-</div>
-<div id="ggformula-details" class="section level3" number="2.3.2">
-<h3><span class="header-section-number">2.3.2</span> ggformula
-Details</h3>
-<p>Although this site will use ggformula way of graphing - these
-functions are built off of the <a
-href="https://ggplot2-book.org/mastery.html">ggplot2</a> graphing
-formulas. Many of the techniques are therefore adapted from the ggplot2
-appraoch.</p>
-</div>
-<div id="wrangling-data" class="section level3" number="2.3.3">
-<h3><span class="header-section-number">2.3.3</span> Wrangling Data</h3>
-<p>This site will not cover many ways of wrangling data; however,
-wrangling techniques are often used to get data into the shape we want.
-Therefore, I’m adding a few resources that I find particularly helpful
-here.</p>
-<ul>
-<li><a href="https://r4ds.hadley.nz/">R for Data Science (2e)</a>: a
-comprehensive book about wrangling data in a variety of ways</li>
-<li><a
-href="https://www.rstudio.com/wp-content%2Fuploads%2F2015%2F02%2Fdata-wrangling-cheatsheet.pdf%2F">Data
-Wrangling Cheat Sheet</a>: a short visual guide to ways of wrangling
-data</li>
-<li><a href="https://tidyr.tidyverse.org/index.html">tidyr Reference
-Guide</a>: lists all commmands in the tidyr package</li>
-<li><a
-href="https://github.com/gadenbuie/tidyexplain?tab=readme-ov-file">GIFs
-of tidyr commands</a>: to see how commands alter the dataset</li>
-<li><a href="https://stringr.tidyverse.org/reference/index.html">stingr
-Reference Guide</a>: for cleaning strings</li>
-<li><a
-href="https://hypebright.nl/en/r-en/ultimate-cheatsheet-for-regex-in-r-2/">regex
-cheat sheet</a>: language to adjust strings</li>
-</ul>
-</div>
-</div>
+<div id="removing-some-legends" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Removing Some
+Legends</h1>
+<p>In order to remove just some legends, specify which legend(s) to
+remove using the guides(color = FALSE) command in a gf_theme( )
+statement.</p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_theme(guides(color = FALSE)) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12)))%&gt;%
+  gf_labs(title = &quot;Remove Just Color Legend&quot;)</code></pre>
+<pre><code>## Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use &quot;none&quot; instead as
+## of ggplot2 3.3.4.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_theme(guides(size = FALSE)) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12)))%&gt;%
+  gf_labs(title = &quot;Remove Just Size Legend&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_theme(guides(size = FALSE, color = FALSE)) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12)))%&gt;%
+  gf_labs(title = &quot;Remove both in guides command&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
 </div>
 
 

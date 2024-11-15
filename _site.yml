@@ -6,7 +6,7 @@ navbar:
       href: index.html
     - text: "Refinements"
       menu:
-        - text: "Axis Labels & Legends"
+        - text: "Outside Labels"
           href: axislabels.html
         - text: "Adjusting Scales (Axis)"
           href: scales.html
@@ -16,6 +16,8 @@ navbar:
           href: themes.html
         - text: "Facets"
           href: facets.html
+        - text: "Legends"
+          href: Legends.html  
     - text: "Wranging Data"
       menu: 
         - text: "Items Coming Soon"
