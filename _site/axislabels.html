@@ -413,9 +413,8 @@ gf_point(Sepal.Length~Sepal.Width, data = iris, color = ~Species) %&gt;%
     subtitle = &quot;While Versicolor &amp; Virginica are more similar&quot;,
     caption = &quot;Iris Dataset&quot;)</code></pre>
 <p><img src="axislabels_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-</div>
-<div id="notes-on-labels" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Notes on Labels</h1>
+<div id="notes-on-labels" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Notes on Labels</h2>
 <p>Note that to split labels onto multiple lines, use ‘\n’ (example in
 color label above)</p>
 <p>Other items that can be labeled are:</p>
@@ -425,8 +424,9 @@ color label above)</p>
 <li><p>alt = “add alt text to the plot”</p></li>
 </ul>
 </div>
-<div id="adjusting-default-labels" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Adjusting Default
+</div>
+<div id="adjusting-default-labels" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Adjusting Default
 Labels</h1>
 <p>Sometimes the categorical labels are not what we want. For example,
 in the Lock5Data SalaryGender, PhD and Gender are coded as 0 and 1. This
@@ -448,8 +448,8 @@ grid.arrange(numeric.gender, factor.gender, nrow = 1)</code></pre>
 ## ℹ did you forget `aes(group = ...)`?</code></pre>
 <p><img src="axislabels_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <div id="adjust-labels-but-not-data-itself" class="section level2"
-number="3.1">
-<h2><span class="header-section-number">3.1</span> Adjust labels (but
+number="2.1">
+<h2><span class="header-section-number">2.1</span> Adjust labels (but
 not data itself)</h2>
 <p>One option is to use scale_x_discrete(labels = c(“0” = “F”, “1” =
 “M”)) to adjust the labels given. This will adjust what R puts on the
@@ -477,8 +477,8 @@ accordingly. An example below adjusts the x axis and color lables.</p>
 <p><img src="axislabels_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="adjust-labels-by-adjusting-the-data" class="section level2"
-number="3.2">
-<h2><span class="header-section-number">3.2</span> Adjust labels by
+number="2.2">
+<h2><span class="header-section-number">2.2</span> Adjust labels by
 adjusting the data</h2>
 <p>Our last way of adjusting the labels is to recode the variable
 itself. This WILL allow R to now treat Gender as a factor instead of as
@@ -492,8 +492,8 @@ gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_d
   gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Gender with Labels Adjusted&quot;) </code></pre>
 <p><img src="axislabels_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
-<div id="abbreviate-labels" class="section level2" number="3.3">
-<h2><span class="header-section-number">3.3</span> Abbreviate
+<div id="abbreviate-labels" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Abbreviate
 labels</h2>
 <p>There are a few ways we can auto-abbreviate some labels. <a
 href="https://www.andrewheiss.com/blog/2022/06/23/long-labels-ggplot/">This</a>
@@ -515,8 +515,8 @@ minlength.labels = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, p
 grid.arrange(abb.labels, minlength.labels, nrow = 1)</code></pre>
 <p><img src="axislabels_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
-<div id="dodge-labels" class="section level2" number="3.4">
-<h2><span class="header-section-number">3.4</span> Dodge Labels</h2>
+<div id="dodge-labels" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Dodge Labels</h2>
 <p>We can automatically dodge the labels and make them offset across
 multiple rows with the guide_axis(n.dodge = N) function in
 scale_x_*().</p>
@@ -531,11 +531,37 @@ dodge.cars = gf_sina(cty~reorder(manufacturer, displ), data = mpg, alpha = 0.4) 
 grid.arrange(abb.cars, dodge.cars, ncol = 1)</code></pre>
 <p><img src="axislabels_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
-<div id="wrap-text" class="section level2" number="3.5">
-<h2><span class="header-section-number">3.5</span> Wrap Text</h2>
+<div id="wrap-text" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Wrap Text</h2>
 <p>Another option is to automatically wrap the text (if there are spaces
 between words).</p>
 <p>scale_x_discrete(labels = label_wrap(10))</p>
+<pre class="r"><code>require(socviz)</code></pre>
+<pre><code>## Loading required package: socviz</code></pre>
+<pre><code>## Warning: package &#39;socviz&#39; was built under R version 4.2.3</code></pre>
+<pre class="r"><code>require(scales)</code></pre>
+<pre><code>## Loading required package: scales</code></pre>
+<pre><code>## Warning: package &#39;scales&#39; was built under R version 4.2.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;scales&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:mosaic&#39;:
+## 
+##     rescale</code></pre>
+<pre class="r"><code>require(forcats)
+require(gridExtra)
+election = socviz::election
+
+non.wrapped = gf_col(fct_reorder(state, trump_vote)~trump_vote/1000000, data = subset(election, trump_vote &gt;2000000)) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;Trump Votes (Millions)&quot;, title = &quot;States Original&quot;) %&gt;%
+  gf_theme(theme_minimal())
+
+wrapped = gf_col(fct_reorder(state, trump_vote)~trump_vote/1000000, data = subset(election, trump_vote &gt;2000000)) %&gt;%
+  gf_refine(scale_y_discrete(labels = label_wrap(5))) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;Trump Votes (Millions)&quot;, title = &quot;States Wrapped&quot;) %&gt;%
+  gf_theme(theme_minimal())
+
+grid.arrange(non.wrapped, wrapped, nrow = 1)</code></pre>
+<p><img src="axislabels_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 </div>
 

@@ -38,7 +38,7 @@ gf_point(Sepal.Length~Sepal.Width, data = iris, color = ~Species) %>%
     caption = "Iris Dataset")
 ```
 
-# Notes on Labels
+## Notes on Labels
 
 Note that to split labels onto multiple lines, use '\\n' (example in color label above)
 
@@ -158,6 +158,24 @@ Another option is to automatically wrap the text (if there are spaces between wo
 
 scale_x_discrete(labels = label_wrap(10))
 
+```{r}
+require(socviz)
+require(scales)
+require(forcats)
+require(gridExtra)
+election = socviz::election
+
+non.wrapped = gf_col(fct_reorder(state, trump_vote)~trump_vote/1000000, data = subset(election, trump_vote >2000000)) %>%
+  gf_labs(y = "", x = "Trump Votes (Millions)", title = "States Original") %>%
+  gf_theme(theme_minimal())
+
+wrapped = gf_col(fct_reorder(state, trump_vote)~trump_vote/1000000, data = subset(election, trump_vote >2000000)) %>%
+  gf_refine(scale_y_discrete(labels = label_wrap(5))) %>%
+  gf_labs(y = "", x = "Trump Votes (Millions)", title = "States Wrapped") %>%
+  gf_theme(theme_minimal())
+
+grid.arrange(non.wrapped, wrapped, nrow = 1)
+```
 
 
 
