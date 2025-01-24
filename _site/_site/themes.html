@@ -11,7 +11,7 @@
 
 
 
-<title>Data Visualization</title>
+<title>All About Themes</title>
 
 <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -388,44 +388,98 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Data Visualization</h1>
+<h1 class="title toc-ignore">All About Themes</h1>
 
 </div>
 
 
-<div id="welcome" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Welcome!</h1>
-<p>This is meant to be a non-exhaustive collection of information from a
-variety of different sources to help refine visualizations.</p>
-<p>All code in this compilation uses <a
-href="https://www.mosaic-web.org/ggformula/reference/index.html">ggformula</a>
-as the base graph and additional layers for graphs.</p>
-<div id="helpful-packages" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Helpful Packages</h2>
-<p>This compilation utilizes many packages - but here are a few key ones
-to start:</p>
-<ul>
-<li>mosaic (also using the ggformula way of graphing)</li>
-<li>forcats (ordering factors by a statistic)</li>
-<li>Lock5Data (selection of many datasets)</li>
-<li>gridextra (arranging multiple graphs together)</li>
-</ul>
+<p>Themes are going to be helpful to adjust the default. There are
+built-in themes already available - but you can also adjust specific
+elements.</p>
+<div id="globally-set-a-theme" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Globally set a
+theme</h1>
+<p>To globally set a theme, use theme_set( ) in an R Chunk. All
+subsequent graphs will use that theme as default.</p>
+<div id="global-theme-example" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Global Theme
+Example</h2>
+<pre class="r"><code>theme_set(theme_bw())
+
+gf_point(mpg~disp, data = mtcars)</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
-<div id="additional-resources" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Additional
-Resources</h2>
-<p>This compilation assumes a basic understanding of creating the
-initial graph - and will therefore focus on ways to refine a graph
-further. As such, a few other resources for those wanting more
-introduction to graphing are included below.</p>
-<p>Claus O. Wilke has a great resource discussing many <a
-href="https://clauswilke.com/dataviz/">Fundamentals of Data
-Visualization</a> made freely available.</p>
-<p>The <a href="https://r-graph-gallery.com/index.html">R Graph
-Gallery</a> gives many examples (and code) of graphs available.</p>
-<p>The <a href="https://ggplot2-book.org/mastery.html">ggplot2</a> book
-is a wealth of information not only on creating graphs but also refining
-them.</p>
+</div>
+<div id="manually-set-a-theme" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Manually set a
+theme</h1>
+<p>To manually set a theme, use the gf_theme( ) layer on any plot.</p>
+<div id="manual-theme-example" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Manual theme
+example</h2>
+<pre class="r"><code>gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_minimal())</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+</div>
+<div id="all-ggplot-themes" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> All ggplot themes</h1>
+<p>Here is a <a
+href="https://ggplot2.tidyverse.org/reference/ggtheme.html">list</a> of
+all themes available and a preview of what they look like.</p>
+<pre class="r"><code>require(gridExtra)
+
+gray = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_gray()) %&gt;%
+  gf_labs(title = &quot;theme_gray&quot;)
+
+bw = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_bw()) %&gt;%
+  gf_labs(title = &quot;theme_bw&quot;)
+
+linedraw = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_linedraw()) %&gt;%
+  gf_labs(title = &quot;theme_linedraw&quot;)
+
+light = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_light()) %&gt;%
+  gf_labs(title = &quot;theme_light&quot;)
+
+dark = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_dark()) %&gt;%
+  gf_labs(title = &quot;theme_dark&quot;)
+
+minimal = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_minimal()) %&gt;%
+  gf_labs(title = &quot;theme_minimal&quot;)
+
+classic = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_labs(title = &quot;theme_classic&quot;)
+
+void = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_void()) %&gt;%
+  gf_labs(title = &quot;theme_void&quot;)
+
+test = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_test()) %&gt;%
+  gf_labs(title = &quot;theme_test&quot;)
+
+
+grid.arrange(gray, bw, linedraw, light, dark, minimal, classic, void, test, nrow = 3 )</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="adjusting-default-themes" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Adjusting Default
+Themes</h1>
+<p>If you want to adjust a thematic aspect of a graph, the order of your
+layers is going to matter. For example, you’ll want to either globally
+set your overall theme or adjust with a theme layer. Then, you can add a
+separate layer to adjust a theme element. It will not work to add this
+to the same theme layer you use to set the theme!</p>
+<div id="adjusting-theme-elements" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Adjusting theme
+elements</h2>
 </div>
 </div>
 

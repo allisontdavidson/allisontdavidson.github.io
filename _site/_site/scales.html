@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Adjusting Axis Scales</title>
+
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Data Visualization</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Intro</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Refinements
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="axislabels.html">Outside Labels</a>
+    </li>
+    <li>
+      <a href="scales.html">Adjusting Scales (Axis)</a>
+    </li>
+    <li>
+      <a href="subsets.html">Subsets</a>
+    </li>
+    <li>
+      <a href="themes.html">Themes</a>
+    </li>
+    <li>
+      <a href="facets.html">Facets</a>
+    </li>
+    <li>
+      <a href="Legends.html">Legends</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Wranging Data
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Items Coming Soon</li>
+    <li class="dropdown-header">Items Coming Soon</li>
+  </ul>
+</li>
+<li>
+  <a href="markdown.html">Markdown Help</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-solid fa-star"></span>
+     
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="50visualizations.html">50 Visualizations</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Adjusting Axis Scales</h1>
+
+</div>
+
+
+<p>There are 2 ways of adjusting scales (in terms of how they treat
+data). One way is called “without clipping” where all data is preserved,
+but we adjust the axis to essentially zoom in or out while keeping all
+data preserved. Alternatively, we can adjust “with clipping” where all
+data not in the area specified is no longer accounted for. This will
+matter if you’re overlaying things like linear model trendlines. The
+images below come from the ggplot2 cheat-sheet and I think illustrate
+things well.</p>
+<p><img src="NoClipping.jpg" alt="No Clipping" /> <img
+src="WithClipping.jpg" alt="With Clipping" /></p>
+<div id="adjust-scales-without-clipping" class="section level1"
+number="1">
+<h1><span class="header-section-number">1</span> Adjust Scales Without
+Clipping</h1>
+<p>To adjust scales without removing unseen data points, use a
+gf_refine( ) statment with coord_cartesian( ) specifications.</p>
+<p>%&gt;% gf_refine(coord_cartesian(xlim = c(0, 100), ylim = c(10,
+20)))</p>
+<div class="float">
+<img src="NoClipping.jpg" alt="No Clipping" />
+<div class="figcaption">No Clipping</div>
+</div>
+<div id="example-without-clipping" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Example Without
+Clipping</h2>
+<pre class="r"><code>original = gf_point(Salary~Age, data = SalaryGender, color = ~as.factor(PhD)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, title = &quot;All Data&quot;) %&gt;%
+  gf_refine(scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;))) %&gt;%
+  gf_lm()
+
+noclipping = gf_point(Salary~Age, data = SalaryGender, color = ~as.factor(PhD)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, title = &quot;Zoom In Without Clipping&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    coord_cartesian(xlim = c(40, 80))) %&gt;%
+  gf_lm()
+
+grid.arrange(original, noclipping, nrow = 1)</code></pre>
+<pre><code>## Warning: Using the `size` aesthetic with geom_line was deprecated in ggplot2 3.4.0.
+## ℹ Please use the `linewidth` aesthetic instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+</div>
+<div id="adjust-scales-with-clipping" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Adjust Scales With
+Clipping</h1>
+<p>There are a few ways you can adjust the scales with clipping. For
+example, you can merely create a subset and only use that data (by
+default, clipping out the other data). Alternatively you can use a
+gf_lims( ) command OR a scale_x_continuous( ) command within a refine
+statement.</p>
+<div class="float">
+<img src="WithClipping.jpg" alt="With Clipping" />
+<div class="figcaption">With Clipping</div>
+</div>
+<div id="example-with-clipping" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Example With
+Clipping</h2>
+<p><strong>Option 1:</strong> gf_lims(x = c(40,80)) or gf_lims(x = c(65,
+NA), y = c(3, NA))</p>
+<p><strong>Option 2:</strong> gf_refine()</p>
+<pre class="r"><code>clipping1 = gf_point(Salary~Age, data = SalaryGender, color = ~as.factor(PhD)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, title = &quot;Zoom In With Clipping&quot;, subtitle = &quot;Using gf_lims()&quot;) %&gt;%
+  gf_refine(scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;))) %&gt;%
+  gf_lm() %&gt;%
+  gf_lims(x = c(40,80))
+
+grid.arrange(noclipping, clipping1, nrow = 1)</code></pre>
+<pre><code>## Warning: Removed 33 rows containing non-finite outside the scale range
+## (`stat_lm()`).</code></pre>
+<pre><code>## Warning: Removed 33 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>clipping2 = gf_point(Salary~Age, data = SalaryGender, color = ~as.factor(PhD)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, title = &quot;Zoom In With Clipping&quot;, subtitle = &quot;Using gf_refine()&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    scale_x_continuous(limits = c(40,80))) %&gt;%
+  gf_lm()
+
+grid.arrange(noclipping, clipping2, nrow = 1)</code></pre>
+<pre><code>## Warning: Removed 33 rows containing non-finite outside the scale range (`stat_lm()`).
+## Removed 33 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+</div>
+</div>
+<div id="adjusting-categorical-scales" class="section level1"
+number="3">
+<h1><span class="header-section-number">3</span> Adjusting Categorical
+Scales</h1>
+<p>Adjusting an axis if we have categorical data is a bit odd. We do so
+the same way we adjust a no-clipping continuous axis, but have to
+realize that the first cateogry on our x-axis is at 1. So the boxplot
+(below) has a default x-range from (1,2). If we want to have a wider
+range, we can spread to (0,3)</p>
+<pre class="r"><code>SalaryGender$Gender = recode(SalaryGender$Gender, &#39;0&#39; = &quot;Female&quot;, &#39;1&#39; = &quot;Male&quot;)
+
+gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Close to Default&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    coord_cartesian(xlim = c(1,2))) </code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Spread X Axis Out&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    coord_cartesian(xlim = c(0,3))) </code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+</div>
+<div id="reverse-scales" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Reverse Scales</h1>
+<p>Reversing scales will have different codes based on the type of data
+you have. The general code to reverse scales is:</p>
+<div id="reverse-continuous-discrete-scales" class="section level2"
+number="4.1">
+<h2><span class="header-section-number">4.1</span> Reverse Continuous
+&amp; Discrete Scales</h2>
+<p><strong>Continuous:</strong> gf_refine( scale_y_reverse( ) )</p>
+<p><strong>Discrete:</strong> gf_refine( scale_y_discrete( limits = rev
+) )</p>
+<pre class="r"><code>original = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Original&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;))) 
+
+y.reverse = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Reverse Y&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    scale_y_reverse()) # Reverse Y axis continuous scale
+
+x.reverse = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Reverse X&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    scale_x_discrete(limits = rev)) # Reverse X axis discrete scale
+
+both.reverse = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Reverse Y and X&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    scale_y_reverse(), # Reverse Y axis continuous scale
+    scale_x_discrete(limits = rev)) # Reverse X axis discrete scale
+
+grid.arrange(original, y.reverse, x.reverse, both.reverse, nrow = 2)</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="reverse-legend" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Reverse Legend</h2>
+<p>More details on Legends will be in a different section, but there are
+ways to reverse legends.</p>
+<p>gf_theme( guides( fill = guide_legend( reverse = TRUE ) ) )</p>
+<pre class="r"><code>original.legend = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Original Legend&quot;) %&gt;%
+  gf_refine(scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;))) 
+
+reverse.legend = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Reverse Legend&quot;) %&gt;%
+  gf_refine(scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;))) %&gt;%
+  gf_theme(guides( color = guide_legend( reverse = TRUE)))
+
+grid.arrange(original.legend, reverse.legend, nrow = 1)</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+</div>
+<div id="scale-breaks" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Scale Breaks</h1>
+<p>To adjust scale breaks, use the breaks command inside the
+scale_XXX_continuous command.</p>
+<p><strong>Sequence:</strong> gf_refine(scale_x_continuous(breaks =
+c(seq(1:13))))</p>
+<p><strong>Specific Values:</strong> gf_refine(scale_x_continuous(breaks
+= c(1950, 2000)))</p>
+<pre class="r"><code>gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Breaks as Sequence&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    scale_y_continuous(breaks = c(seq(0,200, by = 20))))</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Breaks Specific Values&quot;) %&gt;%
+  gf_refine(
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    scale_y_continuous(breaks = c(0, 100, 150)))</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+</div>
+<div id="scales-with-time" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Scales with Time</h1>
+<p>Use as.Date( ) within gf_lims( ) function. Example: gf_lims(x =
+c(as.Date(“2015-01-01”), as.Date(“2015-04-30”)))</p>
+<div id="adjusting-limits" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Adjusting limits</h2>
+<p>Without clipping:</p>
+<pre class="r"><code>gf_point(births~date, data = Births78) %&gt;%
+  gf_refine(coord_cartesian(xlim = c(as.Date(&quot;1978-01-01&quot;), as.Date(&quot;1978-04-30&quot;))))</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(births~date, data = Births78) %&gt;%
+  gf_refine(scale_x_date())</code></pre>
+<p><img src="scales_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+</div>
+<div id="adjusting-breaks" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Adjusting Breaks</h2>
+<p>Date Breaks and Lables:<br />
+Use scale_x_date(date_breaks = “8 months”, date_labels = “%b %y”)
+date_breaks: can be any number of days, weeks, months, etc. (and you can
+also add date_minor_breaks = “ “ date_labels: %b is the abbreviated
+month (other examples are %m as month number or %B full month name) and
+%y is the 2-digit year (other examples are %Y for 4-digit year, or %d as
+2-digit day, %e is day followed by comma, etc.)</p>
+<p><a href="https://sscc.wisc.edu/sscc/pubs/dwr/dates.html"
+class="uri">https://sscc.wisc.edu/sscc/pubs/dwr/dates.html</a></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

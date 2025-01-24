@@ -11,7 +11,7 @@
 
 
 
-<title>Data Visualization</title>
+<title>Legends</title>
 
 <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -388,45 +388,75 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Data Visualization</h1>
+<h1 class="title toc-ignore">Legends</h1>
 
 </div>
 
 
-<div id="welcome" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Welcome!</h1>
-<p>This is meant to be a non-exhaustive collection of information from a
-variety of different sources to help refine visualizations.</p>
-<p>All code in this compilation uses <a
-href="https://www.mosaic-web.org/ggformula/reference/index.html">ggformula</a>
-as the base graph and additional layers for graphs.</p>
-<div id="helpful-packages" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Helpful Packages</h2>
-<p>This compilation utilizes many packages - but here are a few key ones
-to start:</p>
-<ul>
-<li>mosaic (also using the ggformula way of graphing)</li>
-<li>forcats (ordering factors by a statistic)</li>
-<li>Lock5Data (selection of many datasets)</li>
-<li>gridextra (arranging multiple graphs together)</li>
-</ul>
+<p>There are many things you can do with legends. This chapter of the <a
+href="https://ggplot2-book.org/scales-colour">ggplot2</a> book covers
+many more ideas than just what is listed below.</p>
+<div id="adjusting-legend-position" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Adjusting Legend
+Position</h1>
+<p>Use gf_theme(legend.position = “bottom”) to adjust where the legend
+goes. Choice are bottom, top, left, or right.</p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Legends at Bottom&quot;) %&gt;%
+  gf_theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Legends at Top&quot;) %&gt;%
+  gf_theme(legend.position = &quot;top&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
 </div>
-<div id="additional-resources" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Additional
-Resources</h2>
-<p>This compilation assumes a basic understanding of creating the
-initial graph - and will therefore focus on ways to refine a graph
-further. As such, a few other resources for those wanting more
-introduction to graphing are included below.</p>
-<p>Claus O. Wilke has a great resource discussing many <a
-href="https://clauswilke.com/dataviz/">Fundamentals of Data
-Visualization</a> made freely available.</p>
-<p>The <a href="https://r-graph-gallery.com/index.html">R Graph
-Gallery</a> gives many examples (and code) of graphs available.</p>
-<p>The <a href="https://ggplot2-book.org/mastery.html">ggplot2</a> book
-is a wealth of information not only on creating graphs but also refining
-them.</p>
+<div id="removing-all-legends" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Removing All
+Legends</h1>
+<p>You can remove all legends from a single graph using the show.legend
+= FALSE option or using gf_theme(legend.position = “none”)</p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Show All Legends&quot;) </code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class, show.legend = FALSE) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Remove All Legends: show.legend = FALSE&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12))) %&gt;%
+  gf_labs(title = &quot;Remove All Legends: legend.position&quot;) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
 </div>
+<div id="removing-some-legends" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Removing Some
+Legends</h1>
+<p>In order to remove just some legends, specify which legend(s) to
+remove using the guides(color = FALSE) command in a gf_theme( )
+statement.</p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_theme(guides(color = FALSE)) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12)))%&gt;%
+  gf_labs(title = &quot;Remove Just Color Legend&quot;)</code></pre>
+<pre><code>## Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use &quot;none&quot; instead as
+## of ggplot2 3.3.4.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_theme(guides(size = FALSE)) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12)))%&gt;%
+  gf_labs(title = &quot;Remove Just Size Legend&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>gf_count(cyl~class, data = mpg, color = ~class) %&gt;%
+  gf_theme(guides(size = FALSE, color = FALSE)) %&gt;%
+  gf_refine(scale_size(range = c(0.01, 12)))%&gt;%
+  gf_labs(title = &quot;Remove both in guides command&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
 </div>
 
 

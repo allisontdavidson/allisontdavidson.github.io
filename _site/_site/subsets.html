@@ -11,7 +11,7 @@
 
 
 
-<title>Data Visualization</title>
+<title>Subsets</title>
 
 <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -388,44 +388,79 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Data Visualization</h1>
+<h1 class="title toc-ignore">Subsets</h1>
 
 </div>
 
 
-<div id="welcome" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Welcome!</h1>
-<p>This is meant to be a non-exhaustive collection of information from a
-variety of different sources to help refine visualizations.</p>
-<p>All code in this compilation uses <a
-href="https://www.mosaic-web.org/ggformula/reference/index.html">ggformula</a>
-as the base graph and additional layers for graphs.</p>
-<div id="helpful-packages" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Helpful Packages</h2>
-<p>This compilation utilizes many packages - but here are a few key ones
-to start:</p>
-<ul>
-<li>mosaic (also using the ggformula way of graphing)</li>
-<li>forcats (ordering factors by a statistic)</li>
-<li>Lock5Data (selection of many datasets)</li>
-<li>gridextra (arranging multiple graphs together)</li>
-</ul>
+<p>Sometimes you want to adjust the data you see by only graphing a
+subset of your dataset. In order to subset your data within a graph
+command, you’ll want to consider what type of data you have.</p>
+<div id="subsetting-continuous-data" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Subsetting Continuous
+Data</h1>
+<p><strong>Single variable equal to a number:</strong>
+subset(DatasetName, Age == 10)</p>
+<p><strong>Single variable in relation to a number:</strong>
+subset(DatasetName, Age &lt; 10)</p>
+<p><strong>Single variable between 2 values:</strong>
+subset(DatasetName, Age &gt; 3 &amp; Age &lt; 10)</p>
+<pre class="r"><code>theme_set(theme_minimal())
+
+gf_point(hwy~displ, data = mpg, alpha = 0.5) %&gt;%
+  gf_labs(title = &quot;All Data&quot;)</code></pre>
+<p><img src="subsets_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, year == 1999), alpha = 0.5) %&gt;%
+  gf_labs(title = &quot;Only Year = 1999&quot;)</code></pre>
+<p><img src="subsets_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, year &gt; 1999), alpha = 0.5) %&gt;%
+  gf_labs(title = &quot;Only After 1999&quot;)</code></pre>
+<p><img src="subsets_files/figure-html/unnamed-chunk-2-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, displ &lt;3 | displ &gt;6), alpha = 0.5) %&gt;%
+  gf_labs(title = &quot;Displacement on Either End (OR)&quot;)</code></pre>
+<p><img src="subsets_files/figure-html/unnamed-chunk-2-4.png" width="672" /></p>
+<pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, displ &gt; 3 &amp; displ &lt; 6), alpha = 0.5) %&gt;%
+  gf_labs(title = &quot;Displacement Between Two Values (AND)&quot;)</code></pre>
+<p><img src="subsets_files/figure-html/unnamed-chunk-2-5.png" width="672" /></p>
 </div>
-<div id="additional-resources" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Additional
-Resources</h2>
-<p>This compilation assumes a basic understanding of creating the
-initial graph - and will therefore focus on ways to refine a graph
-further. As such, a few other resources for those wanting more
-introduction to graphing are included below.</p>
-<p>Claus O. Wilke has a great resource discussing many <a
-href="https://clauswilke.com/dataviz/">Fundamentals of Data
-Visualization</a> made freely available.</p>
-<p>The <a href="https://r-graph-gallery.com/index.html">R Graph
-Gallery</a> gives many examples (and code) of graphs available.</p>
-<p>The <a href="https://ggplot2-book.org/mastery.html">ggplot2</a> book
-is a wealth of information not only on creating graphs but also refining
-them.</p>
+<div id="subsetting-cateogrical-discrete-data" class="section level1"
+number="2">
+<h1><span class="header-section-number">2</span> Subsetting Cateogrical
+(Discrete) Data</h1>
+<pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, class == &quot;compact&quot;), color = ~manufacturer, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~manufacturer) %&gt;%
+  gf_labs(title = &quot;Facet Wrap&quot;)</code></pre>
+<p><img src="subsets_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="multiple-subsets" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Multiple Subsets</h1>
+<p>AND: subset(DatasetName, year == 1999 &amp; class == “compact”)</p>
+<p>OR: subset(DatasetName, year == 1999 | class == “compact”)</p>
+<p>List: subset(DatasetName, manufacturer %in% c(“audi”, “chevrolet”,
+“dodge”))</p>
+<div id="multiple-subsets-and" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Multiple Subsets:
+AND</h2>
+<pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, year == 1999 &amp; class == &quot;compact&quot;), color = ~manufacturer, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~manufacturer) %&gt;%
+  gf_labs(title = &quot;Facet Wrap: AND&quot;)</code></pre>
+<p><img src="subsets_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="multiple-subsets-or" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Multiple Subsets:
+OR</h2>
+<pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, year == 1999 | class == &quot;compact&quot;), color = ~manufacturer, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~manufacturer) %&gt;%
+  gf_labs(title = &quot;Facet Wrap: OR&quot;)</code></pre>
+<p><img src="subsets_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="multiple-subsets-list" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Multiple Subsets:
+List</h2>
+<pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, manufacturer %in% c(&quot;audi&quot;, &quot;chevrolet&quot;, &quot;dodge&quot;)), color = ~manufacturer, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~manufacturer) %&gt;%
+  gf_labs(title = &quot;Facet Wrap: List&quot;)</code></pre>
+<p><img src="subsets_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 </div>
 

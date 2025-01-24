@@ -11,7 +11,7 @@
 
 
 
-<title>Data Visualization</title>
+<title>Misc Markdown Help</title>
 
 <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -388,44 +388,69 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Data Visualization</h1>
+<h1 class="title toc-ignore">Misc Markdown Help</h1>
 
 </div>
 
 
-<div id="welcome" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Welcome!</h1>
-<p>This is meant to be a non-exhaustive collection of information from a
-variety of different sources to help refine visualizations.</p>
-<p>All code in this compilation uses <a
-href="https://www.mosaic-web.org/ggformula/reference/index.html">ggformula</a>
-as the base graph and additional layers for graphs.</p>
-<div id="helpful-packages" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Helpful Packages</h2>
-<p>This compilation utilizes many packages - but here are a few key ones
-to start:</p>
-<ul>
-<li>mosaic (also using the ggformula way of graphing)</li>
-<li>forcats (ordering factors by a statistic)</li>
-<li>Lock5Data (selection of many datasets)</li>
-<li>gridextra (arranging multiple graphs together)</li>
-</ul>
+<p>The following items are miscellaneous tips or ideas to help with
+formatting your Markdown document. Additional resources include <a
+href="https://bookdown.org/yihui/rmarkdown/">R Markdown: The Definitive
+Guide</a></p>
+<div id="wrap-code-for-pdf-documents" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Wrap code for PDF
+documents</h1>
+<p>Sometimes you’ll notice after you knit your document (especially to
+PDF) that your code is not all visible. To fix this, add the following
+in the beginning R Chunk:</p>
+<p>knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy =
+TRUE)</p>
+<div class="float">
+<img src="wrapPDFtext.png" alt="RChunk text to wrap code" />
+<div class="figcaption">RChunk text to wrap code</div>
 </div>
-<div id="additional-resources" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Additional
-Resources</h2>
-<p>This compilation assumes a basic understanding of creating the
-initial graph - and will therefore focus on ways to refine a graph
-further. As such, a few other resources for those wanting more
-introduction to graphing are included below.</p>
-<p>Claus O. Wilke has a great resource discussing many <a
-href="https://clauswilke.com/dataviz/">Fundamentals of Data
-Visualization</a> made freely available.</p>
-<p>The <a href="https://r-graph-gallery.com/index.html">R Graph
-Gallery</a> gives many examples (and code) of graphs available.</p>
-<p>The <a href="https://ggplot2-book.org/mastery.html">ggplot2</a> book
-is a wealth of information not only on creating graphs but also refining
-them.</p>
+</div>
+<div id="table-of-contents" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Table of Contents</h1>
+<p>To Add a table of contents to your markdown document, use toc: TRUE
+in your title headings.</p>
+<div class="float">
+<img src="TableOfContents.jpg"
+alt="Adding a table of contents to a Markdown document" />
+<div class="figcaption">Adding a table of contents to a Markdown
+document</div>
+</div>
+</div>
+<div id="adjusting-figure-size" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Adjusting Figure
+Size</h1>
+<p>There are two main ways to adjust the figure size in a Markdown. One
+is to adjust all figures within a specific type of document (e.g. PDF).
+Another is to adjust the figure size of all figures within a specific R
+Chunk.</p>
+<div id="global-figure-size-adjustment" class="section level2"
+number="3.1">
+<h2><span class="header-section-number">3.1</span> Global Figure Size
+Adjustment</h2>
+<p>To adjust the figure size globally, you can specify figure height
+&amp; width within the top portion of your markdown. The default is a
+figure height of 3 and width of 5.</p>
+<div class="float">
+<img src="GlobalFigureSize.jpg" alt="Adjusting Global Figure Size" />
+<div class="figcaption">Adjusting Global Figure Size</div>
+</div>
+</div>
+<div id="figure-size-adjustment-for-specific-r-chunk"
+class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Figure Size
+Adjustment for Specific R Chunk</h2>
+<p>Alternatively, you can adjust specific figures within an R Chunk by
+specifying the figure height or width in the R Chunk settings.</p>
+<div class="float">
+<img src="FigureHeightRChunk.jpg"
+alt="Adjust a figure height within an R Chunk" />
+<div class="figcaption">Adjust a figure height within an R Chunk</div>
+</div>
 </div>
 </div>
 
