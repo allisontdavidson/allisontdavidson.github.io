@@ -12,44 +12,28 @@ output:
 
 # Welcome!
 
-This is meant to be a collection of tips and tricks I have accumulated over years exploring visualizations. Please let me know if something is not working or if I should add something! Always looking to improve this collection.
+This is meant to be a non-exhaustive collection of information from a variety of different sources to help refine visualizations.
 
-# Preamble
+All code in this compilation uses [ggformula](https://www.mosaic-web.org/ggformula/reference/index.html).
 
-All refinements are using the ggformula way of graphing. This collection of tips will **not** include a lot of information of creating the basic graph. As such, I am including a few links that may be helpful below.
+## Helpful Packages
 
-## Packages Used
+This compilation utilizes many packages - but here are a few key ones to start:
 
-At the very least, all of these commands are going to need the mosaic package. All ggformula commands will run with the mosaic package loaded. Several other packages will be used throughout the document. Some key ones to know are:
-
--   mosaic (mentioned above)
--   forcats (ordering factors by a statistic)
--   Lock5Data (selection of many datasets)
--   gridextra (arranging multiple graphs together)
-
-## List of all ggformula commands
-
-The [ggormula reference page](https://www.mosaic-web.org/ggformula/reference/index.html) includes information and examples on all functions available. Many are types of graphs, but not exclusively. They also have several articles that walk through ways of graphing in a very visual way.
+- mosaic (also using the ggformula way of graphing)
+- forcats (ordering factors by a statistic)
+- Lock5Data (selection of many datasets)
+- gridextra (arranging multiple graphs together)
 
 ## Additional Resources
 
-### Graphing Introductions
+This compilation assumes a basic understanding of creating the initial graph - and will therefore focus on ways to refine a graph further. As such, a few other resources for those wanting more introduction to graphing are included below.
 
-Additionally, Claus O. Wilke has a great resource discussing many [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/) made freely available.
+Claus O. Wilke has a great resource discussing many [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/) made freely available.
 
-Lastly, the [R Graph Gallery](https://r-graph-gallery.com/index.html) gives many examples (and code) of graphs available.
+The [R Graph Gallery](https://r-graph-gallery.com/index.html) gives many examples (and code) of graphs available.
 
-### ggformula Details
+The [ggplot2](https://ggplot2-book.org/mastery.html) book is a wealth of information not only on creating graphs but also refining them.
 
-Although this site will use ggformula way of graphing - these functions are built off of the [ggplot2](https://ggplot2-book.org/mastery.html) graphing formulas.  Many of the techniques are therefore adapted from the ggplot2 appraoch.
 
-### Wrangling Data
 
-This site will not cover many ways of wrangling data; however, wrangling techniques are often used to get data into the shape we want.  Therefore, I'm adding a few resources that I find particularly helpful here.
-
-- [R for Data Science (2e)](https://r4ds.hadley.nz/): a comprehensive book about wrangling data in a variety of ways
-- [Data Wrangling Cheat Sheet](https://www.rstudio.com/wp-content%2Fuploads%2F2015%2F02%2Fdata-wrangling-cheatsheet.pdf%2F): a short visual guide to ways of wrangling data
-- [tidyr Reference Guide](https://tidyr.tidyverse.org/index.html): lists all commmands in the tidyr package
-- [GIFs of tidyr commands](https://github.com/gadenbuie/tidyexplain?tab=readme-ov-file): to see how commands alter the dataset
-- [stingr Reference Guide](https://stringr.tidyverse.org/reference/index.html): for cleaning strings
-- [regex cheat sheet](https://hypebright.nl/en/r-en/ultimate-cheatsheet-for-regex-in-r-2/): language to adjust strings
