@@ -6,8 +6,10 @@ navbar:
       href: index.html
     - text: "Refinements"
       menu:
-        - text: "Outside Labels"
-          href: axislabels.html
+        - text: "Title Labels (Big/Outer/Axis)"
+          href: TitleLabels.html
+        - text: "Data Labels"
+          href: DataLabels.html
         - text: "Adjusting Scales (Axis)"
           href: scales.html
         - text: "Subsets"

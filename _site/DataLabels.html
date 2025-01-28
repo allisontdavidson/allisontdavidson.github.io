@@ -11,7 +11,7 @@
 
 
 
-<title>Data Visualization</title>
+<title>Category &amp; Number Display</title>
 
 <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -332,7 +332,7 @@ div.tocify {
       <a href="TitleLabels.html">Title Labels (Big/Outer/Axis)</a>
     </li>
     <li>
-      <a href="DataLabels.html">Data Labels</a>
+      <a href="DataLabels.html">Category or Numeric Diplay</a>
     </li>
     <li>
       <a href="scales.html">Adjusting Scales (Axis)</a>
@@ -369,53 +369,122 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Data Visualization</h1>
+<h1 class="title toc-ignore">Category &amp; Number Display</h1>
 
 </div>
 
 
-<div id="welcome" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Welcome!</h1>
-<p>This is meant to be a non-exhaustive collection of information from a
-variety of different sources to help refine visualizations.</p>
-<p>All code in this compilation uses <a
-href="https://www.mosaic-web.org/ggformula/reference/index.html">ggformula</a>.</p>
-<div id="helpful-packages" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Helpful Packages</h2>
-<p>This compilation utilizes many packages - but here are a few key ones
-to start:</p>
-<ul>
-<li>mosaic (also using the ggformula way of graphing)</li>
-<li>forcats (ordering factors by a statistic)</li>
-<li>Lock5Data (selection of many datasets)</li>
-<li>gridextra (arranging multiple graphs together)</li>
-<li>tidyverse (wrap text in labels using str_wrap)</li>
-</ul>
+<div id="adjusting-data-labels" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Adjusting Data
+Labels</h1>
+<p>Sometimes the categorical labels are not what we want. For example,
+in the Lock5Data SalaryGender, PhD and Gender are coded as 0 and 1. This
+is not very clear.</p>
+<p>Here are some ways to adjust those labels.</p>
+<p>There are a couple problems with having the 0 and 1 labels for
+Gender. First, the default treating is going to be numeric - which is
+not ideal. At the very least, we want Gender treated as a factor. We can
+use the as.factor( ) command to force RStudio to read Gender as a
+factor. This is better, but still unclear.</p>
+<pre class="r"><code>numeric.gender = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(x = &quot;Gender&quot;, title = &quot;Gender as Numeric&quot;, subtitle = &quot;No separation into categories&quot;) 
+
+factor.gender = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(x = &quot;Gender&quot;, title = &quot;Gender as 0 and 1 Factor&quot;, subtitle = &quot;Better, but still not clear&quot;) 
+
+grid.arrange(numeric.gender, factor.gender, nrow = 1)</code></pre>
+<pre><code>## Warning: Continuous x aesthetic
+## ℹ did you forget `aes(group = ...)`?</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<div id="adjust-labels-but-not-data-itself" class="section level2"
+number="1.1">
+<h2><span class="header-section-number">1.1</span> Adjust labels (but
+not data itself)</h2>
+<p>One option is to use scale_x_discrete(labels = c(“0” = “F”, “1” =
+“M”)) to adjust the labels given. This will adjust what R puts on the
+x-axis, but it doesn’t actually make Gender a factor with F and M. R
+Still treats it as a number. Thus, we still have to have
+as.factor(Gender) to get separate boxes.</p>
+<pre class="r"><code>no.factor.gender = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(x = &quot;Gender&quot;, title = &quot;Using scale_x_discrete Labels&quot;, subtitle = &quot;But still treat Gender as numeric (not ideal)&quot;) %&gt;%
+  gf_refine(scale_x_discrete(labels = c(&quot;0&quot; = &quot;F&quot;, &quot;1&quot; = &quot;M&quot;))) 
+
+as.factor.gender = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(x = &quot;Gender&quot;, title = &quot;Using scale_x_discrete Labels&quot;, subtitle = &quot;And treat Gender as categorical (ideal)&quot;) %&gt;%
+  gf_refine(scale_x_discrete(labels = c(&quot;0&quot; = &quot;F&quot;, &quot;1&quot; = &quot;M&quot;))) 
+
+grid.arrange(no.factor.gender, as.factor.gender, nrow = 1)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>To adjust multiple labels, just adjust your scale_XXX_discrete( )
+accordingly. An example below adjusts the x axis and color lables.</p>
+<pre class="r"><code>gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Adjust Gender &amp; PhD Labels&quot;) %&gt;%
+  gf_refine(
+    scale_x_discrete(labels = c(&quot;0&quot; = &quot;Female&quot;, &quot;1&quot; = &quot;Male&quot;)),
+    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+    coord_cartesian(xlim = c(1,2))) </code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
-<div id="additional-resources" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Additional
-Resources</h2>
-<p>This compilation assumes a basic understanding of creating the
-initial graph - and will therefore focus on ways to refine a graph
-further. As such, a few other resources for those wanting more
-introduction to graphing are included below.</p>
-<ul>
-<li><p><strong>Data Viz Basics:</strong> Claus O. Wilke has a great
-resource discussing many <a
-href="https://clauswilke.com/dataviz/">Fundamentals of Data
-Visualization</a> made freely available.</p></li>
-<li><p><strong>R Graph Ideas &amp; Codes:</strong> The <a
-href="https://r-graph-gallery.com/index.html">R Graph Gallery</a> gives
-many examples (and code) of graphs available.</p></li>
-<li><p><strong>Refinements using ggplot2:</strong> The <a
-href="https://ggplot2-book.org/mastery.html">ggplot2</a> book is a
-wealth of information not only on creating graphs but also refining
-them.</p></li>
-<li><p><strong>ggplot2 Cheat Sheet:</strong> <a
-href="https://rstudio.github.io/cheatsheets/data-visualization.pdf">Two
-pages</a> packed of information on creating &amp; refining graphs using
-ggplot2</p></li>
-</ul>
+<div id="adjust-labels-by-adjusting-the-data" class="section level2"
+number="1.2">
+<h2><span class="header-section-number">1.2</span> Adjust labels by
+adjusting the data</h2>
+<p>Our last way of adjusting the labels is to recode the variable
+itself. This WILL allow R to now treat Gender as a factor instead of as
+0 and 1.</p>
+<p>Note, you need to put the code to adjust your variable
+<em>before</em> the code for your graph as R will run these sequentially
+when you knit your document.</p>
+<pre class="r"><code>SalaryGender$Gender = recode(SalaryGender$Gender, &#39;0&#39; = &quot;Female&quot;, &#39;1&#39; = &quot;Male&quot;)
+
+gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Gender with Labels Adjusted&quot;) </code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="abbreviate-labels" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Abbreviate
+labels</h2>
+<p>There are a few ways we can auto-abbreviate some labels. <a
+href="https://www.andrewheiss.com/blog/2022/06/23/long-labels-ggplot/">This</a>
+blog post has a lot of great ideas.</p>
+<p><strong>Default length (4):</strong> scale_x_discrete(labels =
+abbreviate)</p>
+<p><strong>Specify min length:</strong> scale_x_discrete(labels =
+function(x) abbreviate(x, minlength = 1))</p>
+<p>Note, these are using the recoded data where Gender is now changed in
+the dataset from 0, and 1 to be Male and Female respectively.</p>
+<pre class="r"><code>abb.labels = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Abbreviated Labels&quot;, subtitle = &quot;labels = abbreviate&quot;) %&gt;%
+  gf_refine(scale_x_discrete(labels = abbreviate))
+
+minlength.labels = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Minlength Abbreviation&quot;, subtitle = &quot;abbreviate(x, minlength = 1)&quot;) %&gt;%
+  gf_refine(scale_x_discrete(labels = function(x) abbreviate(x, minlength = 1)))
+
+grid.arrange(abb.labels, minlength.labels, nrow = 1)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="dodge-labels" class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Dodge Labels</h2>
+<p>We can automatically dodge the labels and make them offset across
+multiple rows with the guide_axis(n.dodge = N) function in
+scale_x_*().</p>
+<pre class="r"><code>abb.cars = gf_sina(cty~reorder(manufacturer, displ), data = mpg, alpha = 0.4) %&gt;%
+  gf_labs(x = &quot;Manufacturer&quot;, title = &quot;Abbreviate Labels&quot;, y = &quot;City MPG&quot;) %&gt;%
+  gf_refine(scale_x_discrete(labels = abbreviate)) 
+
+dodge.cars = gf_sina(cty~reorder(manufacturer, displ), data = mpg, alpha = 0.4) %&gt;%
+  gf_labs(x = &quot;Manufacturer&quot;, title = &quot;Dodge Lables&quot;, y = &quot;City MPG&quot;) %&gt;%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
+
+grid.arrange(abb.cars, dodge.cars, ncol = 1)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="wrap-text" class="section level2" number="1.5">
+<h2><span class="header-section-number">1.5</span> Wrap Text</h2>
+<p>Another option is to automatically wrap the text (if there are spaces
+between words).</p>
+<p>scale_x_discrete(labels = label_wrap(10))</p>
 </div>
 </div>
 

@@ -20,20 +20,20 @@ All code in this compilation uses [ggformula](https://www.mosaic-web.org/ggformu
 
 This compilation utilizes many packages - but here are a few key ones to start:
 
-- mosaic (also using the ggformula way of graphing)
-- forcats (ordering factors by a statistic)
-- Lock5Data (selection of many datasets)
-- gridextra (arranging multiple graphs together)
+-   mosaic (also using the ggformula way of graphing)
+-   forcats (ordering factors by a statistic)
+-   Lock5Data (selection of many datasets)
+-   gridextra (arranging multiple graphs together)
+-   tidyverse (wrap text in labels using str_wrap)
 
 ## Additional Resources
 
 This compilation assumes a basic understanding of creating the initial graph - and will therefore focus on ways to refine a graph further. As such, a few other resources for those wanting more introduction to graphing are included below.
 
-Claus O. Wilke has a great resource discussing many [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/) made freely available.
+-   **Data Viz Basics:** Claus O. Wilke has a great resource discussing many [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/) made freely available.
 
-The [R Graph Gallery](https://r-graph-gallery.com/index.html) gives many examples (and code) of graphs available.
+-   **R Graph Ideas & Codes:** The [R Graph Gallery](https://r-graph-gallery.com/index.html) gives many examples (and code) of graphs available.
 
-The [ggplot2](https://ggplot2-book.org/mastery.html) book is a wealth of information not only on creating graphs but also refining them.
+-   **Refinements using ggplot2:** The [ggplot2](https://ggplot2-book.org/mastery.html) book is a wealth of information not only on creating graphs but also refining them.
 
-
-
+-   **ggplot2 Cheat Sheet:** [Two pages](https://rstudio.github.io/cheatsheets/data-visualization.pdf) packed of information on creating & refining graphs using ggplot2
