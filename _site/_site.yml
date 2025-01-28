@@ -22,9 +22,3 @@ navbar:
       href: WranglingDataIntro.html
     - text: "Markdown Help"
       href: markdown.html
-  right:
-    - icon: fa-solid fa-star
-      menu:
-        - text: "50 Visualizations"
-          href: 50visualizations.html
-
