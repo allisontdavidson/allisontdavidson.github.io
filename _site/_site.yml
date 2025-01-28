@@ -20,9 +20,6 @@ navbar:
           href: Legends.html  
     - text: "Wranging Data"
       href: WranglingDataIntro.html
-      menu: 
-        - text: "Items Coming Soon"
-        - text: "Items Coming Soon"
     - text: "Markdown Help"
       href: markdown.html
   right:
