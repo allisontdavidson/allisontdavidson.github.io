@@ -8,7 +8,7 @@ navbar:
       menu:
         - text: "Title Labels (Big/Outer/Axis)"
           href: TitleLabels.html
-        - text: "Category or Numeric Diplay"
+        - text: "Data Labels"
           href: DataLabels.html
         - text: "Adjusting Scales (Axis)"
           href: scales.html
