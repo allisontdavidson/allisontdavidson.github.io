@@ -16,36 +16,91 @@ require(Lock5Data)
 require(gridExtra)
 require(forcats)
 require(tidyverse)
+require(scales) # label_wrap
+require(ggforce) # for abbreviating labels
 
 # Datasets needed
 data(SalaryGender)
 
 # Theme adjustments
-theme_set(theme_minimal())
+theme_set(theme_classic())
 ```
 
-# Adjusting Data Labels
+This section will cover adjusting numeric or categorical data values on axis, legend labels, or panel (facet) labels.
 
-Sometimes the categorical labels are not what we want. For example, in the Lock5Data SalaryGender, PhD and Gender are coded as 0 and 1. This is not very clear.
-
-Here are some ways to adjust those labels.
-
-There are a couple problems with having the 0 and 1 labels for Gender. First, the default treating is going to be numeric - which is not ideal. At the very least, we want Gender treated as a factor. We can use the as.factor( ) command to force RStudio to read Gender as a factor. This is better, but still unclear.
-
-```{r}
-numeric.gender = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%
-  gf_labs(x = "Gender", title = "Gender as Numeric", subtitle = "No separation into categories") 
-
-factor.gender = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%
-  gf_labs(x = "Gender", title = "Gender as 0 and 1 Factor", subtitle = "Better, but still not clear") 
-
-grid.arrange(numeric.gender, factor.gender, nrow = 1)
-
+```{r, echo = FALSE}
+gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %>%
+  gf_labs(color = "Labels\n(below)", x = "", title = "", y = "") %>%
+  gf_refine(
+    scale_x_discrete(labels = c("0" = "Female", "1" = "Male")),
+    scale_color_discrete(labels = c("0" = "No PhD", "1" = "PhD")),
+    coord_cartesian(xlim = c(1,2)),
+    scale_color_manual(values = c("white", "white"))) %>%
+  gf_theme(theme_classic()) %>%
+  gf_facet_wrap(~PhD)
 ```
 
-## Adjust labels (but not data itself)
+# Force Variable Type
 
-One option is to use scale_x_discrete(labels = c("0" = "F", "1" = "M")) to adjust the labels given. This will adjust what R puts on the x-axis, but it doesn't actually make Gender a factor with F and M. R Still treats it as a number. Thus, we still have to have as.factor(Gender) to get separate boxes.
+Sometimes we have data that is technically numeric (e.g. Division I or Division III listed as 1 or 3) but we really want to treat it like a category.
+
+## Force Numeric Variable to be Categorical
+
+To force numeric data to be treated like a category, use as.factor( ).
+
+**Example:** gf_boxplot( Rank \~ as.factor(Division), data = Dataset )
+
+```{r, include = FALSE}
+Rank = c(sample(seq(1,70), size = 40, replace = FALSE), sample(seq(20, 100), size = 40, replace = FALSE))
+Division = c(rep(1, 40), rep(3, 40))
+Sports = data.frame(Rank, Division)
+```
+
+```{r, warning = FALSE}
+as.numeric = gf_boxplot(Rank~Division, data = Sports) %>%
+  gf_labs(title = "Division as Number")
+as.factor = gf_boxplot(Rank~as.factor(Division), data = Sports) %>%
+  gf_labs(title = "Division as Factor", x = "Division")
+
+grid.arrange(as.numeric, as.factor, nrow =  1)
+```
+
+## Force Categorical Variable to be Numeric
+
+Perhaps we have data stored in dollars (e.g. \$257). R will treat this like a category, but we really want it to be treated as a number. There are a few ways to do this, but one way is to use as.numeric( ).
+
+**Example:** gf_point( as.numeric(Price) \~ SqFt , data = Dataset )
+
+```{r, include = FALSE}
+data(AllCountries)
+AdjustedCountries = AllCountries %>%
+  mutate(NewPrice = as.factor(PumpPrice))
+```
+
+```{r, warning = FALSE}
+factor = gf_point(NewPrice~LandArea, data = AdjustedCountries) %>%
+  gf_labs(title = "Price as Factor", y = "Price", x = "Land Area")
+
+numeric = gf_point(as.numeric(NewPrice)~LandArea, data = AdjustedCountries) %>%
+  gf_labs(title = "Price as Numeric", y = "Price", x = "Land Area")
+
+
+grid.arrange(factor, numeric, nrow = 1)
+```
+
+# Adjust Categorical Labels
+
+The following Sections are specific to adjusting categorical-like data.
+
+## Adjust labels (not data itself)
+
+Sometimes we have categorical data stored as numeric and not only do we want to force R to treat as a factor but we also want to adjust the labels. For example, Gender is stored as 0 and 1. We want to treat as factor and make 0 and 1 more clear.
+
+One option is to use scale_x_discrete(labels = c("0" = "F", "1" = "M")) to adjust the labels given.
+
+**Example:** gf_plot( Y \~ X ) %\>% gf_refine( scale_x_discrete(labels = c("0" = "F", "1" = "M")) )
+
+This will adjust what R puts on the x-axis, but it doesn't actually make Gender a factor with F and M. R Still treats it as a number. Thus, we still have to have as.factor(Gender) to get separate boxes.
 
 ```{r}
 no.factor.gender = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%
@@ -59,20 +114,26 @@ as.factor.gender = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, wid
 grid.arrange(no.factor.gender, as.factor.gender, nrow = 1)
 ```
 
-To adjust multiple labels, just adjust your scale_XXX_discrete( ) accordingly. An example below adjusts the x axis and color lables.
+To adjust multiple labels, adjust your scale_XXX_discrete( ) accordingly. The example below adjusts the x axis and color labels.
 
 ```{r}
-gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %>%
+default = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %>%
+  gf_labs(color = "PhD", x = "Gender", title = "Default Labels (0 and 1)") 
+  
+
+adjusted = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %>%
   gf_labs(color = "PhD", x = "Gender", title = "Adjust Gender & PhD Labels") %>%
   gf_refine(
     scale_x_discrete(labels = c("0" = "Female", "1" = "Male")),
     scale_color_discrete(labels = c("0" = "No PhD", "1" = "PhD")),
     coord_cartesian(xlim = c(1,2))) 
+
+grid.arrange(default, adjusted, nrow = 1)
 ```
 
 ## Adjust labels by adjusting the data
 
-Our last way of adjusting the labels is to recode the variable itself. This WILL allow R to now treat Gender as a factor instead of as 0 and 1.
+Alternatively, we can recode the variable itself. This will allow R to not only treat Gender as a factor instead of as 0 and 1 but also have different (more clear) labels.
 
 Note, you need to put the code to adjust your variable *before* the code for your graph as R will run these sequentially when you knit your document.
 
@@ -84,46 +145,207 @@ gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_d
 
 ```
 
+# Dealing with Overlapping Labels
+
+Sometimes our categorical labels overlap and make our visuals unreadable. There are a few things we can do to adjust.
+
+I'm using a made-up-dataset from [this](https://stackoverflow.com/questions/41568411/how-to-maintain-size-of-ggplot-with-long-labels/66169251) post.
+
+```{r}
+Labels <- c("Long label", "Longer label", "An even longer label",
+        "A very, very long label", "An extremely long label",
+        "Long, longer, longest label of all possible labels", 
+        "Another label", "Short", "Not so short label")
+LongLabels <- data.frame(Labels, CharCount = nchar(Labels))
+
+gf_col(CharCount~Labels, data = LongLabels) %>%
+  gf_labs(y = "Number of Characters in Label", x = "Really Long Label Names", title = "Difficulty with Overlapping Labels")
+
+```
+
+## Make Plot Wider
+
+One way to deal with overlapping labels is merely to make the plot wider. We can do this at the R Chunk level (for a specific plot) or more globally in the Markdown settings.
+
+**R Chunk Level:** adjust {r, fig.width = 10}
+
+![Adjust Figure Size in R Chunk](RChunkFigSize.png)
+
+```{r, fig.width = 10}
+
+Semi.Long.Labels <- c("Long label", "Longer label", "An even longer label", "Another label", "Short", "Not so short label")
+ShorterLabels <- data.frame(Semi.Long.Labels, CharCount = nchar(Semi.Long.Labels))
+
+gf_col(CharCount~Semi.Long.Labels, data = ShorterLabels) %>%
+  gf_labs(y = "Number of Characters in Label", x = "Really Long Label Names", title = "Making Figure Wider (in R Chunk)")
+
+```
+
+**Globally:** adjust settings in the Markdown heading
+
+![Global Figure Size Adjustments](GlobalFigureSize2.png)
+
+## Adjust orientation of graph
+
+Sometimes readability of our graph is solved by simply adjusting the orientation of our graph.
+
+```{r}
+gf_col(Labels~CharCount, data = LongLabels) %>%
+  gf_labs(x = "Number of Characters in Label", y = "Really Long Label Names", title = "Adjust Orientation of Graph")
+```
+
+## Adjust Angle of Labels
+
+We can also adjust the angle of the labels. This is not as ideal as it's harder to read labels that are not horizontal. Ideally, if we can make horizontal labels, we should do so!
+
+To adjust angle of labels, adjust the theme element. Specify the angle, and then (possibly) where it starts horizontally (hjust).
+
+**Example:** gf_plot( Y \~ X ) %\>% gf_theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```{r}
+gf_col(CharCount~Labels, data = LongLabels) %>%
+  gf_labs(y = "", x = "Really Long Label Names", title = "Labels at 45 Degree Angle (with hjust)") %>%
+  gf_theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+gf_col(CharCount~Labels, data = LongLabels) %>%
+  gf_labs(y = "", x = "Really Long Label Names", title = "Labels at 90 Degree Angle (no hjust)") %>%
+  gf_theme(axis.text.x = element_text(angle = 90))
+```
+
+## Wrap Text
+
+Another option is to automatically wrap the text. This is most helpful if there are spaces between words.
+
+**Option 1:** Use scale_x_discrete(labels = label_wrap(10)) (from scales package)
+
+```{r}
+gf_col(CharCount~Labels, data = LongLabels) %>%
+  gf_labs(y = "", x = "Really Long Label Names", title = "Wrap Labels using label_wrap", subtitle = "From scales package") %>%
+  gf_refine(scale_x_discrete(labels = label_wrap(10)))
+```
+
+**Option 2:** Use str_wrap( VarName ) (from tidyverse package)
+
+```{r}
+gf_col(CharCount~str_wrap(Labels, width = 10), data = LongLabels) %>%
+  gf_labs(y = "", x = "Really Long Label Names", title = "Wrap Labels using str_wrap", subtitle = "From tidyverse package")
+```
+
 ## Abbreviate labels
 
-There are a few ways we can auto-abbreviate some labels. [This](https://www.andrewheiss.com/blog/2022/06/23/long-labels-ggplot/) blog post has a lot of great ideas.
+There are a few ways we can auto-abbreviate some labels. It should be noted that the abbreviations are NOT always intuitive - so beware.  You may want to recode manually or try other options.  
 
 **Default length (4):** scale_x_discrete(labels = abbreviate)
 
 **Specify min length:** scale_x_discrete(labels = function(x) abbreviate(x, minlength = 1))
 
-Note, these are using the recoded data where Gender is now changed in the dataset from 0, and 1 to be Male and Female respectively.
-
 ```{r}
-abb.labels = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%
-  gf_labs(color = "PhD", x = "Gender", title = "Abbreviated Labels", subtitle = "labels = abbreviate") %>%
+Default.Abb = gf_col(CharCount~Labels, data = LongLabels) %>%
+  gf_labs(y = "", x = "Abbreviated Label Names (Default)", title = "Abbreviated Labels", subtitle = "labels = abbreviate") %>%
   gf_refine(scale_x_discrete(labels = abbreviate))
 
-minlength.labels = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%
-  gf_labs(color = "PhD", x = "Gender", title = "Minlength Abbreviation", subtitle = "abbreviate(x, minlength = 1)") %>%
+MinLength.Abb = gf_col(CharCount~Labels, data = LongLabels) %>%
+  gf_labs(y = "", x = "Abbreviated Label Names (Min Length = 1)", title = "Minlength Abbreviation", subtitle = "abbreviate(x, minlength = 1)") %>%
   gf_refine(scale_x_discrete(labels = function(x) abbreviate(x, minlength = 1)))
 
-grid.arrange(abb.labels, minlength.labels, nrow = 1)
+grid.arrange(Default.Abb, MinLength.Abb, nrow = 2)
 ```
 
 ## Dodge Labels
 
-We can automatically dodge the labels and make them offset across multiple rows with the guide_axis(n.dodge = N) function in scale_x\_\*().
+We can automatically dodge the labels and make them offset across multiple rows with the guide_axis(n.dodge = N) function in scale_x\_\*().  For shorter labels, we can dodge every other row (so n.dodge = 2).  For longer labels you may need to use n.dodge = 3.  Note that it may get difficult to associate the labels appropriately when n.dodge is larger than 2.  
+
+**Example:** gf_plot( Y ~ X ) %>% gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
 
 ```{r}
-abb.cars = gf_sina(cty~reorder(manufacturer, displ), data = mpg, alpha = 0.4) %>%
-  gf_labs(x = "Manufacturer", title = "Abbreviate Labels", y = "City MPG") %>%
-  gf_refine(scale_x_discrete(labels = abbreviate)) 
-
-dodge.cars = gf_sina(cty~reorder(manufacturer, displ), data = mpg, alpha = 0.4) %>%
-  gf_labs(x = "Manufacturer", title = "Dodge Lables", y = "City MPG") %>%
+gf_sina(cty~reorder(manufacturer, displ), data = mpg, alpha = 0.4) %>%
+  gf_labs(x = "Manufacturer", title = "Dodge Lables", y = "City MPG", subtitle = "n.dodge = 2") %>%
   gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
 
-grid.arrange(abb.cars, dodge.cars, ncol = 1)
+gf_col(CharCount~Labels, data = LongLabels) %>%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 3))) %>% 
+  gf_labs(y = "", x = "", title = "Dodge Really Long Labels", subtitle = "n.dodge = 3")
 ```
 
-## Wrap Text
+## Manually Recode Labels
 
-Another option is to automatically wrap the text (if there are spaces between words).
+### Adjust the labels (only) in a refine statement.
 
-scale_x_discrete(labels = label_wrap(10))
+**Example:**  gf_refine(scale_x_discrete(labels = c(
+                                        "Old Label 1" = "New Label 1",
+                                        "Old Label 2" = "New Label 2"))) 
+
+```{r}
+gf_col(CharCount~Semi.Long.Labels, data = ShorterLabels) %>%
+  gf_labs(y = "", x = "Labels Changed (But Not Data Itself)", title = "Manually Adjust the Labels") %>%
+  gf_refine(scale_x_discrete(labels = c("Long label" = "Long",
+                                        "Longer label" = "Longer",
+                                        "An even longer label" = "Longest",
+                                        "Another label" = "Another",
+                                        "Short" = "Short",
+                                        "Not so short label" = "Not short")))
+```
+
+
+### Adjust the data itself using recode.
+
+**Example:** Dataset\$Variable = recode( Dataset\$Variable , 
+                                        "Old Label 1" = "New Label 1",
+                                        "Old Label 2" = "New Label 2")
+
+
+```{r}
+ShorterLabels$Semi.Long.Labels = recode(ShorterLabels$Semi.Long.Labels,
+                                        "Long label" = "Long",
+                                        "Longer label" = "Longer",
+                                        "An even longer label" = "Longest",
+                                        "Another label" = "Another",
+                                        "Short" = "Short",
+                                        "Not so short label" = "Not short")
+
+gf_col(CharCount~Semi.Long.Labels, data = ShorterLabels) %>%
+  gf_labs(y = "", x = "Recoded Labels (By Changing Data)", title = "Manually Recode Data")
+
+```
+
+## Adjust Font Size
+
+This may be less-than-ideal as the font size on the axis is already relatively small, but as one last suggestion, we could adjust the font size to help overlapping labels.
+
+theme(axis.text=element_text(size=30))
+
+```{r, include = FALSE}
+Semi.Long.Labels <- c("Semi Long label", "A really really Long label", "An even longer label", "Another label", "Short", "Not so short label")
+ShorterLabels <- data.frame(Semi.Long.Labels, CharCount = nchar(Semi.Long.Labels))
+```
+
+**Example:** gf_plot( Y ~ X ) %>% gf_theme(axis.text.x=element_text(size=10))
+
+```{r}
+gf_col(CharCount~Semi.Long.Labels, data = ShorterLabels) %>% gf_theme(axis.text.x=element_text(size=7)) %>%
+  gf_labs(y = "", x = "Long Labels", title = "Change Axis Text (x) Size", subtitle = "Size = 7")
+```
+
+
+# Adjusting Numeric Data
+
+Scales package: https://scales.r-lib.org/ 
+
+
+```{r}
+x = seq(1:100)
+Error = runif(100, min = -10000000, max = 10000000)
+LargeNumbers = x*1000000 
+NumData = data.frame(LargeNumbers, x, RandLargeNum = LargeNumbers + Error)
+
+gf_point(RandLargeNum~x, data = NumData)
+
+require(scales)
+gf_point(RandLargeNum~x, data = NumData) %>%
+  gf_refine(scale_y_continuous(labels = label_comma()))
+
+```
+
+
+
+
