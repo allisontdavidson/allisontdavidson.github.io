@@ -13,7 +13,7 @@
 
 <title>Category &amp; Number Display</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -332,7 +332,7 @@ div.tocify {
       <a href="TitleLabels.html">Title Labels (Big/Outer/Axis)</a>
     </li>
     <li>
-      <a href="DataLabels.html">Category or Numeric Diplay</a>
+      <a href="DataLabels.html">Data Labels</a>
     </li>
     <li>
       <a href="scales.html">Adjusting Scales (Axis)</a>
@@ -374,37 +374,71 @@ div.tocify {
 </div>
 
 
-<div id="adjusting-data-labels" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Adjusting Data
-Labels</h1>
-<p>Sometimes the categorical labels are not what we want. For example,
-in the Lock5Data SalaryGender, PhD and Gender are coded as 0 and 1. This
-is not very clear.</p>
-<p>Here are some ways to adjust those labels.</p>
-<p>There are a couple problems with having the 0 and 1 labels for
-Gender. First, the default treating is going to be numeric - which is
-not ideal. At the very least, we want Gender treated as a factor. We can
-use the as.factor( ) command to force RStudio to read Gender as a
-factor. This is better, but still unclear.</p>
-<pre class="r"><code>numeric.gender = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
-  gf_labs(x = &quot;Gender&quot;, title = &quot;Gender as Numeric&quot;, subtitle = &quot;No separation into categories&quot;) 
-
-factor.gender = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
-  gf_labs(x = &quot;Gender&quot;, title = &quot;Gender as 0 and 1 Factor&quot;, subtitle = &quot;Better, but still not clear&quot;) 
-
-grid.arrange(numeric.gender, factor.gender, nrow = 1)</code></pre>
-<pre><code>## Warning: Continuous x aesthetic
-## ℹ did you forget `aes(group = ...)`?</code></pre>
+<p>This section will cover adjusting numeric or categorical data values
+on axis, legend labels, or panel (facet) labels.</p>
 <p><img src="DataLabels_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<div id="adjust-labels-but-not-data-itself" class="section level2"
-number="1.1">
-<h2><span class="header-section-number">1.1</span> Adjust labels (but
-not data itself)</h2>
+<div id="force-variable-type" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Force Variable
+Type</h1>
+<p>Sometimes we have data that is technically numeric (e.g. Division I
+or Division III listed as 1 or 3) but we really want to treat it like a
+category.</p>
+<div id="force-numeric-variable-to-be-categorical"
+class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Force Numeric
+Variable to be Categorical</h2>
+<p>To force numeric data to be treated like a category, use as.factor(
+).</p>
+<p><strong>Example:</strong> gf_boxplot( Rank ~ as.factor(Division),
+data = Dataset )</p>
+<pre class="r"><code>as.numeric = gf_boxplot(Rank~Division, data = Sports) %&gt;%
+  gf_labs(title = &quot;Division as Number&quot;)
+as.factor = gf_boxplot(Rank~as.factor(Division), data = Sports) %&gt;%
+  gf_labs(title = &quot;Division as Factor&quot;, x = &quot;Division&quot;)
+
+grid.arrange(as.numeric, as.factor, nrow =  1)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="force-categorical-variable-to-be-numeric"
+class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Force Categorical
+Variable to be Numeric</h2>
+<p>Perhaps we have data stored in dollars (e.g. $257). R will treat this
+like a category, but we really want it to be treated as a number. There
+are a few ways to do this, but one way is to use as.numeric( ).</p>
+<p><strong>Example:</strong> gf_point( as.numeric(Price) ~ SqFt , data =
+Dataset )</p>
+<pre class="r"><code>factor = gf_point(NewPrice~LandArea, data = AdjustedCountries) %&gt;%
+  gf_labs(title = &quot;Price as Factor&quot;, y = &quot;Price&quot;, x = &quot;Land Area&quot;)
+
+numeric = gf_point(as.numeric(NewPrice)~LandArea, data = AdjustedCountries) %&gt;%
+  gf_labs(title = &quot;Price as Numeric&quot;, y = &quot;Price&quot;, x = &quot;Land Area&quot;)
+
+
+grid.arrange(factor, numeric, nrow = 1)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+</div>
+<div id="adjust-categorical-labels" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Adjust Categorical
+Labels</h1>
+<p>The following Sections are specific to adjusting categorical-like
+data.</p>
+<div id="adjust-labels-not-data-itself" class="section level2"
+number="2.1">
+<h2><span class="header-section-number">2.1</span> Adjust labels (not
+data itself)</h2>
+<p>Sometimes we have categorical data stored as numeric and not only do
+we want to force R to treat as a factor but we also want to adjust the
+labels. For example, Gender is stored as 0 and 1. We want to treat as
+factor and make 0 and 1 more clear.</p>
 <p>One option is to use scale_x_discrete(labels = c(“0” = “F”, “1” =
-“M”)) to adjust the labels given. This will adjust what R puts on the
-x-axis, but it doesn’t actually make Gender a factor with F and M. R
-Still treats it as a number. Thus, we still have to have
-as.factor(Gender) to get separate boxes.</p>
+“M”)) to adjust the labels given.</p>
+<p><strong>Example:</strong> gf_plot( Y ~ X ) %&gt;% gf_refine(
+scale_x_discrete(labels = c(“0” = “F”, “1” = “M”)) )</p>
+<p>This will adjust what R puts on the x-axis, but it doesn’t actually
+make Gender a factor with F and M. R Still treats it as a number. Thus,
+we still have to have as.factor(Gender) to get separate boxes.</p>
 <pre class="r"><code>no.factor.gender = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
   gf_labs(x = &quot;Gender&quot;, title = &quot;Using scale_x_discrete Labels&quot;, subtitle = &quot;But still treat Gender as numeric (not ideal)&quot;) %&gt;%
   gf_refine(scale_x_discrete(labels = c(&quot;0&quot; = &quot;F&quot;, &quot;1&quot; = &quot;M&quot;))) 
@@ -414,24 +448,30 @@ as.factor.gender = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, wid
   gf_refine(scale_x_discrete(labels = c(&quot;0&quot; = &quot;F&quot;, &quot;1&quot; = &quot;M&quot;))) 
 
 grid.arrange(no.factor.gender, as.factor.gender, nrow = 1)</code></pre>
-<p><img src="DataLabels_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>To adjust multiple labels, just adjust your scale_XXX_discrete( )
-accordingly. An example below adjusts the x axis and color lables.</p>
-<pre class="r"><code>gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>To adjust multiple labels, adjust your scale_XXX_discrete( )
+accordingly. The example below adjusts the x axis and color labels.</p>
+<pre class="r"><code>default = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Default Labels (0 and 1)&quot;) 
+  
+
+adjusted = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
   gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Adjust Gender &amp; PhD Labels&quot;) %&gt;%
   gf_refine(
     scale_x_discrete(labels = c(&quot;0&quot; = &quot;Female&quot;, &quot;1&quot; = &quot;Male&quot;)),
     scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
-    coord_cartesian(xlim = c(1,2))) </code></pre>
-<p><img src="DataLabels_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+    coord_cartesian(xlim = c(1,2))) 
+
+grid.arrange(default, adjusted, nrow = 1)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 <div id="adjust-labels-by-adjusting-the-data" class="section level2"
-number="1.2">
-<h2><span class="header-section-number">1.2</span> Adjust labels by
+number="2.2">
+<h2><span class="header-section-number">2.2</span> Adjust labels by
 adjusting the data</h2>
-<p>Our last way of adjusting the labels is to recode the variable
-itself. This WILL allow R to now treat Gender as a factor instead of as
-0 and 1.</p>
+<p>Alternatively, we can recode the variable itself. This will allow R
+to not only treat Gender as a factor instead of as 0 and 1 but also have
+different (more clear) labels.</p>
 <p>Note, you need to put the code to adjust your variable
 <em>before</em> the code for your graph as R will run these sequentially
 when you knit your document.</p>
@@ -439,53 +479,202 @@ when you knit your document.</p>
 
 gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
   gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Gender with Labels Adjusted&quot;) </code></pre>
-<p><img src="DataLabels_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
-<div id="abbreviate-labels" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> Abbreviate
+</div>
+<div id="dealing-with-overlapping-labels" class="section level1"
+number="3">
+<h1><span class="header-section-number">3</span> Dealing with
+Overlapping Labels</h1>
+<p>Sometimes our categorical labels overlap and make our visuals
+unreadable. There are a few things we can do to adjust.</p>
+<p>I’m using a made-up-dataset from <a
+href="https://stackoverflow.com/questions/41568411/how-to-maintain-size-of-ggplot-with-long-labels/66169251">this</a>
+post.</p>
+<pre class="r"><code>Labels &lt;- c(&quot;Long label&quot;, &quot;Longer label&quot;, &quot;An even longer label&quot;,
+        &quot;A very, very long label&quot;, &quot;An extremely long label&quot;,
+        &quot;Long, longer, longest label of all possible labels&quot;, 
+        &quot;Another label&quot;, &quot;Short&quot;, &quot;Not so short label&quot;)
+LongLabels &lt;- data.frame(Labels, CharCount = nchar(Labels))
+
+gf_col(CharCount~Labels, data = LongLabels) %&gt;%
+  gf_labs(y = &quot;Number of Characters in Label&quot;, x = &quot;Really Long Label Names&quot;, title = &quot;Difficulty with Overlapping Labels&quot;)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div id="make-plot-wider" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Make Plot Wider</h2>
+<p>One way to deal with overlapping labels is merely to make the plot
+wider. We can do this at the R Chunk level (for a specific plot) or more
+globally in the Markdown settings.</p>
+<p><strong>R Chunk Level:</strong> adjust {r, fig.width = 10}</p>
+<div class="float">
+<img src="RChunkFigSize.png" alt="Adjust Figure Size in R Chunk" />
+<div class="figcaption">Adjust Figure Size in R Chunk</div>
+</div>
+<pre class="r"><code>Semi.Long.Labels &lt;- c(&quot;Long label&quot;, &quot;Longer label&quot;, &quot;An even longer label&quot;, &quot;Another label&quot;, &quot;Short&quot;, &quot;Not so short label&quot;)
+ShorterLabels &lt;- data.frame(Semi.Long.Labels, CharCount = nchar(Semi.Long.Labels))
+
+gf_col(CharCount~Semi.Long.Labels, data = ShorterLabels) %&gt;%
+  gf_labs(y = &quot;Number of Characters in Label&quot;, x = &quot;Really Long Label Names&quot;, title = &quot;Making Figure Wider (in R Chunk)&quot;)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-11-1.png" width="960" /></p>
+<p><strong>Globally:</strong> adjust settings in the Markdown
+heading</p>
+<div class="float">
+<img src="GlobalFigureSize2.png" alt="Global Figure Size Adjustments" />
+<div class="figcaption">Global Figure Size Adjustments</div>
+</div>
+</div>
+<div id="adjust-orientation-of-graph" class="section level2"
+number="3.2">
+<h2><span class="header-section-number">3.2</span> Adjust orientation of
+graph</h2>
+<p>Sometimes readability of our graph is solved by simply adjusting the
+orientation of our graph.</p>
+<pre class="r"><code>gf_col(Labels~CharCount, data = LongLabels) %&gt;%
+  gf_labs(x = &quot;Number of Characters in Label&quot;, y = &quot;Really Long Label Names&quot;, title = &quot;Adjust Orientation of Graph&quot;)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="adjust-angle-of-labels" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Adjust Angle of
+Labels</h2>
+<p>We can also adjust the angle of the labels. This is not as ideal as
+it’s harder to read labels that are not horizontal. Ideally, if we can
+make horizontal labels, we should do so!</p>
+<p>To adjust angle of labels, adjust the theme element. Specify the
+angle, and then (possibly) where it starts horizontally (hjust).</p>
+<p><strong>Example:</strong> gf_plot( Y ~ X ) %&gt;%
+gf_theme(axis.text.x = element_text(angle = 45, hjust = 1))</p>
+<pre class="r"><code>gf_col(CharCount~Labels, data = LongLabels) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;Really Long Label Names&quot;, title = &quot;Labels at 45 Degree Angle (with hjust)&quot;) %&gt;%
+  gf_theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>gf_col(CharCount~Labels, data = LongLabels) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;Really Long Label Names&quot;, title = &quot;Labels at 90 Degree Angle (no hjust)&quot;) %&gt;%
+  gf_theme(axis.text.x = element_text(angle = 90))</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+</div>
+<div id="wrap-text" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Wrap Text</h2>
+<p>Another option is to automatically wrap the text. This is most
+helpful if there are spaces between words.</p>
+<p><strong>Option 1:</strong> Use scale_x_discrete(labels =
+label_wrap(10)) (from scales package)</p>
+<pre class="r"><code>gf_col(CharCount~Labels, data = LongLabels) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;Really Long Label Names&quot;, title = &quot;Wrap Labels using label_wrap&quot;, subtitle = &quot;From scales package&quot;) %&gt;%
+  gf_refine(scale_x_discrete(labels = label_wrap(10)))</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><strong>Option 2:</strong> Use str_wrap( VarName ) (from tidyverse
+package)</p>
+<pre class="r"><code>gf_col(CharCount~str_wrap(Labels, width = 10), data = LongLabels) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;Really Long Label Names&quot;, title = &quot;Wrap Labels using str_wrap&quot;, subtitle = &quot;From tidyverse package&quot;)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="abbreviate-labels" class="section level2" number="3.5">
+<h2><span class="header-section-number">3.5</span> Abbreviate
 labels</h2>
-<p>There are a few ways we can auto-abbreviate some labels. <a
-href="https://www.andrewheiss.com/blog/2022/06/23/long-labels-ggplot/">This</a>
-blog post has a lot of great ideas.</p>
+<p>There are a few ways we can auto-abbreviate some labels. It should be
+noted that the abbreviations are NOT always intuitive - so beware. You
+may want to recode manually or try other options.</p>
 <p><strong>Default length (4):</strong> scale_x_discrete(labels =
 abbreviate)</p>
 <p><strong>Specify min length:</strong> scale_x_discrete(labels =
 function(x) abbreviate(x, minlength = 1))</p>
-<p>Note, these are using the recoded data where Gender is now changed in
-the dataset from 0, and 1 to be Male and Female respectively.</p>
-<pre class="r"><code>abb.labels = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
-  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Abbreviated Labels&quot;, subtitle = &quot;labels = abbreviate&quot;) %&gt;%
+<pre class="r"><code>Default.Abb = gf_col(CharCount~Labels, data = LongLabels) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;Abbreviated Label Names (Default)&quot;, title = &quot;Abbreviated Labels&quot;, subtitle = &quot;labels = abbreviate&quot;) %&gt;%
   gf_refine(scale_x_discrete(labels = abbreviate))
 
-minlength.labels = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
-  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Minlength Abbreviation&quot;, subtitle = &quot;abbreviate(x, minlength = 1)&quot;) %&gt;%
+MinLength.Abb = gf_col(CharCount~Labels, data = LongLabels) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;Abbreviated Label Names (Min Length = 1)&quot;, title = &quot;Minlength Abbreviation&quot;, subtitle = &quot;abbreviate(x, minlength = 1)&quot;) %&gt;%
   gf_refine(scale_x_discrete(labels = function(x) abbreviate(x, minlength = 1)))
 
-grid.arrange(abb.labels, minlength.labels, nrow = 1)</code></pre>
-<p><img src="DataLabels_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+grid.arrange(Default.Abb, MinLength.Abb, nrow = 2)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
-<div id="dodge-labels" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> Dodge Labels</h2>
+<div id="dodge-labels" class="section level2" number="3.6">
+<h2><span class="header-section-number">3.6</span> Dodge Labels</h2>
 <p>We can automatically dodge the labels and make them offset across
-multiple rows with the guide_axis(n.dodge = N) function in
-scale_x_*().</p>
-<pre class="r"><code>abb.cars = gf_sina(cty~reorder(manufacturer, displ), data = mpg, alpha = 0.4) %&gt;%
-  gf_labs(x = &quot;Manufacturer&quot;, title = &quot;Abbreviate Labels&quot;, y = &quot;City MPG&quot;) %&gt;%
-  gf_refine(scale_x_discrete(labels = abbreviate)) 
-
-dodge.cars = gf_sina(cty~reorder(manufacturer, displ), data = mpg, alpha = 0.4) %&gt;%
-  gf_labs(x = &quot;Manufacturer&quot;, title = &quot;Dodge Lables&quot;, y = &quot;City MPG&quot;) %&gt;%
-  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
-
-grid.arrange(abb.cars, dodge.cars, ncol = 1)</code></pre>
-<p><img src="DataLabels_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+multiple rows with the guide_axis(n.dodge = N) function in scale_x_*().
+For shorter labels, we can dodge every other row (so n.dodge = 2). For
+longer labels you may need to use n.dodge = 3. Note that it may get
+difficult to associate the labels appropriately when n.dodge is larger
+than 2.</p>
+<p><strong>Example:</strong> gf_plot( Y ~ X ) %&gt;%
+gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2)))</p>
+<pre class="r"><code>gf_sina(cty~reorder(manufacturer, displ), data = mpg, alpha = 0.4) %&gt;%
+  gf_labs(x = &quot;Manufacturer&quot;, title = &quot;Dodge Lables&quot;, y = &quot;City MPG&quot;, subtitle = &quot;n.dodge = 2&quot;) %&gt;%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) </code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>gf_col(CharCount~Labels, data = LongLabels) %&gt;%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 3))) %&gt;% 
+  gf_labs(y = &quot;&quot;, x = &quot;&quot;, title = &quot;Dodge Really Long Labels&quot;, subtitle = &quot;n.dodge = 3&quot;)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
 </div>
-<div id="wrap-text" class="section level2" number="1.5">
-<h2><span class="header-section-number">1.5</span> Wrap Text</h2>
-<p>Another option is to automatically wrap the text (if there are spaces
-between words).</p>
-<p>scale_x_discrete(labels = label_wrap(10))</p>
+<div id="manually-recode-labels" class="section level2" number="3.7">
+<h2><span class="header-section-number">3.7</span> Manually Recode
+Labels</h2>
+<div id="adjust-the-labels-only-in-a-refine-statement."
+class="section level3" number="3.7.1">
+<h3><span class="header-section-number">3.7.1</span> Adjust the labels
+(only) in a refine statement.</h3>
+<p><strong>Example:</strong> gf_refine(scale_x_discrete(labels = c( “Old
+Label 1” = “New Label 1”, “Old Label 2” = “New Label 2”)))</p>
+<pre class="r"><code>gf_col(CharCount~Semi.Long.Labels, data = ShorterLabels) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;Labels Changed (But Not Data Itself)&quot;, title = &quot;Manually Adjust the Labels&quot;) %&gt;%
+  gf_refine(scale_x_discrete(labels = c(&quot;Long label&quot; = &quot;Long&quot;,
+                                        &quot;Longer label&quot; = &quot;Longer&quot;,
+                                        &quot;An even longer label&quot; = &quot;Longest&quot;,
+                                        &quot;Another label&quot; = &quot;Another&quot;,
+                                        &quot;Short&quot; = &quot;Short&quot;,
+                                        &quot;Not so short label&quot; = &quot;Not short&quot;)))</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
+<div id="adjust-the-data-itself-using-recode." class="section level3"
+number="3.7.2">
+<h3><span class="header-section-number">3.7.2</span> Adjust the data
+itself using recode.</h3>
+<p><strong>Example:</strong> Dataset$Variable = recode( Dataset$Variable
+, “Old Label 1” = “New Label 1”, “Old Label 2” = “New Label 2”)</p>
+<pre class="r"><code>ShorterLabels$Semi.Long.Labels = recode(ShorterLabels$Semi.Long.Labels,
+                                        &quot;Long label&quot; = &quot;Long&quot;,
+                                        &quot;Longer label&quot; = &quot;Longer&quot;,
+                                        &quot;An even longer label&quot; = &quot;Longest&quot;,
+                                        &quot;Another label&quot; = &quot;Another&quot;,
+                                        &quot;Short&quot; = &quot;Short&quot;,
+                                        &quot;Not so short label&quot; = &quot;Not short&quot;)
+
+gf_col(CharCount~Semi.Long.Labels, data = ShorterLabels) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;Recoded Labels (By Changing Data)&quot;, title = &quot;Manually Recode Data&quot;)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+</div>
+<div id="adjust-font-size" class="section level2" number="3.8">
+<h2><span class="header-section-number">3.8</span> Adjust Font Size</h2>
+<p>This may be less-than-ideal as the font size on the axis is already
+relatively small, but as one last suggestion, we could adjust the font
+size to help overlapping labels.</p>
+<p>theme(axis.text=element_text(size=30))</p>
+<p><strong>Example:</strong> gf_plot( Y ~ X ) %&gt;%
+gf_theme(axis.text.x=element_text(size=10))</p>
+<pre class="r"><code>gf_col(CharCount~Semi.Long.Labels, data = ShorterLabels) %&gt;% gf_theme(axis.text.x=element_text(size=7)) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;Long Labels&quot;, title = &quot;Change Axis Text (x) Size&quot;, subtitle = &quot;Size = 7&quot;)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+</div>
+</div>
+<div id="adjusting-numeric-data" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Adjusting Numeric
+Data</h1>
+<p>Scales package: <a href="https://scales.r-lib.org/"
+class="uri">https://scales.r-lib.org/</a></p>
+<pre class="r"><code>x = seq(1:100)
+Error = runif(100, min = -10000000, max = 10000000)
+LargeNumbers = x*1000000 
+NumData = data.frame(LargeNumbers, x, RandLargeNum = LargeNumbers + Error)
+
+gf_point(RandLargeNum~x, data = NumData)</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre class="r"><code>require(scales)
+gf_point(RandLargeNum~x, data = NumData) %&gt;%
+  gf_refine(scale_y_continuous(labels = label_comma()))</code></pre>
+<p><img src="DataLabels_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
 </div>
 
 
