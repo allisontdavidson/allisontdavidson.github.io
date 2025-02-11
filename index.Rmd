@@ -25,6 +25,9 @@ This compilation utilizes many packages - but here are a few key ones to start:
 -   Lock5Data (selection of many datasets)
 -   gridextra (arranging multiple graphs together)
 -   tidyverse (wrap text in labels using str_wrap)
+-   scales (adjusting numeric scales and wrap labels)
+-   ggforce (abbreviating labels)
+-   tidyr (wrangle data)
 
 ## Additional Resources
 
