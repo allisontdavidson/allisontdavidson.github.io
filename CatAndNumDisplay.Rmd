@@ -443,5 +443,16 @@ The scales package has many other abilities, described in detail in the [referen
 - [label_scientific](https://scales.r-lib.org/reference/label_scientific.html) (1e05, 1.5e-02)
 
 
+## Categorical Labels for Numbers
 
+If you'd like to add categorical labels to the numeric values, you can do so inside the scale_\*_continuous command using the labels option.  
+
+```{r}
+gf_histogram(~price, data = diamonds) %>%
+  gf_labs(title = "Adding Labels to Price Breaks", y = "", x = "Price Labels") %>%
+  gf_refine(scale_x_continuous(breaks = c(0, 4000, 8000, 12000, 16000),
+                               labels = c("Free", "Typical", "Expensive", "Really\nExpensive", "Astronomical")),
+            scale_y_continuous(breaks = c(0,7500,15000), minor_breaks = seq(0,20000, by = 2000))) %>%
+  gf_theme(theme_minimal())
+```
 

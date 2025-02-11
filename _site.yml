@@ -10,8 +10,8 @@ navbar:
           href: TitleLabels.html
         - text: "Category & Numeric Display"
           href: CatAndNumDisplay.html
-        - text: "Scales (Axis) Range & Ordering"
-          href: scales.html
+        - text: "Axis Range, Breaks, and Ordering"
+          href: AxisRange.html
         - text: "Subsets"
           href: subsets.html
         - text: "Themes"

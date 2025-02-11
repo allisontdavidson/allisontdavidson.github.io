@@ -335,7 +335,7 @@ div.tocify {
       <a href="CatAndNumDisplay.html">Category &amp; Numeric Display</a>
     </li>
     <li>
-      <a href="scales.html">Scales (Axis) Range &amp; Ordering</a>
+      <a href="AxisRange.html">Axis Range, Breaks, and Ordering</a>
     </li>
     <li>
       <a href="subsets.html">Subsets</a>
@@ -791,6 +791,21 @@ href="https://scales.r-lib.org/reference/label_pvalue.html">label_pvalue</a>
 href="https://scales.r-lib.org/reference/label_scientific.html">label_scientific</a>
 (1e05, 1.5e-02)</li>
 </ul>
+</div>
+<div id="categorical-labels-for-numbers" class="section level2"
+number="4.5">
+<h2><span class="header-section-number">4.5</span> Categorical Labels
+for Numbers</h2>
+<p>If you’d like to add categorical labels to the numeric values, you
+can do so inside the scale_*_continuous command using the labels
+option.</p>
+<pre class="r"><code>gf_histogram(~price, data = diamonds) %&gt;%
+  gf_labs(title = &quot;Adding Labels to Price Breaks&quot;, y = &quot;&quot;, x = &quot;Price Labels&quot;) %&gt;%
+  gf_refine(scale_x_continuous(breaks = c(0, 4000, 8000, 12000, 16000),
+                               labels = c(&quot;Free&quot;, &quot;Typical&quot;, &quot;Expensive&quot;, &quot;Really\nExpensive&quot;, &quot;Astronomical&quot;)),
+            scale_y_continuous(breaks = c(0,7500,15000), minor_breaks = seq(0,20000, by = 2000))) %&gt;%
+  gf_theme(theme_minimal())</code></pre>
+<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 </div>
 </div>
 
