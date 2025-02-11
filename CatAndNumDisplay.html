@@ -332,10 +332,10 @@ div.tocify {
       <a href="TitleLabels.html">Title Labels (Big/Outer/Axis)</a>
     </li>
     <li>
-      <a href="CatAndNumDisplay.html">Category &amp; Number Display</a>
+      <a href="CatAndNumDisplay.html">Category &amp; Numeric Display</a>
     </li>
     <li>
-      <a href="scales.html">Adjusting Scales (Axis)</a>
+      <a href="scales.html">Scales (Axis) Range &amp; Ordering</a>
     </li>
     <li>
       <a href="subsets.html">Subsets</a>
@@ -348,6 +348,24 @@ div.tocify {
     </li>
     <li>
       <a href="Legends.html">Legends</a>
+    </li>
+    <li>
+      <a href="Annotations.html">Annotations</a>
+    </li>
+    <li>
+      <a href="position.html">Position Adjustments</a>
+    </li>
+    <li>
+      <a href="summarystats.html">Adding Summary Statistics</a>
+    </li>
+    <li>
+      <a href="NonColorAesthetics.html">Adjusting Non-Color Aesthetics</a>
+    </li>
+    <li>
+      <a href="color.html">Color</a>
+    </li>
+    <li>
+      <a href="Interactivity.html">Interactvity</a>
     </li>
   </ul>
 </li>
@@ -555,7 +573,8 @@ gf_theme(axis.text.x = element_text(angle = 45, hjust = 1))</p>
 <div id="wrap-text" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> Wrap Text</h2>
 <p>Another option is to automatically wrap the text. This is most
-helpful if there are spaces between words.</p>
+helpful if there are spaces between words. If the words themselves are
+very long, this option may not work as well.</p>
 <p><strong>Option 1:</strong> Use scale_x_discrete(labels =
 label_wrap(10)) (from scales package)</p>
 <pre class="r"><code>gf_col(CharCount~Labels, data = LongLabels) %&gt;%
@@ -607,6 +626,11 @@ gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2)))</p>
   gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 3))) %&gt;% 
   gf_labs(y = &quot;&quot;, x = &quot;&quot;, title = &quot;Dodge Really Long Labels&quot;, subtitle = &quot;n.dodge = 3&quot;)</code></pre>
 <p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<p>Alternatively, one can try wrapping and dodging labels.</p>
+<pre class="r"><code>gf_col(CharCount~str_wrap(Labels, width = 10), data = LongLabels) %&gt;%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) %&gt;% 
+  gf_labs(y = &quot;&quot;, x = &quot;&quot;, title = &quot;Dodge and Wrap Labels&quot;, subtitle = &quot;n.dodge = 3, labels width = 10&quot;)</code></pre>
+<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 <div id="manually-recode-labels" class="section level2" number="3.7">
 <h2><span class="header-section-number">3.7</span> Manually Recode
@@ -625,7 +649,7 @@ Label 1” = “New Label 1”, “Old Label 2” = “New Label 2”)))</p>
                                         &quot;Another label&quot; = &quot;Another&quot;,
                                         &quot;Short&quot; = &quot;Short&quot;,
                                         &quot;Not so short label&quot; = &quot;Not short&quot;)))</code></pre>
-<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 <div id="adjust-the-data-itself-using-recode." class="section level3"
 number="3.7.2">
@@ -643,7 +667,7 @@ itself using recode.</h3>
 
 gf_col(CharCount~Semi.Long.Labels, data = ShorterLabels) %&gt;%
   gf_labs(y = &quot;&quot;, x = &quot;Recoded Labels (By Changing Data)&quot;, title = &quot;Manually Recode Data&quot;)</code></pre>
-<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
 </div>
 <div id="adjust-font-size" class="section level2" number="3.8">
@@ -656,25 +680,118 @@ size to help overlapping labels.</p>
 gf_theme(axis.text.x=element_text(size=10))</p>
 <pre class="r"><code>gf_col(CharCount~Semi.Long.Labels, data = ShorterLabels) %&gt;% gf_theme(axis.text.x=element_text(size=7)) %&gt;%
   gf_labs(y = &quot;&quot;, x = &quot;Long Labels&quot;, title = &quot;Change Axis Text (x) Size&quot;, subtitle = &quot;Size = 7&quot;)</code></pre>
-<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 </div>
 <div id="adjusting-numeric-data" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Adjusting Numeric
 Data</h1>
-<p>Scales package: <a href="https://scales.r-lib.org/"
-class="uri">https://scales.r-lib.org/</a></p>
-<pre class="r"><code>x = seq(1:100)
-Error = runif(100, min = -10000000, max = 10000000)
-LargeNumbers = x*1000000 
-NumData = data.frame(LargeNumbers, x, RandLargeNum = LargeNumbers + Error)
-
-gf_point(RandLargeNum~x, data = NumData)</code></pre>
-<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-<pre class="r"><code>require(scales)
-gf_point(RandLargeNum~x, data = NumData) %&gt;%
-  gf_refine(scale_y_continuous(labels = label_comma()))</code></pre>
-<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
+<p>This section explores ways to adjust numeric scale display. This will
+largely use the <a href="https://scales.r-lib.org/">scales
+package</a>.</p>
+<p>To illustrate some ways to adjust numeric data, we’ll start with a
+plot (below) that defaults to scientific notation</p>
+<pre class="r"><code>gf_point(RandLargeNum~x, data = NumData) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;&quot;, title = &quot;Default: Scientific Notation (y-axis)&quot;)</code></pre>
+<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<div id="mathematically-adjust-data" class="section level2"
+number="4.1">
+<h2><span class="header-section-number">4.1</span> Mathematically Adjust
+Data</h2>
+<p>One can mathematically adjust the data to take on a slightly
+different form. If we do so, we’ll want to adjust our labels accordingly
+for better readability.</p>
+<p><strong>Example:</strong> gf_plot( Population/1000000 ~
+LifeExpectancy, data = Dataset ) %&gt;% gf_labs( y = “Population
+(Millions)”)</p>
+<pre class="r"><code>gf_point(RandLargeNum/1000000~x, data = NumData) %&gt;%
+  gf_labs(y = &quot;Values (Millions)&quot;, x = &quot;&quot;, title = &quot;Mathematically Adjust Large Numbers&quot;)</code></pre>
+<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+</div>
+<div id="number-comma-notation" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Number &amp; Comma
+Notation</h2>
+<p>You can adjust the default notation and force the scale to be a
+number using the <a
+href="https://scales.r-lib.org/reference/label_number.html">label_number</a>
+command.</p>
+<pre class="r"><code>gf_point(RandLargeNum~x, data = NumData) %&gt;%
+  gf_refine(scale_y_continuous(labels = label_number())) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;&quot;, title = &quot;Adjust y-axis to number notation&quot;, subtitle = &quot;Better than scientific notation, but rather long&quot;)</code></pre>
+<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>To specifically add a comma (instead of a space) one can use <a
+href="https://scales.r-lib.org/reference/label_number.html">label_comma()</a>.</p>
+<p><strong>Example:</strong> gf_refine( scale_y_continuous( labels =
+label_comma() ) )</p>
+<pre class="r"><code>gf_point(RandLargeNum~x, data = NumData) %&gt;%
+  gf_refine(scale_y_continuous(labels = label_comma())) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;&quot;, title = &quot;Adjust y-axis to comma notation&quot;, subtitle = &quot;Better than scientific notation, but rather long&quot;)</code></pre>
+<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>To adjust the rather long numeric labels, you can adjust the scale
+within the label_comma command. Additionally, you can add prefix and
+suffix labels.</p>
+<pre class="r"><code>gf_point(RandLargeNum~x, data = NumData) %&gt;%
+  gf_refine(scale_y_continuous(labels = label_comma(scale = 1/1000000, suffix = &quot;M&quot;, prefix = &quot;$&quot;))) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;&quot;, title = &quot;Adjust y-axis to Comma notation&quot;, subtitle = &quot;Also adjust scale, suffix, and prefix&quot;)</code></pre>
+<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>Another option is scale_cut() option. This can automatically adjust
+numbers and add a suffix (e.g. K, M, B). This works particularly well
+for log scales. This option works both within label_number and
+label_comma.</p>
+<p><strong>Example:</strong> gf_refine(scale_y_continuous( labels =
+scales::label_number(scale_cut = scales::cut_short_scale())))</p>
+<pre class="r"><code>gf_point(RandLargeNum~x, data = NumData) %&gt;%
+  gf_refine(scale_y_continuous( labels = scales::label_comma(scale_cut = scales::cut_short_scale()))) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;&quot;, title = &quot;cut_short_scale( ) Adjustments&quot;)</code></pre>
+<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+</div>
+<div id="adding-or-to-numbers" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Adding $ or % to
+Numbers</h2>
+<p>Instead of adding a $ as a prefix within the label_number or
+label_comma commands, you can use label_dollar. You can still specify
+the scale and suffix even within label_dollar.</p>
+<p><strong>Example:</strong> gf_refine(scale_y_continuous( labels =
+scales::label_dollar(scale = 1/1000000, suffix = “M”)))</p>
+<pre class="r"><code>gf_point(RandLargeNum~x, data = NumData) %&gt;%
+  gf_refine(scale_y_continuous( labels = scales::label_dollar(scale = 1/1000000, suffix = &quot;M&quot;))) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;&quot;, title = &quot;label_dollar with scale &amp; suffix (y-axis)&quot;)</code></pre>
+<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>Additionally, instead of adding a % sign a a suffix, we can use <a
+href="https://scales.r-lib.org/reference/label_percent.html">label_percent</a>.</p>
+<p><strong>Example:</strong> gf_refine(scale_x_continuous(labels =
+label_percent()))</p>
+<pre class="r"><code>gf_point(RandLargeNum~x, data = NumData) %&gt;%
+  gf_refine(scale_y_continuous( labels = scales::label_dollar(scale = 1/1000000, suffix = &quot;M&quot;)),
+            scale_x_continuous(labels = label_percent(scale = 1))) %&gt;%
+  gf_labs(y = &quot;&quot;, x = &quot;&quot;, title = &quot;label_dollar (y-axis) and label_percent (x-axis)&quot;)</code></pre>
+<p><img src="CatAndNumDisplay_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+</div>
+<div id="other-number-elements" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Other Number
+Elements</h2>
+<p>The scales package has many other abilities, described in detail in
+the <a
+href="https://scales.r-lib.org/reference/index.html">references</a>
+page. Some highlights include:</p>
+<ul>
+<li><a
+href="https://scales.r-lib.org/reference/label_bytes.html">label_bytes()</a>
+(1kB, 2 MB)</li>
+<li><a
+href="https://scales.r-lib.org/reference/label_currency.html">label_currencies</a>
+($100, €2.50)</li>
+<li><a
+href="https://scales.r-lib.org/reference/label_ordinal.html">label_ordinal</a>
+(1st, 2nd, 3rd, etc)</li>
+<li><a
+href="https://scales.r-lib.org/reference/label_pvalue.html">label_pvalue</a>
+(p &lt;0.001, p = 0.25, p &gt;= 0.99)</li>
+<li><a
+href="https://scales.r-lib.org/reference/label_scientific.html">label_scientific</a>
+(1e05, 1.5e-02)</li>
+</ul>
+</div>
 </div>
 
 

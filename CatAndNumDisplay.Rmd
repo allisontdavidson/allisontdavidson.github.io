@@ -213,7 +213,7 @@ gf_col(CharCount~Labels, data = LongLabels) %>%
 
 ## Wrap Text
 
-Another option is to automatically wrap the text. This is most helpful if there are spaces between words.
+Another option is to automatically wrap the text. This is most helpful if there are spaces between words.  If the words themselves are very long, this option may not work as well.
 
 **Option 1:** Use scale_x_discrete(labels = label_wrap(10)) (from scales package)
 
@@ -265,6 +265,15 @@ gf_col(CharCount~Labels, data = LongLabels) %>%
   gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 3))) %>% 
   gf_labs(y = "", x = "", title = "Dodge Really Long Labels", subtitle = "n.dodge = 3")
 ```
+
+Alternatively, one can try wrapping and dodging labels.
+
+```{r}
+gf_col(CharCount~str_wrap(Labels, width = 10), data = LongLabels) %>%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) %>% 
+  gf_labs(y = "", x = "", title = "Dodge and Wrap Labels", subtitle = "n.dodge = 3, labels width = 10")
+```
+
 
 ## Manually Recode Labels
 
@@ -328,22 +337,110 @@ gf_col(CharCount~Semi.Long.Labels, data = ShorterLabels) %>% gf_theme(axis.text.
 
 # Adjusting Numeric Data
 
-Scales package: https://scales.r-lib.org/ 
+```{r, include = FALSE}
+# Creating fake data
+x = seq(1:100)
+SmallError = runif(100, min = -10000000, max = 10000000)
+LargeError = runif(100, min = -100000000, max = 100000000)
+LargeNumbers = x*1000000 
+NumData = data.frame(LargeNumbers, x, RandLargeNum = LargeNumbers + SmallError, OtherLargeNum = LargeNumbers + LargeError)
+```
 
+This section explores ways to adjust numeric scale display.  This will largely use the [scales package](https://scales.r-lib.org/).
+
+To illustrate some ways to adjust numeric data, we'll start with a plot (below) that defaults to scientific notation
 
 ```{r}
-x = seq(1:100)
-Error = runif(100, min = -10000000, max = 10000000)
-LargeNumbers = x*1000000 
-NumData = data.frame(LargeNumbers, x, RandLargeNum = LargeNumbers + Error)
 
-gf_point(RandLargeNum~x, data = NumData)
-
-require(scales)
 gf_point(RandLargeNum~x, data = NumData) %>%
-  gf_refine(scale_y_continuous(labels = label_comma()))
+  gf_labs(y = "", x = "", title = "Default: Scientific Notation (y-axis)")
 
 ```
+
+## Mathematically Adjust Data
+
+One can mathematically adjust the data to take on a slightly different form.  If we do so, we'll want to adjust our labels accordingly for better readability.
+
+**Example:** gf_plot( Population/1000000 ~ LifeExpectancy, data = Dataset ) 
+  %>% gf_labs( y = "Population (Millions)")
+
+```{r}
+gf_point(RandLargeNum/1000000~x, data = NumData) %>%
+  gf_labs(y = "Values (Millions)", x = "", title = "Mathematically Adjust Large Numbers")
+```
+
+
+## Number & Comma Notation
+
+You can adjust the default notation and force the scale to be a number using the [label_number](https://scales.r-lib.org/reference/label_number.html) command.
+
+```{r}
+gf_point(RandLargeNum~x, data = NumData) %>%
+  gf_refine(scale_y_continuous(labels = label_number())) %>%
+  gf_labs(y = "", x = "", title = "Adjust y-axis to number notation", subtitle = "Better than scientific notation, but rather long")
+```
+
+To specifically add a comma (instead of a space) one can use [label_comma()](https://scales.r-lib.org/reference/label_number.html).  
+
+**Example:** gf_refine( scale_y_continuous( labels = label_comma() ) )
+
+```{r}
+gf_point(RandLargeNum~x, data = NumData) %>%
+  gf_refine(scale_y_continuous(labels = label_comma())) %>%
+  gf_labs(y = "", x = "", title = "Adjust y-axis to comma notation", subtitle = "Better than scientific notation, but rather long")
+```
+
+To adjust the rather long numeric labels, you can adjust the scale within the label_comma command.  Additionally, you can add prefix and suffix labels.
+
+```{r}
+gf_point(RandLargeNum~x, data = NumData) %>%
+  gf_refine(scale_y_continuous(labels = label_comma(scale = 1/1000000, suffix = "M", prefix = "$"))) %>%
+  gf_labs(y = "", x = "", title = "Adjust y-axis to Comma notation", subtitle = "Also adjust scale, suffix, and prefix")
+```
+
+Another option is scale_cut() option. This can automatically adjust numbers and add a suffix (e.g. K, M, B).  This works particularly well for log scales.  This option works both within label_number and label_comma.  
+
+**Example:** gf_refine(scale_y_continuous( labels = scales::label_number(scale_cut = scales::cut_short_scale())))
+
+```{r}
+gf_point(RandLargeNum~x, data = NumData) %>%
+  gf_refine(scale_y_continuous( labels = scales::label_comma(scale_cut = scales::cut_short_scale()))) %>%
+  gf_labs(y = "", x = "", title = "cut_short_scale( ) Adjustments")
+```
+
+## Adding $ or % to Numbers
+
+Instead of adding a \$ as a prefix within the label_number or label_comma commands, you can use label_dollar.  You can still specify the scale and suffix even within label_dollar. 
+
+**Example:** gf_refine(scale_y_continuous( labels = scales::label_dollar(scale = 1/1000000, suffix = "M")))
+
+```{r}
+gf_point(RandLargeNum~x, data = NumData) %>%
+  gf_refine(scale_y_continuous( labels = scales::label_dollar(scale = 1/1000000, suffix = "M"))) %>%
+  gf_labs(y = "", x = "", title = "label_dollar with scale & suffix (y-axis)")
+```
+
+Additionally, instead of adding a \% sign a a suffix, we can use [label_percent](https://scales.r-lib.org/reference/label_percent.html).
+
+**Example:** gf_refine(scale_x_continuous(labels = label_percent()))
+
+```{r}
+gf_point(RandLargeNum~x, data = NumData) %>%
+  gf_refine(scale_y_continuous( labels = scales::label_dollar(scale = 1/1000000, suffix = "M")),
+            scale_x_continuous(labels = label_percent(scale = 1))) %>%
+  gf_labs(y = "", x = "", title = "label_dollar (y-axis) and label_percent (x-axis)")
+```
+
+
+## Other Number Elements
+
+The scales package has many other abilities, described in detail in the [references](https://scales.r-lib.org/reference/index.html) page.  Some highlights include:
+
+- [label_bytes()](https://scales.r-lib.org/reference/label_bytes.html) (1kB, 2 MB)
+- [label_currencies](https://scales.r-lib.org/reference/label_currency.html) ($100, €2.50)
+- [label_ordinal](https://scales.r-lib.org/reference/label_ordinal.html) (1st, 2nd, 3rd, etc)
+- [label_pvalue](https://scales.r-lib.org/reference/label_pvalue.html) (p <0.001, p = 0.25, p >= 0.99)
+- [label_scientific](https://scales.r-lib.org/reference/label_scientific.html) (1e05, 1.5e-02)
 
 
 

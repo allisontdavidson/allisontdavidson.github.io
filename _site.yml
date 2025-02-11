@@ -10,7 +10,7 @@ navbar:
           href: TitleLabels.html
         - text: "Category & Numeric Display"
           href: CatAndNumDisplay.html
-        - text: "Adjusting Scales (Axis)"
+        - text: "Scales (Axis) Range & Ordering"
           href: scales.html
         - text: "Subsets"
           href: subsets.html
@@ -19,7 +19,19 @@ navbar:
         - text: "Facets"
           href: facets.html
         - text: "Legends"
-          href: Legends.html  
+          href: Legends.html 
+        - text: "Annotations"
+          href: Annotations.html  
+        - text: "Position Adjustments"
+          href: position.html 
+        - text: "Adding Summary Statistics"
+          href: summarystats.html
+        - text: "Adjusting Non-Color Aesthetics"
+          href: NonColorAesthetics.html
+        - text: "Color"
+          href: color.html
+        - text: "Interactvity"
+          href: Interactivity.html 
     - text: "Wranging Data"
       href: WranglingDataIntro.html
     - text: "Markdown Help"
