@@ -12,6 +12,8 @@ output:
 
 ```{r, include = FALSE}
 require(mosaic)
+require(tidyr)
+require(gridExtra)
 ```
 
 Themes are going to be helpful to adjust the default. There are built-in themes already available - but you can also adjust specific elements.
@@ -19,6 +21,8 @@ Themes are going to be helpful to adjust the default. There are built-in themes 
 # Globally set a theme
 
 To globally set a theme, use theme_set( ) in an R Chunk. All subsequent graphs will use that theme as default.
+
+**Example:** theme_set(theme_bw())
 
 ## Global Theme Example
 
@@ -32,6 +36,8 @@ gf_point(mpg~disp, data = mtcars)
 
 To manually set a theme, use the gf_theme( ) layer on any plot.
 
+**Example:** gf_plot( ) %>% gf_theme(theme_bw())
+
 ## Manual theme example
 
 ```{r}
@@ -41,7 +47,7 @@ gf_point(mpg~disp, data = mtcars) %>%
 
 # All ggplot themes
 
-Here is a [list](https://ggplot2.tidyverse.org/reference/ggtheme.html) of all themes available and a preview of what they look like.
+Here is a [list](https://ggplot2.tidyverse.org/reference/ggtheme.html) of many themes available and a preview of what they look like.
 
 ```{r, message=FALSE, warning = FALSE}
 require(gridExtra)
@@ -85,11 +91,153 @@ test = gf_point(mpg~disp, data = mtcars) %>%
 
 grid.arrange(gray, bw, linedraw, light, dark, minimal, classic, void, test, nrow = 3 )
 ```
+For even MORE themes, check out [ggthemes](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/).
+
 
 # Adjusting Default Themes
 
 If you want to adjust a thematic aspect of a graph, the order of your layers is going to matter. For example, you'll want to either globally set your overall theme or adjust with a theme layer. Then, you can add a separate layer to adjust a theme element. It will not work to add this to the same theme layer you use to set the theme!
 
+The following example illustrates if we want the minimal theme and then have an adjusted title, the only combination that seems to get the desired result (until an update comes out) is to have the theme statement first, then the title size statement second.
+
+**Example:** gf_theme(global_theme()) %>% gf_theme(Theme Element Adjustment)
+
+```{r}
+minimal = gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(theme_minimal()) %>%
+  gf_labs(title = "theme_minimal")
+
+titleadjust2 = gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(theme_minimal()) %>%
+  gf_labs(title = "theme_minimal", subtitle = "Title Size Adjusted Second") %>%
+  gf_theme(plot.title = element_text(size=12))
+
+titleadjust1 = gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(plot.title = element_text(size=12)) %>%
+  gf_theme(theme_minimal()) %>%
+  gf_labs(title = "theme_minimal", subtitle = "Title Size Adjusted First") 
+
+same.line = gf_point(mpg~disp, data = mtcars) %>%
+  gf_theme(plot.title = element_text(size=12), theme_minimal()) %>%
+  gf_labs(title = "theme_minimal", subtitle = "Title Size Adjusted In Same Code")
+
+grid.arrange(minimal, titleadjust2, titleadjust1, same.line, nrow = 2)
+```
+
 ## Adjusting theme elements
+
+There are many elements of a theme that can be adjusted.  For example:
+
+- Text (size, color, font, location)
+- Presence of axis lines, tick marks, values
+- Plot backgrounds
+- Strip locations
+- Legend location
+
+All elements that can be adjusted in a theme statement can be found in the ggplot [reference guide](https://ggplot2.tidyverse.org/reference/theme.html).  Also, at the bottom of the page there is a plethora of examples of themes adjusted.  
+
+Because so many examples have already been well categorized above, here are a few that stand out as particularly helpful.
+
+### Eliminating extra ink
+
+If you'd like to make Edward Tufte proud by eliminating extra "ink" (e.g. axis tick marks, values, lines) - here is an example.
+
+```{r, include = FALSE}
+# Read in data
+lengths = read.delim("https://raw.githubusercontent.com/JedStephens/Handbook-of-Small-Data-Sets/master/LENGTHS.DAT", header = FALSE)
+
+# Formatting data -----------------------------------------------------------------------
+
+# Add a new variable to describe the units the students were using (meter or ft)
+lengths = lengths %>%
+  mutate(Unit = c(rep("Meter", 3), rep("Feet", 5))) %>%
+  pivot_longer(cols = 1:15, names_to = "DummyV", values_to = "GuessedLength", values_drop_na = TRUE)
+
+# ---------------------------------------------------------------------------------------
+
+# Visualization 
+# *************
+
+# Max feet = 94 which is equivalent to 28.65 meters
+# Max meters = 40 which is equivalent to 131 feet.
+
+# Feet Graph
+```
+
+
+```{r}
+before = gf_dotplot(~GuessedLength, data = subset(lengths, Unit == "Feet"), binwidth = 1, alpha = 0.3) %>%
+  gf_labs(x = "Guessed Feet", title = "Default theme_bw", y = NULL)  %>%
+  gf_theme(theme_bw())
+
+after = gf_dotplot(~GuessedLength, data = subset(lengths, Unit == "Feet"), binwidth = 1, alpha = 0.3) %>%
+  gf_labs(x = "Guessed Feet", title = "Removing extra ink from theme_bw", y = NULL) %>%
+  gf_theme(theme_bw()) %>%
+  gf_theme(axis.text.y = element_blank(), 
+           axis.ticks.y = element_blank(),
+           panel.border = element_blank(), # Removes entire black box
+           axis.line.x = element_line()) # Adds back in a line for x axis
+
+grid.arrange(before, after, nrow = 2)
+```
+
+### Adjusting & Removing Legends
+
+All things legend-related are discussed in the Legend section, but because it utilizes a theme statement, it is reiterated here.
+
+
+**Remove specific legend:** gf_theme(guides(color = FALSE))
+
+**Remove ALL legends:** gf_theme(legend.position = "none")
+
+```{r}
+gf_point(mpg~disp, data = mtcars, shape = ~as.factor(cyl), color = ~as.factor(cyl), size = ~wt) %>%
+  gf_theme(theme_minimal()) %>%
+  gf_labs(shape = "cylinders", color = "cylinders", title = "All Legends Included")
+
+gf_point(mpg~disp, data = mtcars, shape = ~as.factor(cyl), color = ~as.factor(cyl), size = ~wt) %>%
+  gf_theme(theme_minimal()) %>%
+  gf_labs(shape = "cylinders", color = "cylinders", title = "Color Legend Removed (Only)") %>%
+  gf_theme(guides(color = FALSE))
+
+gf_point(mpg~disp, data = mtcars, shape = ~as.factor(cyl), color = ~as.factor(cyl), size = ~wt) %>%
+  gf_theme(theme_minimal()) %>%
+  gf_labs(shape = "cylinders", color = "cylinders", title = "Remove ALL Legends") %>%
+  gf_theme(legend.position = "none")
+```
+
+### Facet Strip Adjustments
+
+
+```{r}
+gf_point(mpg~disp, data = mtcars, shape = ~as.factor(cyl), color = ~as.factor(cyl), size = ~wt) %>%
+  gf_theme(theme_minimal()) %>%
+  gf_labs(shape = "cylinders", color = "cylinders", title = "Default (Minimal) Facet Strip") %>%
+  gf_facet_wrap(~cyl)
+
+gf_point(mpg~disp, data = mtcars, shape = ~as.factor(cyl), color = ~as.factor(cyl), size = ~wt) %>%
+  gf_theme(theme_minimal()) %>%
+  gf_labs(shape = "cylinders", color = "cylinders", title = "Adjusted Facet Strip & Spacing") %>%
+  gf_facet_wrap(~cyl) %>%
+  gf_theme(legend.position = "none",
+    panel.spacing = unit(0.3, "in"),
+    strip.text = element_text(colour = "white"),
+    strip.background = element_rect(fill = "grey20", 
+                                  color = "grey80", 
+                                  linewidth = 1))
+```
+
+
+### All Theme Elements
+
+The following code displays all theme elements you can adjust. 
+
+**Examples of Theme Elements:**
+
+```{r}
+theme_get()
+```
+
+
 
 
