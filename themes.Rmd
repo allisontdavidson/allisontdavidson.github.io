@@ -24,8 +24,6 @@ To globally set a theme, use theme_set( ) in an R Chunk. All subsequent graphs w
 
 **Example:** theme_set(theme_bw())
 
-## Global Theme Example
-
 ```{r}
 theme_set(theme_bw())
 
@@ -37,8 +35,6 @@ gf_point(mpg~disp, data = mtcars)
 To manually set a theme, use the gf_theme( ) layer on any plot.
 
 **Example:** gf_plot( ) %>% gf_theme(theme_bw())
-
-## Manual theme example
 
 ```{r}
 gf_point(mpg~disp, data = mtcars) %>%
@@ -91,10 +87,12 @@ test = gf_point(mpg~disp, data = mtcars) %>%
 
 grid.arrange(gray, bw, linedraw, light, dark, minimal, classic, void, test, nrow = 3 )
 ```
+
+
 For even MORE themes, check out [ggthemes](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/).
 
 
-# Adjusting Default Themes
+# Adjusting Default Themes (Order Matters)
 
 If you want to adjust a thematic aspect of a graph, the order of your layers is going to matter. For example, you'll want to either globally set your overall theme or adjust with a theme layer. Then, you can add a separate layer to adjust a theme element. It will not work to add this to the same theme layer you use to set the theme!
 
@@ -110,21 +108,21 @@ minimal = gf_point(mpg~disp, data = mtcars) %>%
 titleadjust2 = gf_point(mpg~disp, data = mtcars) %>%
   gf_theme(theme_minimal()) %>%
   gf_labs(title = "theme_minimal", subtitle = "Title Size Adjusted Second") %>%
-  gf_theme(plot.title = element_text(size=12))
+  gf_theme(plot.title = element_text(size=12, color = "red"))
 
 titleadjust1 = gf_point(mpg~disp, data = mtcars) %>%
-  gf_theme(plot.title = element_text(size=12)) %>%
+  gf_theme(plot.title = element_text(size=12, color = "red")) %>%
   gf_theme(theme_minimal()) %>%
   gf_labs(title = "theme_minimal", subtitle = "Title Size Adjusted First") 
 
 same.line = gf_point(mpg~disp, data = mtcars) %>%
-  gf_theme(plot.title = element_text(size=12), theme_minimal()) %>%
+  gf_theme(plot.title = element_text(size=12, color = "red"), theme_minimal()) %>%
   gf_labs(title = "theme_minimal", subtitle = "Title Size Adjusted In Same Code")
 
 grid.arrange(minimal, titleadjust2, titleadjust1, same.line, nrow = 2)
 ```
 
-## Adjusting theme elements
+## Adjusting specific theme elements
 
 There are many elements of a theme that can be adjusted.  For example:
 
@@ -176,7 +174,11 @@ after = gf_dotplot(~GuessedLength, data = subset(lengths, Unit == "Feet"), binwi
   gf_theme(axis.text.y = element_blank(), 
            axis.ticks.y = element_blank(),
            panel.border = element_blank(), # Removes entire black box
-           axis.line.x = element_line()) # Adds back in a line for x axis
+           axis.line.x = element_line(), # Adds back in line for x axis
+           panel.grid.major.x = element_blank(),
+           panel.grid.major.y = element_blank(),
+           panel.grid.minor.x = element_blank(),
+           panel.grid.minor.y = element_blank()) 
 
 grid.arrange(before, after, nrow = 2)
 ```
@@ -232,9 +234,9 @@ gf_point(mpg~disp, data = mtcars, shape = ~as.factor(cyl), color = ~as.factor(cy
 
 The following code displays all theme elements you can adjust. 
 
-**Examples of Theme Elements:**
+**Examples of Theme Elements:** theme_get()
 
-```{r}
+```{r, include = FALSE}
 theme_get()
 ```
 

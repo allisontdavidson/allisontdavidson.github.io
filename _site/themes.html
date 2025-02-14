@@ -401,27 +401,19 @@ theme</h1>
 <p>To globally set a theme, use theme_set( ) in an R Chunk. All
 subsequent graphs will use that theme as default.</p>
 <p><strong>Example:</strong> theme_set(theme_bw())</p>
-<div id="global-theme-example" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Global Theme
-Example</h2>
 <pre class="r"><code>theme_set(theme_bw())
 
 gf_point(mpg~disp, data = mtcars)</code></pre>
 <p><img src="themes_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-</div>
 </div>
 <div id="manually-set-a-theme" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Manually set a
 theme</h1>
 <p>To manually set a theme, use the gf_theme( ) layer on any plot.</p>
 <p><strong>Example:</strong> gf_plot( ) %&gt;% gf_theme(theme_bw())</p>
-<div id="manual-theme-example" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Manual theme
-example</h2>
 <pre class="r"><code>gf_point(mpg~disp, data = mtcars) %&gt;%
   gf_theme(theme_minimal())</code></pre>
 <p><img src="themes_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-</div>
 </div>
 <div id="all-ggplot-themes" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> All ggplot themes</h1>
@@ -468,13 +460,14 @@ test = gf_point(mpg~disp, data = mtcars) %&gt;%
 
 
 grid.arrange(gray, bw, linedraw, light, dark, minimal, classic, void, test, nrow = 3 )</code></pre>
-<p><img src="themes_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-For even MORE themes, check out <a
+<p><img src="themes_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>For even MORE themes, check out <a
 href="https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/">ggthemes</a>.</p>
 </div>
-<div id="adjusting-default-themes" class="section level1" number="4">
+<div id="adjusting-default-themes-order-matters" class="section level1"
+number="4">
 <h1><span class="header-section-number">4</span> Adjusting Default
-Themes</h1>
+Themes (Order Matters)</h1>
 <p>If you want to adjust a thematic aspect of a graph, the order of your
 layers is going to matter. For example, you’ll want to either globally
 set your overall theme or adjust with a theme layer. Then, you can add a
@@ -493,22 +486,23 @@ gf_theme(Theme Element Adjustment)</p>
 titleadjust2 = gf_point(mpg~disp, data = mtcars) %&gt;%
   gf_theme(theme_minimal()) %&gt;%
   gf_labs(title = &quot;theme_minimal&quot;, subtitle = &quot;Title Size Adjusted Second&quot;) %&gt;%
-  gf_theme(plot.title = element_text(size=12))
+  gf_theme(plot.title = element_text(size=12, color = &quot;red&quot;))
 
 titleadjust1 = gf_point(mpg~disp, data = mtcars) %&gt;%
-  gf_theme(plot.title = element_text(size=12)) %&gt;%
+  gf_theme(plot.title = element_text(size=12, color = &quot;red&quot;)) %&gt;%
   gf_theme(theme_minimal()) %&gt;%
   gf_labs(title = &quot;theme_minimal&quot;, subtitle = &quot;Title Size Adjusted First&quot;) 
 
 same.line = gf_point(mpg~disp, data = mtcars) %&gt;%
-  gf_theme(plot.title = element_text(size=12), theme_minimal()) %&gt;%
+  gf_theme(plot.title = element_text(size=12, color = &quot;red&quot;), theme_minimal()) %&gt;%
   gf_labs(title = &quot;theme_minimal&quot;, subtitle = &quot;Title Size Adjusted In Same Code&quot;)
 
 grid.arrange(minimal, titleadjust2, titleadjust1, same.line, nrow = 2)</code></pre>
 <p><img src="themes_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<div id="adjusting-theme-elements" class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> Adjusting theme
-elements</h2>
+<div id="adjusting-specific-theme-elements" class="section level2"
+number="4.1">
+<h2><span class="header-section-number">4.1</span> Adjusting specific
+theme elements</h2>
 <p>There are many elements of a theme that can be adjusted. For
 example:</p>
 <ul>
@@ -540,7 +534,11 @@ after = gf_dotplot(~GuessedLength, data = subset(lengths, Unit == &quot;Feet&quo
   gf_theme(axis.text.y = element_blank(), 
            axis.ticks.y = element_blank(),
            panel.border = element_blank(), # Removes entire black box
-           axis.line.x = element_line()) # Adds back in a line for x axis
+           axis.line.x = element_line(), # Adds back in line for x axis
+           panel.grid.major.x = element_blank(),
+           panel.grid.major.y = element_blank(),
+           panel.grid.minor.x = element_blank(),
+           panel.grid.minor.y = element_blank()) 
 
 grid.arrange(before, after, nrow = 2)</code></pre>
 <p><img src="themes_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
@@ -599,313 +597,7 @@ Adjustments</h3>
 <h3><span class="header-section-number">4.1.4</span> All Theme
 Elements</h3>
 <p>The following code displays all theme elements you can adjust.</p>
-<p><strong>Examples of Theme Elements:</strong></p>
-<pre class="r"><code>theme_get()</code></pre>
-<pre><code>## List of 136
-##  $ line                            :List of 6
-##   ..$ colour       : chr &quot;black&quot;
-##   ..$ linewidth    : num 0.5
-##   ..$ linetype     : num 1
-##   ..$ lineend      : chr &quot;butt&quot;
-##   ..$ arrow        : logi FALSE
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_line&quot; &quot;element&quot;
-##  $ rect                            :List of 5
-##   ..$ fill         : chr &quot;white&quot;
-##   ..$ colour       : chr &quot;black&quot;
-##   ..$ linewidth    : num 0.5
-##   ..$ linetype     : num 1
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_rect&quot; &quot;element&quot;
-##  $ text                            :List of 11
-##   ..$ family       : chr &quot;&quot;
-##   ..$ face         : chr &quot;plain&quot;
-##   ..$ colour       : chr &quot;black&quot;
-##   ..$ size         : num 11
-##   ..$ hjust        : num 0.5
-##   ..$ vjust        : num 0.5
-##   ..$ angle        : num 0
-##   ..$ lineheight   : num 0.9
-##   ..$ margin       : &#39;margin&#39; num [1:4] 0points 0points 0points 0points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
-##   ..$ debug        : logi FALSE
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ title                           : NULL
-##  $ aspect.ratio                    : NULL
-##  $ axis.title                      : NULL
-##  $ axis.title.x                    :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : NULL
-##   ..$ hjust        : NULL
-##   ..$ vjust        : num 1
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : &#39;margin&#39; num [1:4] 2.75points 0points 0points 0points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.title.x.top                :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : NULL
-##   ..$ hjust        : NULL
-##   ..$ vjust        : num 0
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : &#39;margin&#39; num [1:4] 0points 0points 2.75points 0points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.title.x.bottom             : NULL
-##  $ axis.title.y                    :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : NULL
-##   ..$ hjust        : NULL
-##   ..$ vjust        : num 1
-##   ..$ angle        : num 90
-##   ..$ lineheight   : NULL
-##   ..$ margin       : &#39;margin&#39; num [1:4] 0points 2.75points 0points 0points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.title.y.left               : NULL
-##  $ axis.title.y.right              :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : NULL
-##   ..$ hjust        : NULL
-##   ..$ vjust        : num 1
-##   ..$ angle        : num -90
-##   ..$ lineheight   : NULL
-##   ..$ margin       : &#39;margin&#39; num [1:4] 0points 0points 0points 2.75points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.text                       :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : chr &quot;grey30&quot;
-##   ..$ size         : &#39;rel&#39; num 0.8
-##   ..$ hjust        : NULL
-##   ..$ vjust        : NULL
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : NULL
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.text.x                     :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : NULL
-##   ..$ hjust        : NULL
-##   ..$ vjust        : num 1
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : &#39;margin&#39; num [1:4] 2.2points 0points 0points 0points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.text.x.top                 :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : NULL
-##   ..$ hjust        : NULL
-##   ..$ vjust        : num 0
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : &#39;margin&#39; num [1:4] 0points 0points 2.2points 0points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.text.x.bottom              : NULL
-##  $ axis.text.y                     :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : NULL
-##   ..$ hjust        : num 1
-##   ..$ vjust        : NULL
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : &#39;margin&#39; num [1:4] 0points 2.2points 0points 0points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.text.y.left                : NULL
-##  $ axis.text.y.right               :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : NULL
-##   ..$ hjust        : num 0
-##   ..$ vjust        : NULL
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : &#39;margin&#39; num [1:4] 0points 0points 0points 2.2points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.text.theta                 : NULL
-##  $ axis.text.r                     :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : NULL
-##   ..$ hjust        : num 0.5
-##   ..$ vjust        : NULL
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : &#39;margin&#39; num [1:4] 0points 2.2points 0points 2.2points
-##   .. ..- attr(*, &quot;unit&quot;)= int 8
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ axis.ticks                      :List of 6
-##   ..$ colour       : chr &quot;grey20&quot;
-##   ..$ linewidth    : NULL
-##   ..$ linetype     : NULL
-##   ..$ lineend      : NULL
-##   ..$ arrow        : logi FALSE
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_line&quot; &quot;element&quot;
-##  $ axis.ticks.x                    : NULL
-##  $ axis.ticks.x.top                : NULL
-##  $ axis.ticks.x.bottom             : NULL
-##  $ axis.ticks.y                    : NULL
-##  $ axis.ticks.y.left               : NULL
-##  $ axis.ticks.y.right              : NULL
-##  $ axis.ticks.theta                : NULL
-##  $ axis.ticks.r                    : NULL
-##  $ axis.minor.ticks.x.top          : NULL
-##  $ axis.minor.ticks.x.bottom       : NULL
-##  $ axis.minor.ticks.y.left         : NULL
-##  $ axis.minor.ticks.y.right        : NULL
-##  $ axis.minor.ticks.theta          : NULL
-##  $ axis.minor.ticks.r              : NULL
-##  $ axis.ticks.length               : &#39;simpleUnit&#39; num 2.75points
-##   ..- attr(*, &quot;unit&quot;)= int 8
-##  $ axis.ticks.length.x             : NULL
-##  $ axis.ticks.length.x.top         : NULL
-##  $ axis.ticks.length.x.bottom      : NULL
-##  $ axis.ticks.length.y             : NULL
-##  $ axis.ticks.length.y.left        : NULL
-##  $ axis.ticks.length.y.right       : NULL
-##  $ axis.ticks.length.theta         : NULL
-##  $ axis.ticks.length.r             : NULL
-##  $ axis.minor.ticks.length         : &#39;rel&#39; num 0.75
-##  $ axis.minor.ticks.length.x       : NULL
-##  $ axis.minor.ticks.length.x.top   : NULL
-##  $ axis.minor.ticks.length.x.bottom: NULL
-##  $ axis.minor.ticks.length.y       : NULL
-##  $ axis.minor.ticks.length.y.left  : NULL
-##  $ axis.minor.ticks.length.y.right : NULL
-##  $ axis.minor.ticks.length.theta   : NULL
-##  $ axis.minor.ticks.length.r       : NULL
-##  $ axis.line                       : list()
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_blank&quot; &quot;element&quot;
-##  $ axis.line.x                     : NULL
-##  $ axis.line.x.top                 : NULL
-##  $ axis.line.x.bottom              : NULL
-##  $ axis.line.y                     : NULL
-##  $ axis.line.y.left                : NULL
-##  $ axis.line.y.right               : NULL
-##  $ axis.line.theta                 : NULL
-##  $ axis.line.r                     : NULL
-##  $ legend.background               :List of 5
-##   ..$ fill         : NULL
-##   ..$ colour       : logi NA
-##   ..$ linewidth    : NULL
-##   ..$ linetype     : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_rect&quot; &quot;element&quot;
-##  $ legend.margin                   : &#39;margin&#39; num [1:4] 5.5points 5.5points 5.5points 5.5points
-##   ..- attr(*, &quot;unit&quot;)= int 8
-##  $ legend.spacing                  : &#39;simpleUnit&#39; num 11points
-##   ..- attr(*, &quot;unit&quot;)= int 8
-##  $ legend.spacing.x                : NULL
-##  $ legend.spacing.y                : NULL
-##  $ legend.key                      : NULL
-##  $ legend.key.size                 : &#39;simpleUnit&#39; num 1.2lines
-##   ..- attr(*, &quot;unit&quot;)= int 3
-##  $ legend.key.height               : NULL
-##  $ legend.key.width                : NULL
-##  $ legend.key.spacing              : &#39;simpleUnit&#39; num 5.5points
-##   ..- attr(*, &quot;unit&quot;)= int 8
-##  $ legend.key.spacing.x            : NULL
-##  $ legend.key.spacing.y            : NULL
-##  $ legend.frame                    : NULL
-##  $ legend.ticks                    : NULL
-##  $ legend.ticks.length             : &#39;rel&#39; num 0.2
-##  $ legend.axis.line                : NULL
-##  $ legend.text                     :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : &#39;rel&#39; num 0.8
-##   ..$ hjust        : NULL
-##   ..$ vjust        : NULL
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : NULL
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ legend.text.position            : NULL
-##  $ legend.title                    :List of 11
-##   ..$ family       : NULL
-##   ..$ face         : NULL
-##   ..$ colour       : NULL
-##   ..$ size         : NULL
-##   ..$ hjust        : num 0
-##   ..$ vjust        : NULL
-##   ..$ angle        : NULL
-##   ..$ lineheight   : NULL
-##   ..$ margin       : NULL
-##   ..$ debug        : NULL
-##   ..$ inherit.blank: logi TRUE
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_text&quot; &quot;element&quot;
-##  $ legend.title.position           : NULL
-##  $ legend.position                 : chr &quot;right&quot;
-##  $ legend.position.inside          : NULL
-##  $ legend.direction                : NULL
-##  $ legend.byrow                    : NULL
-##  $ legend.justification            : chr &quot;center&quot;
-##  $ legend.justification.top        : NULL
-##  $ legend.justification.bottom     : NULL
-##  $ legend.justification.left       : NULL
-##  $ legend.justification.right      : NULL
-##  $ legend.justification.inside     : NULL
-##  $ legend.location                 : NULL
-##  $ legend.box                      : NULL
-##  $ legend.box.just                 : NULL
-##  $ legend.box.margin               : &#39;margin&#39; num [1:4] 0cm 0cm 0cm 0cm
-##   ..- attr(*, &quot;unit&quot;)= int 1
-##  $ legend.box.background           : list()
-##   ..- attr(*, &quot;class&quot;)= chr [1:2] &quot;element_blank&quot; &quot;element&quot;
-##  $ legend.box.spacing              : &#39;simpleUnit&#39; num 11points
-##   ..- attr(*, &quot;unit&quot;)= int 8
-##   [list output truncated]
-##  - attr(*, &quot;class&quot;)= chr [1:2] &quot;theme&quot; &quot;gg&quot;
-##  - attr(*, &quot;complete&quot;)= logi TRUE
-##  - attr(*, &quot;validate&quot;)= logi TRUE</code></pre>
+<p><strong>Examples of Theme Elements:</strong> theme_get()</p>
 </div>
 </div>
 </div>
