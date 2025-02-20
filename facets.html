@@ -13,7 +13,7 @@
 
 <title>Facets</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -329,10 +329,13 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="axislabels.html">Outside Labels</a>
+      <a href="TitleLabels.html">Title Labels (Big/Outer/Axis)</a>
     </li>
     <li>
-      <a href="scales.html">Adjusting Scales (Axis)</a>
+      <a href="CatAndNumDisplay.html">Category &amp; Numeric Display</a>
+    </li>
+    <li>
+      <a href="AxisRange.html">Axis Range, Breaks, and Ordering</a>
     </li>
     <li>
       <a href="subsets.html">Subsets</a>
@@ -345,6 +348,24 @@ div.tocify {
     </li>
     <li>
       <a href="Legends.html">Legends</a>
+    </li>
+    <li>
+      <a href="Annotations.html">Annotations</a>
+    </li>
+    <li>
+      <a href="position.html">Position Adjustments</a>
+    </li>
+    <li>
+      <a href="summarystats.html">Adding Summary Statistics</a>
+    </li>
+    <li>
+      <a href="NonColorAesthetics.html">Adjusting Non-Color Aesthetics</a>
+    </li>
+    <li>
+      <a href="color.html">Color</a>
+    </li>
+    <li>
+      <a href="Interactivity.html">Interactvity</a>
     </li>
   </ul>
 </li>
@@ -374,23 +395,11 @@ div.tocify {
 <p>Note that many ideas on this page are taken directly from the <a
 href="https://ggplot2-book.org/facet.html#sec-facet-wrap">ggplot2</a>
 book. A fantastic resource!</p>
-<div id="facet-wrap-vs-grid" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Facet Wrap vs Grid</h1>
+<div id="facet-one-variable" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Facet One Variable</h1>
 <p>At times it is helpful to split a graph into separate panels. You
 have the most control over this process using either a facet_wrap or
-facet_grid layer. Note, in ggformul, you can also use the | notation,
-which uses facet_wrap.</p>
-<p>Facet Wrap will order facets into a rectangular layout. You have
-control over how many rows and columns there are, and can adjust the
-strip position (label of facet).</p>
-<p>Facet grid will organize facets into columns and/or rows based on how
-many categories exist in the varaibles used. You don’t have as much
-flexibility to adjust the number of columns nor rows, but the labels
-tend to be more clear if using more than one variable to facet.</p>
-<div id="examples-of-facet-wrap-vs-grid" class="section level2"
-number="1.1">
-<h2><span class="header-section-number">1.1</span> Examples of Facet
-Wrap vs Grid</h2>
+facet_grid layer.</p>
 <pre class="r"><code>gf_point(hwy~displ, data = mpg, color = ~manufacturer) %&gt;%
   gf_labs(title = &quot;The Need for Facets&quot;, subtitle = &quot;To Add Clarity To Cluttered Charts&quot;)</code></pre>
 <p><img src="facets_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
@@ -398,18 +407,17 @@ Wrap vs Grid</h2>
   gf_facet_wrap(~manufacturer) %&gt;%
   gf_labs(title = &quot;Facet Wrap&quot;)</code></pre>
 <p><img src="facets_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
-<pre class="r"><code>gf_point(hwy~displ, data = mpg, color = ~manufacturer, show.legend = FALSE) %&gt;%
-  gf_facet_grid(~manufacturer) %&gt;%
-  gf_labs(title = &quot;Facet Grid on X axis (columns)&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-2-3.png" width="672" /></p>
-<pre class="r"><code>gf_point(hwy~displ, data = mpg, color = ~manufacturer, show.legend = FALSE) %&gt;%
-  gf_facet_grid(manufacturer~.) %&gt;%
-  gf_labs(title = &quot;Facet Grid on Y axis (rows)&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-2-4.png" width="672" /></p>
+<div id="using-notation-for-facet_wrap" class="section level2"
+number="1.1">
+<h2><span class="header-section-number">1.1</span> Using | Notation for
+facet_wrap</h2>
+<p>Note, in ggformula, you can also use the | notation, which uses
+facet_wrap.</p>
+<p><strong>Example:</strong> gf_plot( Y ~ X | PanelVar , data =
+Dataset)</p>
 <pre class="r"><code>gf_point(hwy~displ|manufacturer, data = mpg, color = ~manufacturer, show.legend = FALSE) %&gt;%
   gf_labs(title = &quot;Wrap Using | Notation&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-2-5.png" width="672" />
-# Facet One Variable</p>
+<p><img src="facets_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
 <div id="facet-wrap-one-variable" class="section level2" number="1.2">
 <h2><span class="header-section-number">1.2</span> Facet Wrap (one
@@ -417,157 +425,333 @@ variable)</h2>
 <p>Facet wrap allows you to specify how many rows and/or how many
 columns you’d like displayed. Additionally, you can change the location
 of the strip to make the facets easier to read.</p>
+<p>To specify number of columns and/or rows use nrow and/or ncol.</p>
+<p><strong>Example:</strong> gf_facet_wrap(~Type, nrow = 3)</p>
+<p><strong>Example:</strong> gf_facet_wrap(~Type, ncol = 1)</p>
 <pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
-  gf_facet_wrap(~Type)</code></pre>
-<pre><code>## Warning: `stat(density)` was deprecated in ggplot2 3.4.0.
-## ℹ Please use `after_stat(density)` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+  gf_facet_wrap(~Type) %&gt;%
+  gf_labs(title = &quot;Facet Wrap Default Settings&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
-  gf_facet_wrap(~Type, nrow = 3)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+  gf_facet_wrap(~Type, nrow = 3) %&gt;%
+  gf_labs(title = &quot;Facet Wrap Specify Rows = 3&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
 <pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
-  gf_facet_wrap(~Type, nrow = 1)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
-<pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
-  gf_facet_wrap(~Type, ncol = 1, strip.position = &quot;right&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
+  gf_facet_wrap(~Type, nrow = 1) %&gt;%
+  gf_labs(title = &quot;Facet Wrap Specify Rows = 1&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
+<div id="change-direction-of-facets" class="section level3"
+number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> Change direction of
+facets</h3>
+<p>To change the direction of the facets, specify dir = “v”.</p>
+<p><strong>Example:</strong> gf_facet_wrap(~Type, nrow = 3, dir =
+“v”)</p>
+<pre class="r"><code>default = gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type, nrow = 3) %&gt;%
+  gf_labs(title = &quot;Specify Rows = 3&quot;)
+
+vdirection = gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type, nrow = 3, dir = &quot;v&quot;) %&gt;%
+  gf_labs(title = &quot;Specify Rows and V Direction&quot;)
+
+grid.arrange(default, vdirection, nrow = 1)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
-<div id="facet-grid-one-variable" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> Facet Grid (one
+<div id="chaning-strip-location" class="section level3" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> Chaning Strip
+Location</h3>
+<p>To change the strip location, specify strip.position = “right”,
+“left”, “top” or “bottom”</p>
+<p><strong>Example:</strong> gf_facet_wrap(~Type, ncol = 1,
+strip.position = “right”)</p>
+<pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type, ncol = 1, strip.position = &quot;right&quot;) %&gt;%
+  gf_labs(title = &quot;Facet Wrap Specify Rows = 1 and Strip Position&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>You can also “switch” the location of the strip.</p>
+<p><strong>Top to Bottom:</strong> Use strip = “x” to move labels from
+top to bottom</p>
+<pre class="r"><code>top = gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type, ncol = 1) %&gt;%
+  gf_labs(title = &quot;Default&quot;, subtitle = &quot;Labels on Top&quot;)
+
+bottom = gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type, ncol = 1, switch = &quot;x&quot;) %&gt;%
+  gf_labs(title = &quot;switch = x&quot;, subtitle = &quot;Labels on Bottom&quot;)
+
+grid.arrange(top, bottom, nrow = 1)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><strong>Right to Left</strong> Use strip = “y” to move labels from
+right to left</p>
+<pre class="r"><code>left = gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type, ncol = 1, switch = &quot;y&quot;) %&gt;%
+  gf_labs(title = &quot;switch = y&quot;, subtitle = &quot;labels on left&quot;)
+
+grid.arrange(top, left, nrow = 1)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="axis-of-facets" class="section level3" number="1.2.3">
+<h3><span class="header-section-number">1.2.3</span> Axis of Facets</h3>
+<p>By default, only the “outer” axis and labels will appear on each
+panel. To force more axis and/or labels, use axes and/or axis.labels
+options.</p>
+<p><strong>Axes Options:</strong> “all”, “all_x”, “all_y” (show axes
+lines/tick marks on specified axes)</p>
+<p><strong>Axis Labels Options:</strong> “all”, “all_x”, “all_y” (show
+labels on specified axes)</p>
+<p><strong>Example:</strong> gf_facet_wrap( ~X , axes = “all”,
+axis.labels = “all_y”)</p>
+<pre class="r"><code>theme_set(theme_classic())
+gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type) %&gt;%
+  gf_labs(title = &quot;Default - Margins Only&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type, axes = &quot;all_y&quot;) %&gt;%
+  gf_labs(title = &quot;axes = all_y&quot;, subtitle = &quot;Adding Axes &amp; Labels to JUST Y Axis&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type, axes = &quot;all&quot;, axis.labels = &quot;all_y&quot;) %&gt;%
+  gf_labs(title = &quot;Axes = all &amp; Labels = all_y&quot;, subtitle = &quot;Adding axis lines to all axes, but only labels to Y&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
+</div>
+</div>
+<div id="facet_grid-one-variable" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> facet_grid (one
 variable)</h2>
+<p>Facet grid will organize facets into columns and/or rows based on how
+many categories exist in the variables used. You don’t have as much
+flexibility to adjust the number of columns nor rows, but the labels
+tend to be more clear if using more than one variable to facet.</p>
 <p>The facet grid command follows the same Y ~ X notation that many
 ggformula commands follow. To order panels into rows, have the variable
 on the Y axis. To order panels into columns, have the variable on the X
 axis.</p>
-<pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+<p><strong>Example (cols):</strong> gf_facet_grid( ~ X )</p>
+<p><strong>Example (rows):</strong> gf_facet_grid( Y ~ . )</p>
+<pre class="r"><code>theme_set(theme_minimal())
+
+gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
   gf_facet_grid(~Type) %&gt;%
   gf_labs(title = &quot;Facet Grid into Columns&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="facets_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
   gf_facet_grid(Type~.) %&gt;%
   gf_labs(title = &quot;Facet Grid into Rows&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<p><img src="facets_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
 </div>
 </div>
 <div id="facet-two-varibles" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Facet Two Varibles</h1>
+<p>To facet your graph based on two variables, you can either use
+facet_wrap or facet_grid.</p>
 <div id="facet-wrap-2-variables" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Facet Wrap (2
 variables)</h2>
-<p>Facet wraps with 2 variables will default to the labels stacked.</p>
-<p>You can control how the ribbon is wrapped into a grid with ncol,
-nrow, as.table and dir. ncol and nrow control how many columns and rows
-(you only need to set one). as.table controls whether the facets are
-laid out like a table (TRUE), with highest values at the bottom-right,
-or a plot (FALSE), with the highest values at the top-right. dir
-controls the direction of wrap: horizontal or vertical.</p>
+<p>Facet wraps with 2 variables will default to the labels stacked (one
+label on top of the other).</p>
+<p><strong>Example:</strong> gf_facet_wrap(V1 (top label) ~ V2 (bottom
+label))</p>
 <pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
   gf_facet_wrap(Type~Origin) %&gt;%
   gf_labs(title = &quot;Facet Wrap with 2 Variables&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="facets_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<div id="tabel-settings" class="section level3" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Tabel Settings</h3>
+<p>The default settings (as.table = TRUE) will have the “highest” values
+in the bottom right. Adjusting as.table = FALSE makes highest values
+start at the top right instead.</p>
+<p><strong>Example:</strong> gf_facet_wrap(Y~X, as.table = FALSE)</p>
+<pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(Type~Origin, as.table = TRUE) %&gt;%
+  gf_labs(title = &quot;as.table = TRUE&quot;, subtitle = &quot;Highest Values Bottom Right&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
   gf_facet_wrap(Type~Origin, as.table = FALSE) %&gt;%
-  gf_labs(title = &quot;Facet Wrap with 2 Variables&quot;, subtitle = &quot;Not as table default&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+  gf_labs(title = &quot;as.table = FALSE&quot;, subtitle = &quot;Highest Values Top Right&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+</div>
+<div id="layout-of-panels" class="section level3" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Layout of
+Panels</h3>
+<p>We can adjust the layout of the panels still using the nrow, ncol,
+dir options. It may also be helpful to specify dropped factor levels to
+keep things consistent. The example below shows that there are no Large
+non-USA vehicles in the dataset, but having the blank panel helps line
+up the panels for easy readability.</p>
+<p><strong>Example:</strong> gf_facet_wrap(Y~X, nrow = 2, dir = “v”,
+drop = FALSE)</p>
 <pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
   gf_facet_wrap(Type~Origin, nrow = 2, dir = &quot;v&quot;) %&gt;%
-  gf_labs(title = &quot;Facet Wrap with 2 Variables&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+  gf_labs(title = &quot;drop = TRUE (default)&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(Type~Origin, nrow = 2, dir = &quot;v&quot;, drop = FALSE) %&gt;%
+  gf_labs(title = &quot;drop = FALSE&quot;, subtitle = &quot;Panel for missing Large non-USA&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+</div>
 </div>
 <div id="facet-grid-2-variables" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Facet Grid (2
 variables)</h2>
 <p>Facet grids with 2 variables may be easier to read as their labels
 are split.</p>
+<p><strong>Example:</strong> gf_facet_grid( Y ~ X )</p>
 <pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
   gf_facet_grid(Type~Origin) %&gt;%
-  gf_labs(title = &quot;Facet Grid with 2 Variables&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+  gf_labs(title = &quot;Origin as columns&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
   gf_facet_grid(Origin~Type) %&gt;%
-  gf_labs(title = &quot;Facet Grid with 2 Variables&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+  gf_labs(title = &quot;Origin as rows&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
 </div>
 </div>
-<div id="three-variables" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Three Variables</h1>
+<div id="three-or-more-variables" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Three (or more)
+Variables</h1>
 <p>Once you start adding in more than 2 variables - things can get
 complicated. Be aware of making your graph too complicated and decide if
 you should instead split things up into separate visuals.</p>
+<p><strong>Example:</strong> gf_facet_grid(Y1 + Y2 ~ X1 + X2)</p>
 <pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
   gf_facet_grid(Origin+DriveTrain~Type, scales = &quot;free&quot;) %&gt;%
-  gf_labs(title = &quot;Facet Grid with 2 Variables&quot;)</code></pre>
-<pre><code>## Warning: Groups with fewer than two data points have been dropped.
-## Groups with fewer than two data points have been dropped.
-## Groups with fewer than two data points have been dropped.</code></pre>
-<pre><code>## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
-## -Inf
-## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
-## -Inf
-## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
-## -Inf</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+  gf_labs(title = &quot;Facet Grid with 3 Variables&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
-<div id="free-scales" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Free Scales</h1>
-<p>By default the x-axis and y-axis scales are fixed. To allow scales to
-adjust based on panel you can use one of the following:</p>
-<p>scales = “free_x”: the x scale is free, and the y scale is fixed.
-scales = “free_y”: the y scale is free, and the x scale is fixed. scales
-= “free”: x and y scales vary across panels.</p>
+<div id="adjust-panel-scales" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Adjust Panel
+Scales</h1>
+<p>By default the x-axis and y-axis scales are fixed. There may be times
+when you want the scales to be adjusted based on the data. There are a
+few ways to adjust.</p>
+<div id="free-scales" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Free Scales</h2>
+<p>To allow scales to adjust based on panel you can use one of the
+following:</p>
+<p><strong>scales = “free_x”:</strong> the x scale is free, and the y
+scale is fixed.</p>
+<p><strong>scales = “free_y”:</strong> the y scale is free, and the x
+scale is fixed.</p>
+<p><strong>scales = “free”:</strong> x and y scales vary across
+panels.</p>
 <p>Fixed scales make it easier to see patterns across panels; free
 scales make it easier to see patterns within panels.</p>
-<pre class="r"><code>gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
-  gf_facet_wrap(~Type, ncol = 1, strip.position = &quot;right&quot;, scales = &quot;free_y&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>default = gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type, ncol = 1, strip.position = &quot;right&quot;) %&gt;%
+  gf_labs(title = &quot;Fixed Scales (Default)&quot;)
+
+freey = gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type, ncol = 1, strip.position = &quot;right&quot;, scales = &quot;free_y&quot;) %&gt;%
+  gf_labs(title = &quot;scales = free_y&quot;)
+
+grid.arrange(default, freey, nrow = 1)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>Another example from <a
+href="https://ggplot2-book.org/facet#sec-facet-wrap">ggplot2</a> this
+time using economics_long data.</p>
+<pre class="r"><code>gf_line(value~date, data = economics_long) %&gt;%
+  gf_facet_wrap(~variable, ncol = 1, strip.position = &quot;right&quot;) %&gt;%
+  gf_refine(scale_y_continuous(labels = label_number(scale_cut = cut_si(&quot;&quot;)))) %&gt;%
+  gf_labs(title = &quot;Economics data without free scales&quot;, subtitle = &quot;Diffitult to see any trends&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>gf_line(value~date, data = economics_long) %&gt;%
+  gf_facet_wrap(~variable, ncol = 1, scales = &quot;free_y&quot;, strip.position = &quot;right&quot;) %&gt;%
+  gf_refine(scale_y_continuous(labels = label_number(scale_cut = cut_si(&quot;&quot;)))) %&gt;%
+  gf_labs(title = &quot;Economics data WITH free scales&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
 </div>
-<div id="free-space" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Free Space</h1>
-<p>The facet_grid() function has an additional parameter called space,
-which takes the same values as scales. When space is “free”, each column
-(or row) will have width (or height) proportional to the range of the
-scale for that column (or row).</p>
-<pre class="r"><code>require(forcats)</code></pre>
-<pre><code>## Loading required package: forcats</code></pre>
-<pre><code>## Warning: package &#39;forcats&#39; was built under R version 4.2.3</code></pre>
+<div id="free-space" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Free Space</h2>
+<p>Similar to how we adjusted the scales, we can also adjust the
+“space”. When space is “free”, each column (or row) will have width (or
+height) proportional to the range of the scale for that column (or
+row).</p>
+<p><strong>Example:</strong> gf_facet_grid(Y~., scales = “free_y”, space
+= “free”)</p>
+<pre class="r"><code>gf_point(fct_reorder(model, hwy)~hwy, data = mpg, color = ~manufacturer, show.legend = FALSE) %&gt;%
+  gf_facet_grid(manufacturer~., scales = &quot;free_y&quot;) %&gt;%
+  gf_theme(strip.text.y = element_text(angle=0)) %&gt;%
+  gf_labs( y = &quot;&quot; , x = &quot;Miles Per Gallon&quot;, title = &quot;Default Space&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <pre class="r"><code>gf_point(fct_reorder(model, hwy)~hwy, data = mpg, color = ~manufacturer, show.legend = FALSE) %&gt;%
   gf_facet_grid(manufacturer~., scales = &quot;free_y&quot;, space = &quot;free&quot;) %&gt;%
   gf_theme(strip.text.y = element_text(angle=0)) %&gt;%
-  gf_labs( y = &quot;&quot; , x = &quot;Miles Per Gallon&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+  gf_labs( y = &quot;&quot; , x = &quot;Miles Per Gallon&quot;, title = &quot;Free Space&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
 </div>
-<div id="labeller" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Labeller</h1>
+</div>
+<div id="adjusting-strip-labels" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Adjusting Strip
+Labels</h1>
+<p>At times, the default strip labels may not be readable OR may not be
+very clear. There are several things we can do to adjust the readability
+of these strip labels.</p>
+<div id="adjust-angle-of-labels" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Adjust angle of
+labels</h2>
+<p>When labels are on the right or left sides, the default orientation
+is vertical. This is not always the most readable. We can adjust the
+angle of the text to make the labels horizontal for easier
+readability.</p>
+<p><strong>Example:</strong> gf_theme(strip.text.y =
+element_text(angle=0))</p>
+<pre class="r"><code>default = gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_grid(Type~.) %&gt;%
+  gf_labs(title = &quot;Default Vertical side Labels&quot;)
+
+horizontal = gf_density(~Price, data = Cars93, fill = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_grid(Type~.) %&gt;%
+  gf_theme(strip.text.y = element_text(angle=0)) %&gt;%
+  gf_labs(title = &quot;Label Angle Adjusted (Horizontal)&quot;)
+
+grid.arrange(default, horizontal)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="label-both-variable-value" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Label both variable
+&amp; value</h2>
 <p>The labeller function label_both() will print out both the name of
 the variable and the value of the variable in each facet.</p>
 <p>See the <a
 href="https://ggplot2.tidyverse.org/reference/labeller.html">labeller</a>
 reference for all things you’re able to do.</p>
-<div id="label-both-variable-value" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> Label both variable
-&amp; value</h2>
+<p><strong>Label both for every variable:</strong> gf_facet_grid(Y ~ X1
++ X2 , labeller = “label_both”)</p>
+<p><strong>Label both for specified variable(s):</strong>
+gf_facet_grid(Y ~ X1 + X2, labeller = labeller(X1 = label_both, X2 =
+label_value))</p>
+<p><strong>Label both for either column or row:</strong> gf_facet_grid(Y
+~ X1 + X2, labeller = labeller(.cols = label_both, .rows =
+label_value))</p>
 <pre class="r"><code>theme_set(theme_light())
-
-# Before
 
 gf_point(mpg~wt, data = mtcars) %&gt;%
   gf_facet_grid(am~vs+cyl) %&gt;%
-  gf_labs(title = &quot;Before&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<pre class="r"><code># After 
-
-gf_point(mpg~wt, data = mtcars) %&gt;%
+  gf_labs(title = &quot;Default Labels&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(mpg~wt, data = mtcars) %&gt;%
   gf_facet_grid(am~vs+cyl, labeller = &quot;label_both&quot;)%&gt;%
-  gf_labs(title = &quot;After&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+  gf_labs(title = &quot;Label Both Var &amp; Value&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(mpg~wt, data = mtcars) %&gt;%
+  gf_facet_grid(am~vs+cyl, labeller = labeller(vs = label_both, cyl = label_value))%&gt;%
+  gf_labs(title = &quot;Label Both Var &amp; Value&quot;, subtitle = &quot;But only for certain variables&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-20-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(mpg~wt, data = mtcars) %&gt;%
+  gf_facet_grid(am~vs+cyl, labeller = labeller(.cols = label_both, .rows = label_value))%&gt;%
+  gf_labs(title = &quot;Label Both Var &amp; Value&quot;, subtitle = &quot;But only for Columns not Rows&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-20-4.png" width="672" /></p>
 </div>
-<div id="changing-labels-define-then-use-instead" class="section level2"
-number="6.2">
-<h2><span class="header-section-number">6.2</span> Changing labels
-(define &amp; then use instead)</h2>
+<div id="defining-new-labels" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Defining New
+Labels</h2>
+<p>At times, the default labels are either not very clear, or not what
+we want. We can create new labels and them pass these new labels into a
+labeller option within a facet layer.</p>
+<p><strong>Example:</strong> gf_facet_grid(~X, labeller = labeller(X =
+New_Labels))</p>
 <pre class="r"><code># Define Labels
 conservation_status &lt;- c(
   cd = &quot;Conservation Dependent&quot;,
@@ -582,32 +766,131 @@ conservation_status &lt;- c(
 
 gf_bar(vore~., data = na.omit(msleep)) %&gt;%
   gf_facet_grid(~conservation) %&gt;%
-  gf_labs(title = &quot;Before&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+  gf_labs(title = &quot;Old Labels&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <pre class="r"><code># After
 
 gf_bar(vore~., data = na.omit(msleep)) %&gt;%
   gf_facet_grid(~conservation, labeller = labeller(conservation = conservation_status))%&gt;%
-  gf_labs(title = &quot;After&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+  gf_labs(title = &quot;New Labels&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
 </div>
-<div id="wrap-labels" class="section level2" number="6.3">
-<h2><span class="header-section-number">6.3</span> Wrap Labels</h2>
+<div id="wrap-abbreviate-labels" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Wrap &amp; Abbreviate
+Labels</h2>
+<p>If there are sufficient breaks between words in your labels, and your
+labels happen to be a bit long - you can try using the label_wrap option
+to fit the labels a bit better.</p>
+<p><strong>Example:</strong> gf_facet_wrap(~X, labeller = (X =
+label_wrap_gen(10)))</p>
 <pre class="r"><code>gf_point(hwy~displ, data = mpg, color = ~manufacturer, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~manufacturer) %&gt;%
-  gf_labs(title = &quot;Facet Wrap&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+  gf_labs(title = &quot;Default Labels&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <pre class="r"><code>gf_point(hwy~displ, data = mpg, color = ~manufacturer, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~manufacturer, labeller = (manufacturer = label_wrap_gen(10))) %&gt;%
-  gf_labs(title = &quot;Facet Wrap&quot;)</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+  gf_labs(title = &quot;Wrap Labels&quot;, subtitle = &quot;See Land Rover label&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
 </div>
-<div id="adding-units-to-labels" class="section level2" number="6.4">
-<h2><span class="header-section-number">6.4</span> Adding units to
+<div id="adding-units-to-labels" class="section level2" number="5.5">
+<h2><span class="header-section-number">5.5</span> Adding units to
 labels</h2>
+<p>You may want to add units to your labels to make them more clear. One
+way of doing so is just pasting extra specification within your labeller
+option.</p>
 <pre class="r"><code>gf_point(hwy~displ, data = mpg, color = ~cyl, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~cyl, labeller = labeller(cyl = ~paste(.x, &quot;cylinders&quot;)))</code></pre>
-<p><img src="facets_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="facets_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+</div>
+<div id="reference-items-within-panels" class="section level1"
+number="6">
+<h1><span class="header-section-number">6</span> Reference Items within
+Panels</h1>
+<p>Sometimes it may be helpful to add all dots/lines/bars/etc. to each
+panel to compare each group to all groups.</p>
+<div id="adding-gray-layer" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Adding gray
+layer</h2>
+<p>To add a gray layer, start by transforming the data (making a “dummy”
+variable and coloring that gray), and then adding the additional layers
+on top.</p>
+<p><strong>Code to Add Gray Layer</strong> gf_plot(Y ~ X , data =
+transform(Dataset, PanelVar = NULL), color = “gray85”, alpha = 0.4)</p>
+<pre class="r"><code>gf_point(Petal.Length~Petal.Width, data=iris, color = ~Species) %&gt;%
+  gf_facet_wrap(~Species) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_refine(scale_color_viridis(discrete = TRUE)) %&gt;%
+  gf_labs(title = &quot;No Gray Reference Dots&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(Petal.Length~Petal.Width, data=transform(iris, Species = NULL), color = &quot;gray85&quot;, alpha = 0.4) %&gt;%
+  gf_point(Petal.Length~Petal.Width, data=iris, color = ~Species) %&gt;%
+  gf_facet_wrap(~Species) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_refine(scale_color_viridis(discrete = TRUE)) %&gt;%
+  gf_labs(title = &quot;Gray Reference Dots Added&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
+<p>We use similar code as the example above if we want to add bars,
+lines, area etc to the background. Below is an example of a histgram
+instead of a scatterplot.</p>
+<pre class="r"><code>gf_density(~price, data = diamonds, fill=~cut, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~cut) %&gt;%
+  gf_labs(title = &quot;No Gray Reference&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~price, data = transform(diamonds, cut = NULL), fill=&quot;gray85&quot;, show.legend = FALSE) %&gt;%
+gf_histogram(~price, data = diamonds, fill=~cut, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~cut) %&gt;%
+  gf_labs(title = &quot;Gray Reference Added&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+</div>
+<div id="regression-lines" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Regression Lines</h2>
+<p>In the following example, we just add regression lines for each type
+of car using the lm( ) command.</p>
+<pre class="r"><code>gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type) %&gt;%
+  gf_labs(title = &quot;Default Scatterplot&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type) %&gt;%
+  gf_lm(show.legend = FALSE)%&gt;%
+  gf_labs(title = &quot;Regression Lines Added&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type) %&gt;%
+  gf_lm(show.legend = FALSE) %&gt;%
+  gf_lm(interval = &quot;confidence&quot;, fill = ~Type, alpha = 0.3, show.legend = FALSE)%&gt;%
+  gf_labs(title = &quot;Confidence Interval for Mean Response Added&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-26-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type) %&gt;%
+  gf_lm(show.legend = FALSE) %&gt;%
+  gf_lm(interval = &quot;prediction&quot;, fill = ~Type, alpha = 0.1, show.legend = FALSE)%&gt;%
+  gf_lm(interval = &quot;confidence&quot;, fill = ~Type, alpha = 0.2, show.legend = FALSE)%&gt;%
+  gf_labs(title = &quot;Prediction &amp; Confidence Bands Added&quot;)</code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-26-4.png" width="672" /></p>
+</div>
+<div id="average-points" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Average Points</h2>
+<p>The following example is taken from the book <a
+href="https://ggplot2-book.org/facet">ggplot2</a>. In order to add the
+reference points for the means of each of the groups, you first create a
+new dataset, calculate the averages, and then rename your color/facet
+variable. When you create a plot, you’ll use the original data to create
+the facetted plot, then add a layer of just the average points from the
+newly created dataset.</p>
+<pre class="r"><code>irisLabels = iris %&gt;%
+group_by(Species) %&gt;%
+  mutate(Sepal.Width.Ave = mean(Sepal.Width), 
+         Sepal.Length.Ave = mean(Sepal.Length)) %&gt;%
+  rename(NewSpecies = Species)
+
+
+gf_point(Sepal.Length~Sepal.Width, data=iris, color = ~Species, alpha = 0.3) %&gt;%
+  gf_point(Sepal.Length.Ave~Sepal.Width.Ave, color=~NewSpecies, data = irisLabels, size = 5) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_facet_wrap(~Species) </code></pre>
+<p><img src="facets_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 </div>
 </div>
 
