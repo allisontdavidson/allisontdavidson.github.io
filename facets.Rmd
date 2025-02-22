@@ -405,7 +405,7 @@ gf_bar(vore~., data = na.omit(msleep)) %>%
 
 ```
 
-## Wrap & Abbreviate Labels
+## Wrap Labels
 
 If there are sufficient breaks between words in your labels, and your labels happen to be a bit long - you can try using the label_wrap option to fit the labels a bit better.  
 
@@ -459,7 +459,7 @@ gf_point(Petal.Length~Petal.Width, data=transform(iris, Species = NULL), color =
 We use similar code as the example above if we want to add bars, lines, area etc to the background.  Below is an example of a histgram instead of a scatterplot.  
 
 ```{r}
-gf_density(~price, data = diamonds, fill=~cut, show.legend = FALSE) %>%
+gf_histogram(~price, data = diamonds, fill=~cut, show.legend = FALSE) %>%
   gf_facet_wrap(~cut) %>%
   gf_labs(title = "No Gray Reference")
 

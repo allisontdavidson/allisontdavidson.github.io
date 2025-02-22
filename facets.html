@@ -775,9 +775,8 @@ gf_bar(vore~., data = na.omit(msleep)) %&gt;%
   gf_labs(title = &quot;New Labels&quot;)</code></pre>
 <p><img src="facets_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
 </div>
-<div id="wrap-abbreviate-labels" class="section level2" number="5.4">
-<h2><span class="header-section-number">5.4</span> Wrap &amp; Abbreviate
-Labels</h2>
+<div id="wrap-labels" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Wrap Labels</h2>
 <p>If there are sufficient breaks between words in your labels, and your
 labels happen to be a bit long - you can try using the label_wrap option
 to fit the labels a bit better.</p>
@@ -833,7 +832,7 @@ transform(Dataset, PanelVar = NULL), color = “gray85”, alpha = 0.4)</p>
 <p>We use similar code as the example above if we want to add bars,
 lines, area etc to the background. Below is an example of a histgram
 instead of a scatterplot.</p>
-<pre class="r"><code>gf_density(~price, data = diamonds, fill=~cut, show.legend = FALSE) %&gt;%
+<pre class="r"><code>gf_histogram(~price, data = diamonds, fill=~cut, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~cut) %&gt;%
   gf_labs(title = &quot;No Gray Reference&quot;)</code></pre>
 <p><img src="facets_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
