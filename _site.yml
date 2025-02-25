@@ -19,7 +19,7 @@ navbar:
         - text: "Facets"
           href: facets.html
         - text: "Legends"
-          #href: Legends.html 
+          href: Legends.html 
         - text: "Annotations"
           #href: Annotations.html  
         - text: "Position Adjustments"
