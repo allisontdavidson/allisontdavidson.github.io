@@ -28,6 +28,8 @@ This compilation utilizes many packages - but here are a few key ones to start:
 -   scales (adjusting numeric scales and wrap labels)
 -   ggforce (abbreviating labels)
 -   tidyr (wrangle data)
+-   viridis (viridis color palettes)
+-   ggrepel (avoid overlapping labels)
 
 ## Additional Resources
 

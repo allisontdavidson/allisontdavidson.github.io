@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Annotations</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Data Visualization</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Intro</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Refinements
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="TitleLabels.html">Title Labels (Big/Outer/Axis)</a>
+    </li>
+    <li>
+      <a href="CatAndNumDisplay.html">Category &amp; Numeric Display</a>
+    </li>
+    <li>
+      <a href="AxisRange.html">Axis Range, Breaks, and Ordering</a>
+    </li>
+    <li>
+      <a href="subsets.html">Subsets</a>
+    </li>
+    <li>
+      <a href="themes.html">Themes</a>
+    </li>
+    <li>
+      <a href="facets.html">Facets</a>
+    </li>
+    <li>
+      <a href="Legends.html">Legends</a>
+    </li>
+    <li>
+      <a href="Annotations.html">Annotations</a>
+    </li>
+    <li class="dropdown-header">Position Adjustments</li>
+    <li class="dropdown-header">Adding Summary Statistics</li>
+    <li class="dropdown-header">Adjusting Non-Color Aesthetics</li>
+    <li class="dropdown-header">Color</li>
+    <li class="dropdown-header">Interactvity</li>
+  </ul>
+</li>
+<li>
+  <a href="WranglingDataIntro.html">Wranging Data</a>
+</li>
+<li>
+  <a href="markdown.html">Markdown Help</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Annotations</h1>
+
+</div>
+
+
+<p>In this section we look at ways to add elements to your visualization
+that may add clarity. These can include (but are not limited to) text
+labels, reference lines, arrows, and rectangles, etc.</p>
+<div id="adding-text-to-user-defined-locations" class="section level1"
+number="1">
+<h1><span class="header-section-number">1</span> Adding Text to User
+Defined Locations</h1>
+<p>To add text to a specific location, use <a
+href="https://www.mosaic-web.org/ggformula/reference/gf_text.html">gf_text(
+)</a> and specify the coordinates where you want the text located.</p>
+<p><strong>Example:</strong> gf_text(x = 5 , y = 10 , label = “Label
+Text”)</p>
+<p>Specify the some aesthetics of your labels using the following
+options:</p>
+<p><strong>Color:</strong> gf_text( , color = “Color Name”)</p>
+<p><strong>Fontface (Plain, Bold, Italic):</strong> gf_text( , fontface
+= “plain”)</p>
+<p><strong>Family (Sans, Serif, Mono):</strong> gf_text( , family =
+“sans”)</p>
+<p><strong>Size:</strong> gf_text( , size = 3)</p>
+<p><strong>Angle:</strong> gf_text( , angle = 30)</p>
+<pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5) %&gt;%
+gf_dist(&quot;chisq&quot;, df=10, col=&quot;orange&quot;) %&gt;%
+gf_dist(&quot;chisq&quot;, df=20, col=&quot;darkcyan&quot;, linetype = &quot;dashed&quot;) %&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_text(x = 7, y = 0.12, label = &quot;df = 5&quot;, hjust = &quot;left&quot;) %&gt;%
+  gf_text(x = 15, y = 0.08, label = &quot;df = 10&quot;, color = &quot;orange&quot;, hjust = &quot;left&quot;) %&gt;%
+  gf_text(x = 26, y = 0.05, label = &quot;df = 20&quot;, color = &quot;darkcyan&quot;, hjust = &quot;left&quot;) %&gt;%
+  gf_labs(title = &quot;Adding Labels &amp; Changing Color&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5) %&gt;%
+gf_dist(&quot;chisq&quot;, df=10, col=&quot;orange&quot;) %&gt;%
+gf_dist(&quot;chisq&quot;, df=20, col=&quot;darkcyan&quot;, linetype = &quot;dashed&quot;) %&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_text(x = 7, y = 0.12, label = &quot;plain&quot;, hjust = &quot;left&quot;, fontface = &quot;plain&quot;) %&gt;%
+  gf_text(x = 15, y = 0.08, label = &quot;bold&quot;, color = &quot;orange&quot;, hjust = &quot;left&quot;, fontface = &quot;bold&quot;) %&gt;%
+  gf_text(x = 26, y = 0.05, label = &quot;italic&quot;, color = &quot;darkcyan&quot;, hjust = &quot;left&quot;, fontface = &quot;italic&quot;) %&gt;%
+  gf_labs(title = &quot;Changing Fontface of Labels&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5) %&gt;%
+gf_dist(&quot;chisq&quot;, df=10, col=&quot;orange&quot;) %&gt;%
+gf_dist(&quot;chisq&quot;, df=20, col=&quot;darkcyan&quot;, linetype = &quot;dashed&quot;) %&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_text(x = 7, y = 0.12, label = &quot;sans&quot;, hjust = &quot;left&quot;, family = &quot;sans&quot;) %&gt;%
+  gf_text(x = 15, y = 0.08, label = &quot;serif&quot;, color = &quot;orange&quot;, hjust = &quot;left&quot;, family = &quot;serif&quot;) %&gt;%
+  gf_text(x = 26, y = 0.05, label = &quot;mono&quot;, color = &quot;darkcyan&quot;, hjust = &quot;left&quot;, family = &quot;mono&quot;) %&gt;%
+  gf_labs(title = &quot;Changing Font of Labels&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5) %&gt;%
+gf_dist(&quot;chisq&quot;, df=10, col=&quot;orange&quot;) %&gt;%
+gf_dist(&quot;chisq&quot;, df=20, col=&quot;darkcyan&quot;, linetype = &quot;dashed&quot;) %&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_text(x = 7, y = 0.12, label = &quot;size = 3&quot;, hjust = &quot;left&quot;, size = 4) %&gt;%
+  gf_text(x = 15, y = 0.08, label = &quot;size = 5&quot;, color = &quot;orange&quot;, hjust = &quot;left&quot;, size = 5) %&gt;%
+  gf_text(x = 26, y = 0.05, label = &quot;size = 7&quot;, color = &quot;darkcyan&quot;, hjust = &quot;left&quot;, size = 7) %&gt;%
+  gf_labs(title = &quot;Changing Size of Labels&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5)%&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_text(x = 7, y = 0.12, label = &quot;Angle = 30&quot;, angle = 30, hjust = &quot;left&quot;) %&gt;%
+  gf_labs(title = &quot;Adjust angle of labels&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>The default location for the label will match the center of the label
+to the coordinates specified. Sometimes this isn’t what we want. There
+are a few ways to change how the coordinates are used to locate a
+label.</p>
+<p><strong>hjust = left</strong> the coordinates mark the left of the
+label</p>
+<p><strong>hjust = right</strong> the coordinates mark the right of the
+label</p>
+<p><strong>hjust = inward</strong> the label will be adjusted to be
+within the graph space (e.g. if it would go off the left, it will shift
+right, if it would go off to the right, it would shift left)</p>
+<pre class="r"><code>default = gf_dist(&quot;chisq&quot;, df=5)%&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_text(x = 7, y = 0.12, label = &quot;Default (Center)&quot;)
+
+left = gf_dist(&quot;chisq&quot;, df=5)%&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_text(x = 7, y = 0.12, label = &quot;hjust = left&quot;, hjust = &quot;left&quot;)
+
+right = gf_dist(&quot;chisq&quot;, df=5)%&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_text(x = 7, y = 0.12, label = &quot;hjust = right&quot;, hjust = &quot;right&quot;)
+
+inward = gf_dist(&quot;chisq&quot;, df=5)%&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_text(x = 7, y = 0.12, label = &quot;hjust = inward&quot;, hjust = &quot;inward&quot;)
+
+grid.arrange(default, left, right, inward)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="adding-text-to-locations-based-on-data" class="section level1"
+number="2">
+<h1><span class="header-section-number">2</span> Adding Text to
+Locations Based on Data</h1>
+<p>To add text to a specific location based on data, you use the same
+gf_text( ) command, but instead of specifying x and y directly, we use
+the ggformula Y ~ X to either supply variable values.</p>
+<div id="both-x-y-defined-by-variables-in-dataset"
+class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Both X &amp; Y
+Defined by Variables in Dataset</h2>
+<p>In the following example, both X and Y locations of the labels we’ll
+use are defined by variables in the dataset. The general formul we’ll
+use is defined by:</p>
+<p><strong>Example:</strong> gf_text( Y ~ X , data = Dataset , label = ~
+Var )</p>
+<p>Note, you can use hjust or vjust to adjust horizontally and/or
+vertically. Additionally, you can specify an amount to “nudge” the label
+in a certain direction.</p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Labels without Nudge&quot;) %&gt;%
+  gf_text(HOFScore~GamesStarted, data = subset(Quarterbacks, GamesStarted &gt; 250), label = ~Player, hjust = &quot;right&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Labels with nudge_x = -3&quot;) %&gt;%
+  gf_text(HOFScore~GamesStarted, data = subset(Quarterbacks, GamesStarted &gt; 250), label = ~Player, hjust = &quot;right&quot;, nudge_x = -3)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+</div>
+<div id="either-x-or-y-is-defined-by-variables-in-dataset"
+class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Either X or Y is
+Defined by Variables in Dataset</h2>
+<p>Suppose we only have one variable in our dataset to specify a
+location. In that case, we can specify the additional location elements
+needed. For example, in the dotplot below we can specify salary, but we
+need a y-axis height specified. This isn’t in our dataset, so we can
+provide R with a specified height of 0.1.</p>
+<p><strong>Example:</strong> gf_text( 5 ~ X , data = Dataset , label =
+~NameVar )</p>
+<pre class="r"><code>gf_dotplot(~Salary, data = BaseballSalaries2019, binwidth = 0.3) %&gt;%
+  gf_text(0.1~Salary, data = subset(BaseballSalaries2019, Salary &gt;= 40), label = ~Name, hjust = &quot;inward&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Alternatively, in the example below we have the y-variable (birhts)
+but we only want to label he end of the lines. In this case we can
+specify where exactly the x-location is by using
+as.Date(“1978-12-31”).</p>
+<p>Note the text labels are borrowing the same color aestheic from the
+line graph layer previously. Additionally, it may help to adjust the
+graph so the labels can be seen. We can do this by either expanding the
+visual range or adjusting the x-axis range.</p>
+<pre class="r"><code>gf_line(births~date, data = Births78, col = ~wday) %&gt;%
+  gf_text(births~as.Date(&quot;1978-12-31&quot;), data = subset(Births78, date &gt; as.Date(&quot;1978-12-24&quot;)), label = ~wday, hjust = &quot;left&quot;) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_refine(scale_x_date(expand = expansion(add = 25))) %&gt;%
+  gf_labs(title = &quot;Add Labels &amp; Expand Visual Range&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>gf_line(births~date, data = Births78, col = ~wday) %&gt;%
+  gf_text(births~as.Date(&quot;1978-12-31&quot;), data = subset(Births78, date &gt; as.Date(&quot;1978-12-24&quot;)), label = ~wday, hjust = &quot;left&quot;) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_lims(x = c(as.Date(&quot;1978-01-01&quot;), as.Date(&quot;1979-01-03&quot;))) %&gt;%
+  gf_labs(title = &quot;Add labels &amp; Ajust X-Axis Range&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+</div>
+<div id="locations-calculated-from-data" class="section level2"
+number="2.3">
+<h2><span class="header-section-number">2.3</span> Locations Calculated
+From Data</h2>
+<p>In this last example, we’ll how how we can calculate a location based
+on data, and then use those calculated values to define the location of
+the labels.</p>
+<div id="have-r-calculate-location-using-summary-function"
+class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Have R Calculate
+Location using Summary Function</h3>
+<p>In the following example, we’ll use the stat = “summary” option to
+have R auto-calculate the average of different groups.</p>
+<p>In the following example we’ll see a few things.</p>
+<ol style="list-style-type: decimal">
+<li><p>If we do not specify x and y directly, R will “borrow” those
+locations from previous layers of our visualization. In this case, it
+borrows the location from the jitter plot first layer.</p></li>
+<li><p>We specify only labeling the right-end of the reference lines we
+added using the subset function.</p></li>
+<li><p>We specify the location using stat = “summary” which will by
+default calculate the mean for that group.</p></li>
+<li><p>Instead of using hjust = “left”, I used hjust = -0.1 to slightly
+nudge the labels away from the reference lines.</p></li>
+</ol>
+<pre class="r"><code>gf_jitter(WeightGain~Amount, data=rats.tidy, color=~Source, alpha = 0.4, shape = ~Source, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.2)) %&gt;%
+  gf_line(WeightGain~Amount, color = ~Source, data=rats.tidy, group=~Source, stat=&quot;summary&quot;, linetype = ~Source, size = 2) %&gt;%
+  gf_labs(y = &quot;Weight Gain&quot;, x = &quot;Amount of Protein&quot;, title = &quot;Weight Gain in Rats&quot;) %&gt;%
+  gf_text(data = subset(rats.tidy, Amount == &quot;High&quot;), label = ~Source, stat = &quot;summary&quot;, hjust = -0.1) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;)</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()`
+## No summary function supplied, defaulting to `mean_se()`</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="create-new-dataset-of-values" class="section level3"
+number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Create New Dataset
+of Values</h3>
+<p>In the following example, a new dataset is created where the average
+sepal length &amp; width are calculated. Those values are stored in a
+separate dataset than the original data (although they don’t have to
+be!) and used as an additional layer on the plot below.</p>
+<p>Note the gf_text( ) command will display a text label while the
+gf_label( ) command will display a text with an opaque rectagle around
+it. This is helpful if you have overlapping items and you want to
+highlight the label specifically.</p>
+<pre class="r"><code>data(iris)
+
+irisLabels = iris %&gt;%
+group_by(Species) %&gt;%
+  mutate(Sepal.Width.Ave = mean(Sepal.Width), 
+         Sepal.Length.Ave = mean(Sepal.Length))
+
+gf_point(Sepal.Length~Sepal.Width, data=iris, color = ~Species) %&gt;%
+  gf_text(Sepal.Length.Ave~Sepal.Width.Ave, label=~Species, data = irisLabels) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_labs(title = &quot;gf_text( ) (hard to read)&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(Sepal.Length~Sepal.Width, data=iris, color = ~Species) %&gt;%
+  gf_label(Sepal.Length.Ave~Sepal.Width.Ave, label=~Species, data = irisLabels) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_labs(title = &quot;gf_label( ) (easier to read)&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+</div>
+<div id="use-calculated-data-values" class="section level3"
+number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> Use Calculated Data
+Values</h3>
+<p>In the dataset below, there are columns of calculated percentages of
+patients as well as cumulative percentage of patients. To specify the
+exact location of the numeric labels, I devised a mathematical formula
+based on the cumulative percentage, and percentage, and used the number
+of patients in each category to label each portion of each bar.</p>
+<p>Alternatively, one can use the position adjustment option with the
+gf_text command:</p>
+<p><strong>Example:</strong> gf_text( , position = position_stack(vjust
+= 0.5))</p>
+<pre class="r"><code>gf_col(Treatment~PercentPatients, data=clinical, fill=~Response) %&gt;%
+  gf_refine(scale_fill_brewer(palette = &quot;RdYlGn&quot;, direction = -1)) %&gt;%
+  gf_text(Treatment~(100-CumPercent+PercentPatients/2), label=~round(PercentPatients, digits = 0)) %&gt;%
+  gf_labs(x = &quot;Cumulative Percentage of Patients&quot;, title = &quot;Use Formula to Specify Location of Labels&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>gf_col(Treatment~PercentPatients, data=clinical, fill=~Response) %&gt;%
+  gf_refine(scale_fill_brewer(palette = &quot;RdYlGn&quot;, direction = -1)) %&gt;%
+  gf_text(Treatment~PercentPatients, label=~round(PercentPatients, digits = 0), position = position_stack(vjust = 0.5)) %&gt;%
+  gf_labs(x = &quot;Cumulative Percentage of Patients&quot;, title = &quot;Adjust Position using position_stack &amp; vjust&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="overlapping-text-labels" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Overlapping Text
+Labels</h1>
+<p>Within the gf_text command, we do have the option to check for
+overlapping points. We are a bit limitted in how those labels are then
+displayed if we adjust for overlapping points.</p>
+<p><strong>Example:</strong> gf_text( , check_overlap = TRUE)</p>
+<pre class="r"><code>gf_dotplot(~Salary, data = BaseballSalaries2019, binwidth = 0.3) %&gt;%
+  gf_text(0.1~Salary, data = subset(BaseballSalaries2019, Salary &gt;= 28), label = ~Name) %&gt;%
+  gf_labs(title = &quot;Plot All Names Earning 28+ Million&quot;, subtitle = &quot;Note many overlapping names&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>gf_dotplot(~Salary, data = BaseballSalaries2019, binwidth = 0.3) %&gt;%
+  gf_text(0.1~Salary, data = subset(BaseballSalaries2019, Salary &gt;= 28), label = ~Name, check_overlap = TRUE) %&gt;%
+  gf_labs(title = &quot;Use option check_overlap = TRUE&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<div id="ggrepel" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> GGrepel</h2>
+<p>Allowing for a bit more flexibility in overlapping labels is the
+package <a href="https://ggrepel.slowkow.com/">ggrepel</a>. Further - <a
+href="https://ggrepel.slowkow.com/articles/examples.html">this
+article</a> covers a wide array of things you can do with ggrepel.</p>
+<p>Unlike using gf_text to add a layer, geom_text_repel will be “added”
+on as the last layer to your plot (using + instead of %&gt;%).</p>
+<p><strong>Example:</strong> gf_plot( Y ~ X ) + geom_text_repel( )</p>
+<p>The options within geom_text_repel will mirror those of ggplot2.
+Generally speaking, instead of the Y~X formula, we’ll specify these
+variables as well as the labels in an aes( ) option.</p>
+<p><strong>Example:</strong> + geom_text_repel( data = DatasetInfo ,
+aes(y = YVar , x = XVar, label = LabelVar))</p>
+<p>Further, you can specify the size of the labels, the shortest segment
+that will be drawn (e.g. only draw segments if they’re longer than 0.5),
+and box.padding (a buffer between labels). An example below implements
+these options.</p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Label Points Without GGrepel&quot;) %&gt;%
+  gf_text(HOFScore~GamesStarted, data = subset(Quarterbacks, GamesStarted &gt; 180 | HOFScore &gt; 100), label = ~Player, hjust = &quot;right&quot;, nudge_x = -3, size = 3)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Label Points WITH GGrepel&quot;) +
+  geom_text_repel(data = subset(Quarterbacks, GamesStarted &gt; 185 | HOFScore &gt; 100), aes(y = HOFScore, x = GamesStarted, label = Player), min.segment.length = 0.5, box.padding = 0.5, size = 3)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+<p>Below is an example where the x value is from the dataset, but the y
+location is a numeric value (e.g. 0). Note, ggrepel may change as you
+rerun your code (as it may use a random generator to determine spacing).
+In this case, you can specify a seed to keep the randomization and
+change of the label location to a minimum.</p>
+<p><strong>Example:</strong> set.seed(123)</p>
+<pre class="r"><code>set.seed(123)
+
+gf_dotplot(~Salary, data = BaseballSalaries2019, binwidth = 0.3) %&gt;%
+  gf_labs(title = &quot;GGrepel in Dotplot&quot;) +
+  geom_text_repel(data = subset(BaseballSalaries2019, Salary &gt;= 30), aes(y = 0, x = Salary, label = Name), max.overlaps = Inf, size = 3, min.segment.length = 0, nudge_y = 0.1, box.padding = 0.7)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+</div>
+<div id="plotting-labels-as-datapoints" class="section level1"
+number="4">
+<h1><span class="header-section-number">4</span> Plotting Labels as
+Data/Points</h1>
+<p>Alternatively, you don’t need to use the gf_text( ) command as an
+added layer on top of a graph, instead you can merely plot the actual
+labels as “points” instead.</p>
+<pre class="r"><code>gf_text(PercentFat~Age, data=fat, label = ~Sex, color = ~Sex) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_labs(y = &quot;Percent Body Fat&quot;, title = &quot;Use Text as Points&quot;, subtitle = &quot;Color By Gender&quot;) </code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+</div>
+<div id="adding-reference-points" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Adding Reference
+Points</h1>
+<p>Specific reference points can be added using a gf_point( ) layer on
+top of your plot. You can adjust the size and color to make those
+specific points stand out.</p>
+<p>In the example below, the capital is a much larger dot colored
+red.</p>
+<pre class="r"><code>world = map_data(&quot;world&quot;)
+japan = map_data(&quot;world&quot;, &quot;japan&quot;)
+
+gf_polygon(lat~long, data=japan, group = ~group, fill=NA, color = &quot;black&quot;, size = 0.1) %&gt;%
+  gf_point(lat~long, data=subset(world.cities, country.etc == &quot;Japan&quot;), alpha=0.2, size=~pop/1000000, group = NA) %&gt;%
+  gf_point(lat~long, data=subset(world.cities, country.etc == &quot;Japan&quot; &amp; capital == 1), size=~pop/1000000, color = &quot;red&quot;, alpha = 0.6, group = NA) %&gt;%
+  gf_theme(theme_map()) %&gt;%
+  gf_refine(coord_equal()) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>Alternatively, one can calculate values and use those the plot
+reference points (e.g. the “middle” of a group).</p>
+<pre class="r"><code>irisLabels = iris %&gt;%
+group_by(Species) %&gt;%
+  mutate(Sepal.Width.Ave = mean(Sepal.Width), 
+         Sepal.Length.Ave = mean(Sepal.Length)) %&gt;%
+  rename(NewSpecies = Species)
+
+
+gf_point(Sepal.Length~Sepal.Width, data=iris, color = ~Species, alpha = 0.3) %&gt;%
+  gf_point(Sepal.Length.Ave~Sepal.Width.Ave, color=~NewSpecies, data = irisLabels, size = 5) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+<div id="adding-reference-lines" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Adding Reference
+Lines</h1>
+<p>To add reference lines, we’ll start with simple vertical lines,
+horizontal lines, and lines with defined slope &amp; intercept.</p>
+<p>Lines can have a variety of adjustments (e.g. color, linetype, width,
+opacity). Many of those are included in the <a
+href="https://www.mosaic-web.org/ggformula/reference/gf_lines.html">ggformula</a>
+reference guide.</p>
+<p>For linetype specifically, the following shows the names of several
+differnt linetypes that can be specified.</p>
+<pre class="r"><code>show_line_types()</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<div id="vertical-lines" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Vertical Lines</h2>
+<p>To add vertical reference lines to your plot, use the gf_vline( )
+command.</p>
+<p><strong>Vertical Lines:</strong> gf_vline( xintercept = 100)</p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Adding Vertical Line&quot;) %&gt;%
+  gf_vline(xintercept = mean(~GamesStarted, data = na.omit(Quarterbacks))) %&gt;%
+  gf_text(200~50, label = &quot;Below\nAverage&quot;, color = &quot;gray70&quot;) %&gt;%
+  gf_text(200~150, label = &quot;Above\nAverage&quot;, color = &quot;gray70&quot;) </code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+</div>
+<div id="horizontal-lines" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Horizontal Lines</h2>
+<p>To add horizontal reference lines to your plot, use the gf_hline( )
+command.</p>
+<p><strong>Horizontal Lines:</strong> gf_hline( yintercept = 4)</p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Adding Horizontal Line&quot;) %&gt;%
+  gf_hline(yintercept = 100) %&gt;%
+  gf_text(200~100, label = &quot;HOF Worthy&quot;, color = &quot;gray70&quot;) %&gt;%
+  gf_text(50~300, label = &quot;Not in HOF&quot;, color = &quot;gray70&quot;, hjust = &quot;inward&quot;) </code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+</div>
+<div id="sloped-lines" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Sloped Lines</h2>
+<p>To add sloped reference lines to your plot, use the gf_abline( )
+command.</p>
+<p><strong>Sloped Line:</strong> gf_abline( slope = 1, intercept =
+0)</p>
+<pre class="r"><code>gf_point(Husband~Wife, data=MarriageAges, alpha = 0.5) %&gt;%
+  gf_labs(x = &quot;Wife Age at Marriage&quot;, y = &quot;Husband Age at Marriage&quot; , title = &quot;Adding abline&quot;) %&gt;%
+  gf_abline(slope = 1 , linetype = &quot;dashed&quot; , color = &quot;gray50&quot;) %&gt;%
+  gf_text(70~20, hjust = 0, label = &quot;Husband Older&quot; , size = 6 , color = &quot;gray80&quot;) %&gt;%
+  gf_text(30~55, hjust = 0, label = &quot;Wife Older&quot;, size = 6 , color = &quot;gray80&quot; )</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+</div>
+<div id="qq-plots" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> QQ plots</h2>
+<p>Specifically for QQ plots we can utilize the function <a
+href="https://www.mosaic-web.org/ggformula/reference/gf_qq.html">gf_qqline</a>
+to add an appropriate reference line to assess normality visually.</p>
+<p><strong>Example:</strong> gf_qq(~Var , data = Dataset ) %&gt;%
+gf_qqline()</p>
+<pre class="r"><code>gf_qq(~Salary, data = BaseballSalaries2019) %&gt;%
+  gf_qqline() %&gt;%
+  gf_labs(title = &quot;QQ plot with reference line added&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+<div id="regression" class="section level2" number="6.5">
+<h2><span class="header-section-number">6.5</span> Regression</h2>
+<p>There are a few ways to add regression lines and intervals to your
+plot.</p>
+<ol style="list-style-type: decimal">
+<li>Built in <a
+href="https://www.mosaic-web.org/ggformula/reference/gf_smooth.html">gf_lm</a>
+function (simple linear regression)</li>
+<li>Manually specifying a function using <a
+href="https://www.mosaic-web.org/ggformula/reference/gf_function.html">gf_fun</a></li>
+<li>Adding smooth curves (e.g. Loess) <a
+href="https://www.mosaic-web.org/ggformula/reference/gf_smooth.html">gf_smooth</a></li>
+</ol>
+<div id="simple-linear-regression" class="section level3"
+number="6.5.1">
+<h3><span class="header-section-number">6.5.1</span> Simple Linear
+Regression</h3>
+<p>The examples below use the gf_lm() defaults which utilize simple
+linear regression models. You can still alter the color and linetype of
+the trendline and also add confidence intervals for the mean response
+and prediction bands.</p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_lm()</code></pre>
+<pre><code>## Warning: Removed 2 rows containing non-finite outside the scale range
+## (`stat_lm()`).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<pre><code>## Warning: Using the `size` aesthetic with geom_line was deprecated in ggplot2 3.4.0.
+## ℹ Please use the `linewidth` aesthetic instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_lm(color = &quot;black&quot;, linetype = &quot;dashed&quot;)</code></pre>
+<pre><code>## Warning: Removed 2 rows containing non-finite outside the scale range
+## (`stat_lm()`).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks)  %&gt;%
+  gf_lm(interval = &quot;confidence&quot;, alpha = 0.3, color = &quot;black&quot;, linetype = &quot;dashed&quot;)</code></pre>
+<pre><code>## Warning: Removed 2 rows containing non-finite outside the scale range (`stat_lm()`).
+## Removed 2 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<pre><code>## Warning: Using the `size` aesthetic with geom_ribbon was deprecated in ggplot2 3.4.0.
+## ℹ Please use the `linewidth` aesthetic instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-29-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks)  %&gt;%
+  gf_lm(interval = &quot;prediction&quot;, alpha = 0.3, fill = &quot;blue&quot;, color = &quot;black&quot;, linetype = &quot;dashed&quot;)</code></pre>
+<pre><code>## Warning: Removed 2 rows containing non-finite outside the scale range
+## (`stat_lm()`).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-29-4.png" width="672" /></p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks)  %&gt;%
+  gf_lm(interval = &quot;prediction&quot;, alpha = 0.1, fill = &quot;blue&quot;, color = &quot;black&quot;, linetype = &quot;dashed&quot;)%&gt;%
+  gf_lm(interval = &quot;confidence&quot;, alpha = 0.3, color = &quot;black&quot;, linetype = &quot;dashed&quot;)</code></pre>
+<pre><code>## Warning: Removed 2 rows containing non-finite outside the scale range
+## (`stat_lm()`).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing non-finite outside the scale range
+## (`stat_lm()`).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-29-5.png" width="672" /></p>
+<p>The following example manually specifies the function to be
+plotted.</p>
+<pre class="r"><code>simple.model = lm(HOFScore~GamesStarted, data = Quarterbacks)
+summary(simple.model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = HOFScore ~ GamesStarted, data = Quarterbacks)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -50.783  -9.312  -0.436   5.953 129.951 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  -19.75059    2.36388  -8.355 4.76e-15 ***
+## GamesStarted   0.55698    0.02128  26.169  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 20 on 247 degrees of freedom
+##   (2 observations deleted due to missingness)
+## Multiple R-squared:  0.7349, Adjusted R-squared:  0.7339 
+## F-statistic: 684.8 on 1 and 247 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_fun(-19.75 + 0.557 * GamesStarted~ GamesStarted) %&gt;%
+  gf_labs(title = &quot;Manually Adding Function to Graph&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+</div>
+<div id="plotting-transformations" class="section level3"
+number="6.5.2">
+<h3><span class="header-section-number">6.5.2</span> Plotting
+Transformations</h3>
+<p>To plot other models, one option is to create a model, create a
+function, and plot the function. The following examples explore
+differnet log models and polynomial models.</p>
+<pre class="r"><code>log.model = lm(log(HOFScore)~GamesStarted, data = Quarterbacks)
+log.F = makeFun(log.model)
+
+poly2.model = lm(HOFScore~I(GamesStarted^2)+GamesStarted, data = Quarterbacks)
+poly2.F = makeFun(poly2.model)
+
+poly3.model = lm(HOFScore~poly(GamesStarted, 3), data = na.omit(Quarterbacks))
+poly3.F = makeFun(poly3.model)
+
+gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_fun(log.F(GamesStarted)~GamesStarted, linetype = ~&quot;Log Model&quot;) %&gt;%
+  gf_fun(poly2.F(GamesStarted)~GamesStarted, linetype = ~&quot;Polynomial 2 Model&quot;) %&gt;%
+  gf_theme(legend.position = &quot;top&quot;, legend.title = element_blank()) %&gt;%
+  gf_refine(coord_cartesian(ylim = c(0,300)))</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_fun(poly3.F(GamesStarted)~GamesStarted, linetype = ~&quot;Polynomial 3 Model&quot;)  %&gt;%
+  gf_fun(poly2.F(GamesStarted)~GamesStarted, linetype = ~&quot;Polynomial 2 Model&quot;) %&gt;%
+  gf_theme(legend.position = &quot;top&quot;, legend.title = element_blank()) %&gt;%
+  gf_refine(coord_cartesian(ylim = c(0,300)))</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-31-2.png" width="672" /></p>
+</div>
+<div id="multiple-regression" class="section level3" number="6.5.3">
+<h3><span class="header-section-number">6.5.3</span> Multiple
+Regression</h3>
+<p>To plot reference lines that account for multiple explanatory
+variables, it might be helpful to add several lines to your plot. The
+example below displays a few options for a multiple regression
+model.</p>
+<pre class="r"><code>mult.model = lm(HOFScore~GamesStarted * ChampionshipWins, data = Quarterbacks)
+mult.F = makeFun(mult.model)
+
+gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_fun(mult.F(GamesStarted, ChampionshipWins =0)~GamesStarted, col = ~&quot;Wins = 0&quot;) %&gt;%
+  gf_fun(mult.F(GamesStarted, ChampionshipWins =2)~GamesStarted, col = ~&quot;Wins = 2&quot;) %&gt;%
+  gf_fun(mult.F(GamesStarted, ChampionshipWins =4)~GamesStarted, col = ~&quot;Wins = 4&quot;) %&gt;%
+  gf_labs(title = &quot;Adding Multiple Regression Reference Lines&quot;, color = &quot;Chaptionship\nWins&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+</div>
+<div id="smooth-curves" class="section level3" number="6.5.4">
+<h3><span class="header-section-number">6.5.4</span> Smooth Curves</h3>
+<p>Instead of adding a straight line using gf_lm one can apply a smooth
+curve using <a
+href="https://www.mosaic-web.org/ggformula/reference/gf_smooth.html">gf_smooth</a>.
+Additionally there are options within this command to alter what is
+plotted.</p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_smooth()</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39;</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_smooth(se= TRUE)</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39;</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-33-2.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="other-shapes-rectangles-arrows-fill" class="section level1"
+number="7">
+<h1><span class="header-section-number">7</span> Other Shapes
+(Rectangles, Arrows, Fill)</h1>
+<p>Sometimes you’ll want to use other ways to highlight portions of your
+graphs. This section goes over some of these other ideas for guiding the
+reader to certain aspects of your graph.</p>
+<div id="rectangles" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Rectangles</h2>
+<p>To add rectangles to your plot, we can use the <a
+href="https://www.mosaic-web.org/ggformula/reference/gf_rect.html">gf_rect</a>
+command. You’ll want to specify the “corners” of the rectangle using the
+following formula approach:</p>
+<p><strong>Example (outline only):</strong> gf_rect(ymin+ymax~xmin+xmax,
+color = “ColorName”, fill = NA)</p>
+<p><strong>Example (fill):</strong> gf_rect(ymin+ymax~xmin+xmax, fill =
+“FillColor”, data = data.frame(), inherit = FALSE, alpha= 0.2)</p>
+<p>Note the specification of data = data.frame() here as the variables
+were not from the dataset, and inherit = FALSE keeps the function from
+trying to use variables/data from the previous layers.</p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Adding Red Rectangle&quot;, subtitle = &quot;At the time of creating this, alpha seems to only work when data &amp; inherit specified&quot;) %&gt;%
+  gf_rect(125+300~250+325, fill = &quot;red&quot;, alpha = 0.2)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Red Rectangle With Proper Alpha Transparency&quot;) %&gt;%
+  gf_rect(125+300~250+325, fill = &quot;red&quot;, alpha = 0.2, data = data.frame(), inherit = FALSE)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-34-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Red Rectangle Outline Only&quot;) %&gt;%
+  gf_rect(125+300~250+325, color = &quot;red&quot;, alpha = 0.2, data = data.frame(), inherit = FALSE, fill = NA)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-34-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
+  gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Red Rectangle Dotted Outline&quot;) %&gt;%
+  gf_rect(125+300~250+325, color = &quot;red&quot;, fill = NA, linetype = &quot;dashed&quot;, size = 2)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-34-4.png" width="672" /></p>
+<p>The following example is translated from the <a
+href="https://ggplot2-book.org/annotations">ggplot2</a> book. <a
+href="https://www.databrewer.co/R/gallery/ggplot2-segment-US-president-terms">This
+post</a> goes through a similar example using a different type of graph,
+but similar idea.</p>
+<pre class="r"><code>#Adjust start date for graph
+presidential &lt;- subset(presidential, start &gt; economics$date[1])
+
+gf_line(unemploy~date, data = economics) %&gt;%
+  gf_rect(-Inf+Inf~start+end, data = presidential, fill=~party, alpha = 0.2, inherit = FALSE) %&gt;%
+  gf_vline(xintercept = ~as.numeric(start), data = presidential, color = ~party, show.legend = FALSE) %&gt;%
+  gf_text(2500~start, data = presidential, label = ~name, size = 3, hjust = &quot;left&quot;) %&gt;%
+  gf_refine(scale_fill_manual(values = c(&quot;blue&quot;, &quot;red&quot;)),
+            scale_color_manual(values = c(&quot;blue&quot;, &quot;red&quot;)))</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+</div>
+<div id="arrows-line-segments" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Arrows &amp; Line
+Segments</h2>
+<p>To add line segments and/or arrows to your graph, you can use the <a
+href="https://www.mosaic-web.org/ggformula/reference/gf_segment.html">gf_segment</a>
+or <a
+href="https://www.mosaic-web.org/ggformula/reference/gf_curve.html">gf_curve</a>
+commands. Use segment for straight lines and curve for curved lines.</p>
+<p><strong>Example:</strong> gf_curve( ymin + ymax ~ xmin + xmax ,
+curvature = 0.3, arrow = arrow() )</p>
+<p>Note for curvature: negative values will produce “left hand curves”
+while positive values produce “right hand curves”. Zero will produce a
+straight line.</p>
+<pre class="r"><code>gf_linerange(fct_reorder(Name, Salary)~0+Salary, data=LAD, size = 2, color = ~(CumSalary &lt;=31 | Salary &gt; 30)) %&gt;%
+  gf_refine(guides(color = &quot;none&quot;), scale_color_manual(values = c(&quot;gray80&quot;, &quot;darkcyan&quot;))) %&gt;%
+  gf_labs(y=&quot;Player&quot;, x = &quot;Salary (in Millions)&quot;, title = &quot;Adding Arrorws to Graph&quot;) %&gt;%
+  gf_rect(0.5+19.5~-0.3+5.1, fill = NA, size = 1) %&gt;%
+  gf_curve(27+7~25+5.5, curvature = -0.3, color = &quot;darkcyan&quot;, arrow = arrow(), size = 1) %&gt;%
+  gf_text(7~20, label = &quot;Kenshaw makes as \nmuch as 19 other \nplayers combined&quot;, color = &quot;black&quot;, size = 4)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+</div>
+<div id="fill-objects" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Fill Objects</h2>
+<p>The following example shows how one might use a fill option in a map
+to help highlight certain counties.</p>
+<pre class="r"><code>gf_polygon(lat~long, data = penn, group = ~group, fill = ~(subregion %in% c(&quot;montgomery&quot;, &quot;deleware&quot;, &quot;philadelphia&quot;, &quot;bradford&quot;, &quot;allegheny&quot;)), color = &quot;black&quot;, size = 0.05, show.legend = FALSE) %&gt;%
+  gf_refine(scale_fill_manual(values = c(&quot;white&quot;, &quot;gray70&quot;))) %&gt;%
+  gf_theme(theme_map()) +
+  geom_label_repel(data = subset(centroid.test, subregion %in% c(&quot;montgomery&quot;, &quot;deleware&quot;, &quot;philadelphia&quot;, &quot;bradford&quot;, &quot;allegheny&quot;)), aes(x = mean.long, y = mean.lat, label = subregion), box.padding = 0.5, show.legend = FALSE, fill = &quot;white&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+</div>
+</div>
+<div id="annotating-across-facets" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Annotating Across
+Facets</h1>
+<p>The following examples originally were referenced in the Facets page,
+but could be discussed here. It may be of interest to add reference
+items across multiple facets.</p>
+<div id="adding-gray-layer" class="section level2" number="8.1">
+<h2><span class="header-section-number">8.1</span> Adding gray
+layer</h2>
+<p>To add a gray layer, start by transforming the data (making a “dummy”
+variable and coloring that gray), and then adding the additional layers
+on top.</p>
+<p><strong>Code to Add Gray Layer</strong> gf_plot(Y ~ X , data =
+transform(Dataset, PanelVar = NULL), color = “gray85”, alpha = 0.4)</p>
+<pre class="r"><code>gf_point(Petal.Length~Petal.Width, data=iris, color = ~Species) %&gt;%
+  gf_facet_wrap(~Species) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_refine(scale_color_viridis(discrete = TRUE)) %&gt;%
+  gf_labs(title = &quot;No Gray Reference Dots&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(Petal.Length~Petal.Width, data=transform(iris, Species = NULL), color = &quot;gray85&quot;, alpha = 0.4) %&gt;%
+  gf_point(Petal.Length~Petal.Width, data=iris, color = ~Species) %&gt;%
+  gf_facet_wrap(~Species) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_refine(scale_color_viridis(discrete = TRUE)) %&gt;%
+  gf_labs(title = &quot;Gray Reference Dots Added&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-40-2.png" width="672" /></p>
+<p>We use similar code as the example above if we want to add bars,
+lines, area etc to the background. Below is an example of a histgram
+instead of a scatterplot.</p>
+<pre class="r"><code>gf_histogram(~price, data = diamonds, fill=~cut, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~cut) %&gt;%
+  gf_labs(title = &quot;No Gray Reference&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~price, data = transform(diamonds, cut = NULL), fill=&quot;gray85&quot;, show.legend = FALSE) %&gt;%
+gf_histogram(~price, data = diamonds, fill=~cut, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~cut) %&gt;%
+  gf_labs(title = &quot;Gray Reference Added&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-41-2.png" width="672" /></p>
+</div>
+<div id="regression-lines" class="section level2" number="8.2">
+<h2><span class="header-section-number">8.2</span> Regression Lines</h2>
+<p>In the following example, we just add regression lines for each type
+of car using the lm( ) command.</p>
+<pre class="r"><code>gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type) %&gt;%
+  gf_labs(title = &quot;Default Scatterplot&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type) %&gt;%
+  gf_lm(show.legend = FALSE)%&gt;%
+  gf_labs(title = &quot;Regression Lines Added&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-42-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type) %&gt;%
+  gf_lm(show.legend = FALSE) %&gt;%
+  gf_lm(interval = &quot;confidence&quot;, fill = ~Type, alpha = 0.3, show.legend = FALSE)%&gt;%
+  gf_labs(title = &quot;Confidence Interval for Mean Response Added&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-42-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~Type) %&gt;%
+  gf_lm(show.legend = FALSE) %&gt;%
+  gf_lm(interval = &quot;prediction&quot;, fill = ~Type, alpha = 0.1, show.legend = FALSE)%&gt;%
+  gf_lm(interval = &quot;confidence&quot;, fill = ~Type, alpha = 0.2, show.legend = FALSE)%&gt;%
+  gf_labs(title = &quot;Prediction &amp; Confidence Bands Added&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-42-4.png" width="672" /></p>
+</div>
+<div id="average-points" class="section level2" number="8.3">
+<h2><span class="header-section-number">8.3</span> Average Points</h2>
+<p>The following example is taken from the book <a
+href="https://ggplot2-book.org/facet">ggplot2</a>. In order to add the
+reference points for the means of each of the groups, you first create a
+new dataset, calculate the averages, and then rename your color/facet
+variable. When you create a plot, you’ll use the original data to create
+the facetted plot, then add a layer of just the average points from the
+newly created dataset.</p>
+<pre class="r"><code>irisLabels = iris %&gt;%
+group_by(Species) %&gt;%
+  mutate(Sepal.Width.Ave = mean(Sepal.Width), 
+         Sepal.Length.Ave = mean(Sepal.Length)) %&gt;%
+  rename(NewSpecies = Species)
+
+
+gf_point(Sepal.Length~Sepal.Width, data=iris, color = ~Species, alpha = 0.3) %&gt;%
+  gf_point(Sepal.Length.Ave~Sepal.Width.Ave, color=~NewSpecies, data = irisLabels, size = 5) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_facet_wrap(~Species) </code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

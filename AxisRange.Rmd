@@ -18,6 +18,10 @@ require(gridExtra)
 require(scales)
 require(tidyr)
 theme_set(theme_minimal())
+data(StudentSurvey)
+require(resampledata)
+data("Cuckoos")
+require(forcats)
 ```
 
 This section looks at ways of adjusting the overall scale of each axis (e.g. instead of going from 0 to 100 going from 40 to 60) as well as reversing the order (e.g. instead of going from 1 to 100 going from 100 to 1).
@@ -360,4 +364,102 @@ both.reverse = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor
 grid.arrange(original, both.reverse, nrow = 1)
 
 ```
+
+# Order of Categories
+
+We can adjust the default order of categories a few ways.
+
+1.  We can manually specify the order of levels within a factor ([fct_relevel](https://forcats.tidyverse.org/reference/fct_relevel.html))
+2.  We can have R order based on summary statistics ([fct_reorder](https://forcats.tidyverse.org/reference/fct_reorder.html))
+3.  Order by Count ([fct_infreq](https://forcats.tidyverse.org/reference/fct_inorder.html))
+4.  Order by Count but only display Top N ([fct_lump_n](https://forcats.tidyverse.org/reference/fct_lump.html))
+5.  Reverse order of any factor ([fct_rev](https://forcats.tidyverse.org/reference/fct_rev.html))
+
+A helpful package in ordering categorical variables is [forcats](https://forcats.tidyverse.org/index.html).  All ways of adjusting variable order described below utilize this package.  
+
+## Manually specify order
+
+To manually specify the order of level of a factor, we'll adjust the data to the order we want.  To do this we can use [fct_relevel](https://forcats.tidyverse.org/reference/fct_relevel.html) either within a graph command or to alter the dataset itself.  
+
+**Example (in graph command):** gf_plot( Y ~ fct_relevel(X , "Level 1", "Level 2", "Level 3"))
+
+**Example (mutate dataset):** Dataset %>% mutate( Var = fct_relevel( Var , "Level 1", "Level 2", "Level 3"))
+
+```{r}
+gf_bar(~Year, data = StudentSurvey) %>%
+  gf_labs(title = "Default Alphabetical Ordering")
+
+gf_bar(~fct_relevel(Year, "FirstYear", "Sophomore", "Junior", "Senior"), data = StudentSurvey) %>%
+  gf_labs(title = "Adjust Order within Bargraph Command", x = "Year")
+
+StudentSurvey2 = StudentSurvey %>%
+  mutate(YearOrdered = fct_relevel(Year, "FirstYear", "Sophomore", "Junior", "Senior"))
+
+gf_bar(~YearOrdered, data = StudentSurvey2) %>%
+  gf_labs(title = "Ordering after Force Change in Data")
+
+```
+
+
+## Order by Summary Statistic
+
+In the example below we order the boxplots by the average number of eggs in each bird.  There are a few ways to do this, but one is using the [fct_reorder](https://forcats.tidyverse.org/reference/fct_reorder.html) command in the forcats package.  
+
+**Example (default reorder):** gf_plot( Y ~ fct_reorder(X , Var ), data = Dataset)
+
+**Example (specify median & descending):** gf_plot( Y ~ fct_reorder( X , Var, .fun = median , .desc = TRUE))
+
+```{r}
+gf_boxplot(Eggs~Bird, data = Cuckoos, color = ~Bird, show.legend = FALSE) %>%
+  gf_labs(x = "Bird Type", title = "Default Ordering of Bird Type")
+
+gf_boxplot(Eggs~fct_reorder(Bird, Eggs), data = Cuckoos, color = ~Bird, show.legend = FALSE) %>%
+  gf_labs(x = "Bird Type", title = "Order of Bird Type based on Average Eggs")
+
+gf_boxplot(Eggs~fct_reorder(Bird, Eggs, .fun = median, .desc=TRUE), data = Cuckoos, color = ~Bird, show.legend = FALSE) %>%
+  gf_labs(x = "Bird Type", title = "Force Statistic & Descening Order")
+```
+
+[This](https://r-graph-gallery.com/267-reorder-a-variable-in-ggplot2.html) post also highlights some options for reordering.  
+
+## Order by Count
+
+Ordering categories by count works slightly differently if there is not an actual variable that counts data in each category.  [This](https://blog.albertkuo.me/post/2022-01-04-reordering-geom-col-and-geom-bar-by-count-or-value/) post was really helpful.  We still use the forcats package, but the function [fct_infreq](https://forcats.tidyverse.org/reference/fct_inorder.html) is what will calculate the frequency for us (so we don't have to create a variable that counts items in a category).
+
+**Example (order by frequency):** gf_plot( ~ fct_infreq(Var), data = Dataset)
+
+**Example (reverse order by freq):** gf_plot( ~ fct_rev(fct_infreq(Var)), data = Dataset)
+
+**Example (only keep n most frequent):** gf_plot( ~ fct_lump_n(fct_infreq(Var), n = 10), data = Dataset)
+
+
+```{r, include = FALSE}
+ufo <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-06-25/ufo_sightings.csv")
+```
+
+
+```{r, fig.height = 7}
+
+gf_bar(state~., data=subset(ufo, country == "us")) %>%
+  gf_labs(title = "Default Ordering")
+
+gf_bar(fct_infreq(state)~., data=subset(ufo, country == "us")) %>%
+  gf_labs(title = "Order by Frequency", y = "state")
+
+gf_bar(fct_rev(fct_infreq(state))~., data=subset(ufo, country == "us")) %>%
+  gf_labs(title = "Order by Frequency (Reverse)", y = "state")
+
+gf_bar(~fct_lump_n(fct_infreq(state), n = 10) , data=subset(ufo, country == "us")) %>%
+  gf_labs(title = "Order by Frequency (Only keep 10 most frequent)", subtitle = "Lump all the rest in Other Category", y = "state", x = "State")
+
+ufo = ufo %>%
+  mutate(TopState = fct_lump_n(fct_infreq(state), n = 10))
+
+gf_bar(~TopState , data=subset(ufo, country == "us"), fill = ~(TopState != "Other"), show.legend = FALSE) %>%
+  gf_labs(title = "Adjust Dataset for Top 10 States + Other", subtitle = "Change Colors to Highlight Other Category", y = "state", x = "State") 
+```
+
+
+
+
 
