@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>All About Themes</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Data Visualization</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Intro</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Refinements
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="TitleLabels.html">Title Labels (Big/Outer/Axis)</a>
+    </li>
+    <li>
+      <a href="CatAndNumDisplay.html">Category &amp; Numeric Display</a>
+    </li>
+    <li>
+      <a href="AxisRange.html">Axis Range, Breaks, and Ordering</a>
+    </li>
+    <li>
+      <a href="subsets.html">Subsets</a>
+    </li>
+    <li>
+      <a href="themes.html">Themes</a>
+    </li>
+    <li>
+      <a href="facets.html">Facets</a>
+    </li>
+    <li>
+      <a href="Legends.html">Legends</a>
+    </li>
+    <li>
+      <a href="Annotations.html">Annotations</a>
+    </li>
+    <li class="dropdown-header">Position Adjustments</li>
+    <li class="dropdown-header">Adding Summary Statistics</li>
+    <li class="dropdown-header">Adjusting Non-Color Aesthetics</li>
+    <li class="dropdown-header">Color</li>
+    <li class="dropdown-header">Interactvity</li>
+  </ul>
+</li>
+<li>
+  <a href="WranglingDataIntro.html">Wranging Data</a>
+</li>
+<li>
+  <a href="markdown.html">Markdown Help</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">All About Themes</h1>
+
+</div>
+
+
+<p>Themes are going to be helpful to adjust the default. There are
+built-in themes already available - but you can also adjust specific
+elements.</p>
+<div id="globally-set-a-theme" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Globally set a
+theme</h1>
+<p>To globally set a theme, use theme_set( ) in an R Chunk. All
+subsequent graphs will use that theme as default.</p>
+<p><strong>Example:</strong> theme_set(theme_bw())</p>
+<pre class="r"><code>theme_set(theme_bw())
+
+gf_point(mpg~disp, data = mtcars)</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="manually-set-a-theme" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Manually set a
+theme</h1>
+<p>To manually set a theme, use the gf_theme( ) layer on any plot.</p>
+<p><strong>Example:</strong> gf_plot( ) %&gt;% gf_theme(theme_bw())</p>
+<pre class="r"><code>gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_minimal())</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="all-ggplot-themes" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> All ggplot themes</h1>
+<p>Here is a <a
+href="https://ggplot2.tidyverse.org/reference/ggtheme.html">list</a> of
+many themes available and a preview of what they look like.</p>
+<pre class="r"><code>require(gridExtra)
+
+gray = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_gray()) %&gt;%
+  gf_labs(title = &quot;theme_gray&quot;)
+
+bw = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_bw()) %&gt;%
+  gf_labs(title = &quot;theme_bw&quot;)
+
+linedraw = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_linedraw()) %&gt;%
+  gf_labs(title = &quot;theme_linedraw&quot;)
+
+light = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_light()) %&gt;%
+  gf_labs(title = &quot;theme_light&quot;)
+
+dark = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_dark()) %&gt;%
+  gf_labs(title = &quot;theme_dark&quot;)
+
+minimal = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_minimal()) %&gt;%
+  gf_labs(title = &quot;theme_minimal&quot;)
+
+classic = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_labs(title = &quot;theme_classic&quot;)
+
+void = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_void()) %&gt;%
+  gf_labs(title = &quot;theme_void&quot;)
+
+test = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_test()) %&gt;%
+  gf_labs(title = &quot;theme_test&quot;)
+
+
+grid.arrange(gray, bw, linedraw, light, dark, minimal, classic, void, test, nrow = 3 )</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>For even MORE themes, check out <a
+href="https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/">ggthemes</a>.</p>
+</div>
+<div id="adjusting-default-themes-order-matters" class="section level1"
+number="4">
+<h1><span class="header-section-number">4</span> Adjusting Default
+Themes (Order Matters)</h1>
+<p>If you want to adjust a thematic aspect of a graph, the order of your
+layers is going to matter. For example, you’ll want to either globally
+set your overall theme or adjust with a theme layer. Then, you can add a
+separate layer to adjust a theme element. It will not work to add this
+to the same theme layer you use to set the theme!</p>
+<p>The following example illustrates if we want the minimal theme and
+then have an adjusted title, the only combination that seems to get the
+desired result (until an update comes out) is to have the theme
+statement first, then the title size statement second.</p>
+<p><strong>Example:</strong> gf_theme(global_theme()) %&gt;%
+gf_theme(Theme Element Adjustment)</p>
+<pre class="r"><code>minimal = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_minimal()) %&gt;%
+  gf_labs(title = &quot;theme_minimal&quot;)
+
+titleadjust2 = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(theme_minimal()) %&gt;%
+  gf_labs(title = &quot;theme_minimal&quot;, subtitle = &quot;Title Size Adjusted Second&quot;) %&gt;%
+  gf_theme(plot.title = element_text(size=12, color = &quot;red&quot;))
+
+titleadjust1 = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(plot.title = element_text(size=12, color = &quot;red&quot;)) %&gt;%
+  gf_theme(theme_minimal()) %&gt;%
+  gf_labs(title = &quot;theme_minimal&quot;, subtitle = &quot;Title Size Adjusted First&quot;) 
+
+same.line = gf_point(mpg~disp, data = mtcars) %&gt;%
+  gf_theme(plot.title = element_text(size=12, color = &quot;red&quot;), theme_minimal()) %&gt;%
+  gf_labs(title = &quot;theme_minimal&quot;, subtitle = &quot;Title Size Adjusted In Same Code&quot;)
+
+grid.arrange(minimal, titleadjust2, titleadjust1, same.line, nrow = 2)</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<div id="adjusting-specific-theme-elements" class="section level2"
+number="4.1">
+<h2><span class="header-section-number">4.1</span> Adjusting specific
+theme elements</h2>
+<p>There are many elements of a theme that can be adjusted. For
+example:</p>
+<ul>
+<li>Text (size, color, font, location)</li>
+<li>Presence of axis lines, tick marks, values</li>
+<li>Plot backgrounds</li>
+<li>Strip locations</li>
+<li>Legend location</li>
+</ul>
+<p>All elements that can be adjusted in a theme statement can be found
+in the ggplot <a
+href="https://ggplot2.tidyverse.org/reference/theme.html">reference
+guide</a>. Also, at the bottom of the page there is a plethora of
+examples of themes adjusted.</p>
+<p>Because so many examples have already been well categorized above,
+here are a few that stand out as particularly helpful.</p>
+<div id="eliminating-extra-ink" class="section level3" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Eliminating extra
+ink</h3>
+<p>If you’d like to make Edward Tufte proud by eliminating extra “ink”
+(e.g. axis tick marks, values, lines) - here is an example.</p>
+<pre class="r"><code>before = gf_dotplot(~GuessedLength, data = subset(lengths, Unit == &quot;Feet&quot;), binwidth = 1, alpha = 0.3) %&gt;%
+  gf_labs(x = &quot;Guessed Feet&quot;, title = &quot;Default theme_bw&quot;, y = NULL)  %&gt;%
+  gf_theme(theme_bw())
+
+after = gf_dotplot(~GuessedLength, data = subset(lengths, Unit == &quot;Feet&quot;), binwidth = 1, alpha = 0.3) %&gt;%
+  gf_labs(x = &quot;Guessed Feet&quot;, title = &quot;Removing extra ink from theme_bw&quot;, y = NULL) %&gt;%
+  gf_theme(theme_bw()) %&gt;%
+  gf_theme(axis.text.y = element_blank(), 
+           axis.ticks.y = element_blank(),
+           panel.border = element_blank(), # Removes entire black box
+           axis.line.x = element_line(), # Adds back in line for x axis
+           panel.grid.major.x = element_blank(),
+           panel.grid.major.y = element_blank(),
+           panel.grid.minor.x = element_blank(),
+           panel.grid.minor.y = element_blank()) 
+
+grid.arrange(before, after, nrow = 2)</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="adjusting-removing-legends" class="section level3"
+number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> Adjusting &amp;
+Removing Legends</h3>
+<p>All things legend-related are discussed in the Legend section, but
+because it utilizes a theme statement, it is reiterated here.</p>
+<p><strong>Remove specific legend:</strong> gf_theme(guides(color =
+FALSE))</p>
+<p><strong>Remove ALL legends:</strong> gf_theme(legend.position =
+“none”)</p>
+<pre class="r"><code>gf_point(mpg~disp, data = mtcars, shape = ~as.factor(cyl), color = ~as.factor(cyl), size = ~wt) %&gt;%
+  gf_theme(theme_minimal()) %&gt;%
+  gf_labs(shape = &quot;cylinders&quot;, color = &quot;cylinders&quot;, title = &quot;All Legends Included&quot;)</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(mpg~disp, data = mtcars, shape = ~as.factor(cyl), color = ~as.factor(cyl), size = ~wt) %&gt;%
+  gf_theme(theme_minimal()) %&gt;%
+  gf_labs(shape = &quot;cylinders&quot;, color = &quot;cylinders&quot;, title = &quot;Color Legend Removed (Only)&quot;) %&gt;%
+  gf_theme(guides(color = FALSE))</code></pre>
+<pre><code>## Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use &quot;none&quot; instead as
+## of ggplot2 3.3.4.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(mpg~disp, data = mtcars, shape = ~as.factor(cyl), color = ~as.factor(cyl), size = ~wt) %&gt;%
+  gf_theme(theme_minimal()) %&gt;%
+  gf_labs(shape = &quot;cylinders&quot;, color = &quot;cylinders&quot;, title = &quot;Remove ALL Legends&quot;) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+</div>
+<div id="facet-strip-adjustments" class="section level3" number="4.1.3">
+<h3><span class="header-section-number">4.1.3</span> Facet Strip
+Adjustments</h3>
+<pre class="r"><code>gf_point(mpg~disp, data = mtcars, shape = ~as.factor(cyl), color = ~as.factor(cyl), size = ~wt) %&gt;%
+  gf_theme(theme_minimal()) %&gt;%
+  gf_labs(shape = &quot;cylinders&quot;, color = &quot;cylinders&quot;, title = &quot;Default (Minimal) Facet Strip&quot;) %&gt;%
+  gf_facet_wrap(~cyl)</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(mpg~disp, data = mtcars, shape = ~as.factor(cyl), color = ~as.factor(cyl), size = ~wt) %&gt;%
+  gf_theme(theme_minimal()) %&gt;%
+  gf_labs(shape = &quot;cylinders&quot;, color = &quot;cylinders&quot;, title = &quot;Adjusted Facet Strip &amp; Spacing&quot;) %&gt;%
+  gf_facet_wrap(~cyl) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;,
+    panel.spacing = unit(0.3, &quot;in&quot;),
+    strip.text = element_text(colour = &quot;white&quot;),
+    strip.background = element_rect(fill = &quot;grey20&quot;, 
+                                  color = &quot;grey80&quot;, 
+                                  linewidth = 1))</code></pre>
+<p><img src="themes_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+</div>
+<div id="all-theme-elements" class="section level3" number="4.1.4">
+<h3><span class="header-section-number">4.1.4</span> All Theme
+Elements</h3>
+<p>The following code displays all theme elements you can adjust.</p>
+<p><strong>Examples of Theme Elements:</strong> theme_get()</p>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
