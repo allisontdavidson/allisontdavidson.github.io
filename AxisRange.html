@@ -352,7 +352,9 @@ div.tocify {
     <li>
       <a href="Annotations.html">Annotations</a>
     </li>
-    <li class="dropdown-header">Position Adjustments</li>
+    <li>
+      <a href="Position.html">Position Adjustments</a>
+    </li>
     <li class="dropdown-header">Adding Summary Statistics</li>
     <li class="dropdown-header">Adjusting Non-Color Aesthetics</li>
     <li class="dropdown-header">Color</li>
@@ -728,6 +730,40 @@ grid.arrange(original, x.reverse, ncol = 1)</code></pre>
 
 grid.arrange(original, both.reverse, nrow = 1)</code></pre>
 <p><img src="AxisRange_files/figure-html/unnamed-chunk-13-3.png" width="672" /></p>
+<div id="reverse-fill" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Reverse Fill</h2>
+<p>The following example looks at a bargraph and different ways to
+reverse the fill categories and colors used to fill.</p>
+<pre class="r"><code>gf_bar(~cut, data = diamonds) %&gt;%
+  gf_labs(title = &quot;Default Graph&quot;)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>gf_bar(~cut, data = diamonds) %&gt;%
+  gf_refine(scale_x_discrete(limits = rev)) %&gt;%
+  gf_labs(title = &quot;Reverse X Axis&quot;)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+<p><strong>Reverse fill categories only:</strong> fill = ~
+fct_rev(Var)</p>
+<p><strong>Reverse fill colors &amp; categories:</strong>
+scale_fill_viridis(discrete = TRUE, limits = rev)</p>
+<p><strong>Reverse legend to match reversed fill &amp;
+cateogeis:</strong>
+gf_theme(guides(fill=guide_legend(reverse=TRUE)))</p>
+<pre class="r"><code>gf_bar(~cut, data = diamonds, fill = ~clarity) %&gt;%
+  gf_labs(title = &quot;Default Graph With Fill&quot;)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>gf_bar(~cut, data = diamonds, fill = ~fct_rev(clarity)) %&gt;%
+  gf_labs(title = &quot;Reverse Fill Categories&quot;, subtitle = &quot;Color Order The Same&quot;, fill = &quot;clarity&quot;)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+<pre class="r"><code>gf_bar(~cut, data = diamonds, fill = ~clarity) %&gt;%
+  gf_refine(scale_fill_viridis(discrete = TRUE, limits = rev)) %&gt;%
+  gf_labs(title = &quot;Reverse Color Order &amp; Categories&quot;) </code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-16-3.png" width="672" /></p>
+<pre class="r"><code>gf_bar(~cut, data = diamonds, fill = ~clarity) %&gt;%
+  gf_refine(scale_fill_viridis(discrete = TRUE, limits = rev)) %&gt;%
+  gf_labs(title = &quot;Match Legend to Reverse Color Order &quot;) %&gt;%
+  gf_theme(guides(fill=guide_legend(reverse=TRUE)))</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-16-4.png" width="672" /></p>
+</div>
 </div>
 <div id="order-of-categories" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> Order of
@@ -761,16 +797,16 @@ fct_relevel(X , “Level 1”, “Level 2”, “Level 3”))</p>
 = fct_relevel( Var , “Level 1”, “Level 2”, “Level 3”))</p>
 <pre class="r"><code>gf_bar(~Year, data = StudentSurvey) %&gt;%
   gf_labs(title = &quot;Default Alphabetical Ordering&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre class="r"><code>gf_bar(~fct_relevel(Year, &quot;FirstYear&quot;, &quot;Sophomore&quot;, &quot;Junior&quot;, &quot;Senior&quot;), data = StudentSurvey) %&gt;%
   gf_labs(title = &quot;Adjust Order within Bargraph Command&quot;, x = &quot;Year&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
 <pre class="r"><code>StudentSurvey2 = StudentSurvey %&gt;%
   mutate(YearOrdered = fct_relevel(Year, &quot;FirstYear&quot;, &quot;Sophomore&quot;, &quot;Junior&quot;, &quot;Senior&quot;))
 
 gf_bar(~YearOrdered, data = StudentSurvey2) %&gt;%
   gf_labs(title = &quot;Ordering after Force Change in Data&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-14-3.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
 </div>
 <div id="order-by-summary-statistic" class="section level2"
 number="4.2">
@@ -787,13 +823,13 @@ fct_reorder(X , Var ), data = Dataset)</p>
 Y ~ fct_reorder( X , Var, .fun = median , .desc = TRUE))</p>
 <pre class="r"><code>gf_boxplot(Eggs~Bird, data = Cuckoos, color = ~Bird, show.legend = FALSE) %&gt;%
   gf_labs(x = &quot;Bird Type&quot;, title = &quot;Default Ordering of Bird Type&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <pre class="r"><code>gf_boxplot(Eggs~fct_reorder(Bird, Eggs), data = Cuckoos, color = ~Bird, show.legend = FALSE) %&gt;%
   gf_labs(x = &quot;Bird Type&quot;, title = &quot;Order of Bird Type based on Average Eggs&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
 <pre class="r"><code>gf_boxplot(Eggs~fct_reorder(Bird, Eggs, .fun = median, .desc=TRUE), data = Cuckoos, color = ~Bird, show.legend = FALSE) %&gt;%
   gf_labs(x = &quot;Bird Type&quot;, title = &quot;Force Statistic &amp; Descening Order&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-15-3.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-18-3.png" width="672" /></p>
 <p><a
 href="https://r-graph-gallery.com/267-reorder-a-variable-in-ggplot2.html">This</a>
 post also highlights some options for reordering.</p>
@@ -816,22 +852,22 @@ fct_rev(fct_infreq(Var)), data = Dataset)</p>
 fct_lump_n(fct_infreq(Var), n = 10), data = Dataset)</p>
 <pre class="r"><code>gf_bar(state~., data=subset(ufo, country == &quot;us&quot;)) %&gt;%
   gf_labs(title = &quot;Default Ordering&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <pre class="r"><code>gf_bar(fct_infreq(state)~., data=subset(ufo, country == &quot;us&quot;)) %&gt;%
   gf_labs(title = &quot;Order by Frequency&quot;, y = &quot;state&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
 <pre class="r"><code>gf_bar(fct_rev(fct_infreq(state))~., data=subset(ufo, country == &quot;us&quot;)) %&gt;%
   gf_labs(title = &quot;Order by Frequency (Reverse)&quot;, y = &quot;state&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-17-3.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-20-3.png" width="672" /></p>
 <pre class="r"><code>gf_bar(~fct_lump_n(fct_infreq(state), n = 10) , data=subset(ufo, country == &quot;us&quot;)) %&gt;%
   gf_labs(title = &quot;Order by Frequency (Only keep 10 most frequent)&quot;, subtitle = &quot;Lump all the rest in Other Category&quot;, y = &quot;state&quot;, x = &quot;State&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-17-4.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-20-4.png" width="672" /></p>
 <pre class="r"><code>ufo = ufo %&gt;%
   mutate(TopState = fct_lump_n(fct_infreq(state), n = 10))
 
 gf_bar(~TopState , data=subset(ufo, country == &quot;us&quot;), fill = ~(TopState != &quot;Other&quot;), show.legend = FALSE) %&gt;%
   gf_labs(title = &quot;Adjust Dataset for Top 10 States + Other&quot;, subtitle = &quot;Change Colors to Highlight Other Category&quot;, y = &quot;state&quot;, x = &quot;State&quot;) </code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-17-5.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-20-5.png" width="672" /></p>
 </div>
 </div>
 

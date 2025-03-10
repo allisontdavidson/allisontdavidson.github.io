@@ -23,7 +23,7 @@ navbar:
         - text: "Annotations"
           href: Annotations.html  
         - text: "Position Adjustments"
-          #href: position.html 
+          href: Position.html 
         - text: "Adding Summary Statistics"
           #href: summarystats.html
         - text: "Adjusting Non-Color Aesthetics"

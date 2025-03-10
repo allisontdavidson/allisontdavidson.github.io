@@ -1,0 +1,374 @@
+---
+title: "Minor Position Adjustments"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: TRUE
+    toc_depth: 3
+    number_sections: TRUE
+    theme: lumen
+---
+
+```{r, include = FALSE}
+require(mosaic)
+require(Lock5Data)
+data(SalaryGender)
+data("BaseballSalaries2019")
+require(gridExtra)
+theme_set(theme_minimal())
+require(forcats)
+require(MASS)
+require(viridis)
+require(scales)
+require(tidyr)
+require(ggrepel)
+require(maps)
+data(world.cities)
+data("MarriageAges")
+library(ggpubr)
+require(ggrepel)
+require(ggmosaic)
+require(palmerpenguins)
+require(ggformula)
+require(ggridges)
+require(readr)
+require(socviz)
+
+data(fly)
+fly = na.omit(fly)
+
+data("penguins")
+penguins = na.omit(penguins)
+
+data("gss_sm")
+gss_sm = na.omit(gss_sm)
+```
+
+To make minor adjustments to position of bars, points, lines, and densities we will specify the "position" in our layers. There are several ways to adjust the position (generally speaking). Some of the most common include:
+
+-   Identity (not adjusting position)
+
+-   Dodge (nudge position of categories horizontally from overlapping)
+
+-   Stack (display bars & densities on top of one another vertically)
+
+-   Fill (adjust stacked items to be proportional)
+
+-   Jitter (add noise to overlapping points)
+
+-   Jitterdodge (add noise to points and nudge groups horizontally)
+
+-   Nudge (offset text in either x or y direction)
+
+The following [chapter](https://ggplot2.tidyverse.org/reference/layer_positions.html) in ggplot2 book covers more details about position.
+
+# Position Identity
+
+Some graphs will automatically adjust the position of elements (e.g. the histograms below automatically stack bars).  In case we don't want the bars stacked, we can specify to keep the position as-is using position = position_identity().
+
+**Example:** gf_plot( Y ~ X , data = Dataset. position = position_identity() )
+
+```{r}
+gf_histogram(~flipper_length_mm, data = penguins, fill=~island, alpha = 0.5) %>%
+  gf_refine(scale_fill_manual(values = c("darkorange","purple","cyan4"))) %>% 
+  gf_labs(title = "Default Stacked")
+
+gf_histogram(~flipper_length_mm, data = penguins, fill=~island, alpha = 0.5, position = position_identity()) %>%
+  gf_refine(scale_fill_manual(values = c("darkorange","purple","cyan4"))) %>% 
+  gf_labs(title = "Position Identity")
+
+
+gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5) %>%
+  gf_refine(scale_fill_manual(values = c("darkorange","purple","cyan4"))) %>% 
+  gf_labs(title = "Default Stacked")
+
+gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %>%
+  gf_refine(scale_fill_manual(values = c("darkorange","purple","cyan4"))) %>% 
+  gf_labs(title = "Position Identity")
+
+
+```
+
+# Dodge
+
+For bargraphs, the default is to stack the categories.  If you want to have the bars for each category side-by-side you can dodge the position using position = position_dodge.  
+
+**Example (original):** gf_plot( ~ X , data = Dataset , position = position_dodge())
+
+**Example (with specifications):** gf_plot( ~ X , data = Dataset , position = position_dodge2(preserve = "single"))
+
+```{r}
+gf_bar(~flight_freq, data = fly, fill = ~rude_to_recline) %>%
+  gf_refine(scale_fill_brewer(palette = "Blues")) %>%
+  gf_labs(x = "How often do you fly?", fill = "Rude to\nRecline?", title = "Default Bargraph")
+  
+gf_bar(~flight_freq, data = fly, fill = ~rude_to_recline, position = position_dodge()) %>%
+  gf_refine(scale_fill_brewer(palette = "Blues")) %>%
+  gf_labs(x = "How often do you fly?", fill = "Rude to\nRecline?", title = "Position Dodge")
+
+gf_bar(~flight_freq, data = fly, fill = ~rude_to_recline, position = position_dodge2()) %>%
+  gf_refine(scale_fill_brewer(palette = "Blues")) %>%
+  gf_labs(x = "How often do you fly?", fill = "Rude to\nRecline?", title = "Position Dodge2", subtitle = "Added Space Between Bars")
+```
+
+
+The default position_dodge will adjust the width of the bars for inconsistent numbers of categories.  To keep the width the same, specify preserve = "single".
+
+
+```{r}
+gf_bar(~as.factor(cyl), data = mtcars, fill=~as.factor(vs)) %>%
+  gf_labs(title = "Default Stack", x = "Cylinders", fill = "vs")
+
+
+gf_bar(~as.factor(cyl), data = mtcars, fill=~as.factor(vs), position = position_dodge()) %>%
+  gf_labs(title = "Default Position Dodge", x = "Cylinders", fill = "vs")
+
+gf_bar(~as.factor(cyl), data = mtcars, fill=~as.factor(vs), position = position_dodge2(preserve = "single")) %>%
+  gf_labs(title = "Position Dodge2", subtitle = "Preserve Bar Width", x = "Cylinders", fill = "vs")
+
+
+```
+
+# Position Fill
+
+Instead of just stacking bars & densities on top of one another, it is sometimes helpful to translate the stacks into percentages instead of raw counts.  Use position = position_fill() in this case. 
+
+**Example:** gf_plot( ~ X , data = Dataset , position = position_fill())
+
+```{r}
+gf_bar(~flight_freq, data = fly, fill = ~rude_to_recline) %>%
+  gf_refine(scale_fill_brewer(palette = "Blues")) %>%
+  gf_labs(x = "How often do you fly?", fill = "Rude to\nRecline?", title = "Default Bargraph") %>%
+  gf_theme(legend.position = "bottom") 
+  
+
+gf_bar(~flight_freq, data = fly, fill = ~rude_to_recline, position = position_fill()) %>%
+  gf_labs(x = "How often do you fly?", fill = "Rude to\nRecline?", title = "Position Fill (Proportions)", y = "Proportion") %>%
+  gf_refine(scale_fill_brewer(palette = "Blues"))%>%
+  gf_theme(legend.position = "bottom") 
+
+
+gf_bar(~as.factor(cyl), data = mtcars, fill=~as.factor(vs)) %>%
+  gf_labs(title = "Default Stack", x = "Cylinders", fill = "vs")
+
+gf_bar(~as.factor(cyl), data = mtcars, fill=~as.factor(vs), position = position_fill()) %>%
+  gf_labs(title = "Position Fill", x = "Cylinders", fill = "vs")
+```
+
+
+Position fill can be used with other graphs too.  Below are examples of histograms using the default stack and then fill.
+
+```{r}
+gf_histogram(~price, data = diamonds, fill = ~cut) %>%
+  gf_labs(title = "Default Stacked Histogram")
+
+gf_histogram(~price, data = diamonds, fill = ~cut, position = position_fill()) %>%
+  gf_labs(title = "Proportion Filled Histogram")
+```
+
+The following examples of density plots show the overlapping densities (default), stacked densities, and then position filled densities. 
+
+```{r}
+gf_density(~price, data = diamonds, fill = ~cut) %>%
+  gf_labs(title = "Default Overlapping Densities")
+
+gf_density(~price, data = diamonds, fill = ~cut, position = position_stack()) %>%
+  gf_labs(title = "Stacked Densities")
+
+gf_density(~price, data = diamonds, fill = ~cut, position = position_fill()) %>%
+  gf_labs(title = "Proportion Filled Densities")
+
+
+gf_density(~age, data = gss_sm, fill=~marital) %>%
+  gf_labs(title = "Default Overlapping Densities")
+
+gf_density(~age, data = gss_sm, fill=~marital, position = position_stack()) %>%
+  gf_labs(title = "Stacked Densities")
+
+gf_density(~age, data = gss_sm, fill=~marital, position = position_fill()) %>%
+  gf_labs(title = "Proportion Filled Densities")
+```
+
+# Jitter Point Position
+
+When points overlap it is helpful to jitter the position to see the overlapping points.  Also, adding transparency is usually helpful.  There are a few ways to jitter point positions.
+
+**Jitter Specific Variable:** gf_plot( Y ~ jitter(X), data = Dataset)
+
+**Jitter Plot:** gf_jitter( Y ~ X , data = Dataset, width = 0.3, height = 0.2)
+
+**Jitter Position:**  gf_plot( Y ~ X , data = Dataset , position = position_jitter(height = 0, width = 0.2))
+
+```{r, warning = FALSE}
+
+gf_point(Siblings~BirthOrder, data = StudentSurvey) %>%
+  gf_labs(title = "Default Graph Overlapping Points")
+
+gf_point(Siblings~jitter(BirthOrder), data = StudentSurvey, alpha = 0.3) %>%
+  gf_labs(title = "Just Jitter Birth Order", subtitle = "Specifying jitter around variable")
+
+gf_point(Siblings~BirthOrder, data = StudentSurvey, alpha = 0.3, position = position_jitter(height = 0, width = 0.2)) %>%
+  gf_labs(title = "Just Jitter Birth Order", subtitle = "Specifying Position Jitter")
+
+gf_jitter(Siblings~BirthOrder, data = StudentSurvey, alpha = 0.4) %>%
+  gf_labs(title = "Jitter both variables using a jitter plot")
+
+gf_point(Siblings~BirthOrder, data = StudentSurvey, position = position_jitter(), alpha = 0.3) %>%
+  gf_labs(title = "Jitter both variables using position jitter")
+
+gf_jitter(Siblings~BirthOrder, data = StudentSurvey, alpha = 0.4, width = 0.3, height = 0.2)  %>%
+  gf_labs(title = "Jitter both variables using a jitter plot", subtitle = "Specifying width & height")
+
+gf_point(Siblings~BirthOrder, data = StudentSurvey, position = position_jitter(width = 0.3, height = 0.2), alpha = 0.3)  %>%
+  gf_labs(title = "Jitter both variables using position jitter", subtitle = "Specifying width & height")
+
+
+```
+
+# Jitterdoge Points & Lines
+
+If you'd like to both jitter position of points and dodge overlapping categories, use jitterdodge.  
+
+**Example:** gf_plot(Y~X, data = Dataset, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3))
+
+```{r}
+gf_point(body_mass_g~sex, data = penguins, color = ~species)%>%
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_labs(title = "Default overlapping points & categories")
+
+gf_point(body_mass_g~sex, data = penguins, color = ~species, position = position_jitterdodge()) %>%
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_labs(title = "Default JitterDodge")
+
+gf_point(body_mass_g~sex, data = penguins, color = ~species, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3), alpha = 0.3) %>%
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_labs(title = "Jitterdodge specifying jitter & dodge widths")
+
+
+```
+
+The following examples overlay summary lines on the plot.  So the categories & lines match up, it is best to keep the jitterdodge specifications the same throughout all layers.
+
+
+```{r}
+gf_point(body_mass_g~sex, data = penguins, color = ~species, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3, seed = 123), alpha = 0.3) %>%
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_line(body_mass_g~sex, color = ~species, data = penguins, group = ~species, stat = "summary", size = 1) %>%
+  gf_labs(title = "No jitterdodge on lines")
+
+gf_point(body_mass_g~sex, data = penguins, color = ~species, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3, seed = 123), alpha = 0.3) %>%
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_line(body_mass_g~sex, color = ~species, data = penguins, group = ~species, stat = "summary", size = 1, position = position_jitterdodge()) %>%
+  gf_labs(title = "Default jitterdodge lines")
+
+gf_point(body_mass_g~sex, data = penguins, color = ~species, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3, seed = 123), alpha = 0.3) %>%
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_line(body_mass_g~sex, color = ~species, data = penguins, group = ~species, stat = "summary", size = 1, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3)) %>%
+  gf_labs(title = "Specify widths in jitterdodge")
+```
+
+# Nudge Text Position
+
+To adjust text away from elements in your visual, you can use position_nudge.
+
+**Example:** gf_text( label = ~TextVar , position = position_nudge())
+
+```{r, include = FALSE}
+col1 = c("low", "low", 1, 155, NA, NA, 164)
+col2 = c("high", "low", 1, NA, 162, 171, NA)
+col3 = c("low", "high", 1, NA, 168, 175, NA)
+col4 = c("high", "high", 1, 157, NA, NA, 171)
+col5 = c("low", "low", 2, NA, 156, 161, NA)
+col6 = c("high", "low", 2, 150, NA, NA, 153)
+col7 = c("low", "high", 2, 152, NA, NA, 162)
+col8 = c("high", "high", 2, NA, 161, 173, NA)
+
+# Combine as rows instead of columns (transpose the original data)
+
+ammonium = data.frame(rbind(col1, col2, col3, col4, col5, col6, col7, col8))
+
+# Add column names
+
+colnames(ammonium) = c("AmmoniumQuality", "AmmoniumAmount", "ProdUnit", "Block1", "Block2", "Block3", "Block4")
+
+# Make block & Yeild separate variables (in order to graph differently)
+
+ammonium2 = gather(ammonium, "Block", "Yield", 4:7)
+
+# Force order of low & high
+
+ammonium2$AmmoniumQuality = factor(ammonium2$AmmoniumQuality, levels = c("low", "high"))
+ammonium2$AmmoniumAmount = factor(ammonium2$AmmoniumAmount, levels = c("low", "high"))
+
+# Force R to treat Yield as numeric
+ammonium2$Yield = as.numeric(ammonium2$Yield)
+
+ammonium2$Block = parse_number(ammonium2$Block)
+
+```
+
+
+```{r, warning = FALSE}
+gf_point(Yield~AmmoniumAmount|AmmoniumQuality, data=ammonium2, color = ~ProdUnit, shape = ~ProdUnit) %>%
+  gf_text(label = ~Block) %>%
+  gf_labs(x = "Ammonium Amount", title = "Using hjust to nudge labels", shape = "Production\n Unit", color = "Production\n Unit") %>%
+  gf_labs(title = "Default Overlapping Labels")
+
+gf_point(Yield~AmmoniumAmount|AmmoniumQuality, data=ammonium2, color = ~ProdUnit, shape = ~ProdUnit) %>%
+  gf_text(label = ~Block, position = position_nudge(x = -0.1)) %>%
+  gf_labs(x = "Ammonium Amount", title = "Using hjust to nudge labels", shape = "Production\n Unit", color = "Production\n Unit") %>%
+  gf_labs(title = "Nudge labels -0.1")
+
+gf_point(Yield~AmmoniumAmount|AmmoniumQuality, data=ammonium2, color = ~ProdUnit, shape = ~ProdUnit) %>%
+  gf_text(label = ~Block, position = position_nudge(x = 0.1)) %>%
+  gf_labs(x = "Ammonium Amount", title = "Using hjust to nudge labels", shape = "Production\n Unit", color = "Production\n Unit") %>%
+  gf_labs(title = "Nudge labels 0.1")
+
+gf_point(Yield~AmmoniumAmount|AmmoniumQuality, data=ammonium2, color = ~ProdUnit, shape = ~ProdUnit) %>%
+  gf_text(label = ~Block, hjust = 2) %>%
+  gf_labs(x = "Ammonium Amount", title = "Using hjust to nudge labels", shape = "Production\n Unit", color = "Production\n Unit")  %>%
+  gf_labs(title = "Nudge labels Using hjust instead")
+```
+
+```{r, include = FALSE}
+# Read in data
+
+clinical = read.table("https://raw.githubusercontent.com/JedStephens/Handbook-of-Small-Data-Sets/master/CLINICAL.DAT")
+
+colnames(clinical) = c("BP", "CP", "Total")
+
+response = c("Complete response", "Partial response", "No change", "Progression", "Total")
+
+clinical = clinical %>%
+  mutate(Response = response) %>% # add response variable
+  gather(Treatment, NumPatients, 1:2) %>% # make separate variables for treatment and count
+  dplyr::select(-Total) %>% # drop the Total variable (not needed for visualization)
+  subset(Response != "Total") %>% # get rid of "total" from Response (not needed)
+  group_by(Treatment) %>% # group by treatment so I can calculate sum and percentage within treatment
+  mutate(PercentPatients = 100*NumPatients/sum(NumPatients)) %>% # add column for percent patients to better compare two groups
+  mutate(CumPercent = cumsum(PercentPatients)) # calculate cumulative percent so I can add labels at specific spots
+
+clinical$Response = factor(clinical$Response, levels = c("Complete response", "Partial response", "No change",  "Progression"))
+
+```
+
+
+To adjust halfway, use vjust = 0.5 or hjust = 0.5
+
+**Example:** gf_text( , position = position_stack(vjust = 0.5))
+
+```{r}
+gf_col(Treatment~PercentPatients, data=clinical, fill=~Response) %>%
+  gf_refine(scale_fill_brewer(palette = "RdYlGn", direction = -1)) %>%
+  gf_text(Treatment~PercentPatients, label=~round(PercentPatients, digits = 0), position = position_stack()) %>%
+  gf_labs(x = "Cumulative Percentage of Patients", title = "Add labels using position_stack")
+
+gf_col(Treatment~PercentPatients, data=clinical, fill=~Response) %>%
+  gf_refine(scale_fill_brewer(palette = "RdYlGn", direction = -1)) %>%
+  gf_text(Treatment~PercentPatients, label=~round(PercentPatients, digits = 0), position = position_stack(vjust = 0.5)) %>%
+  gf_labs(x = "Cumulative Percentage of Patients", title = "Adjust labels using position_stack & vjust")
+
+
+```
+

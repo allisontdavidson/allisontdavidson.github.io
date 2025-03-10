@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Minor Position Adjustments</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Data Visualization</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Intro</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Refinements
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="TitleLabels.html">Title Labels (Big/Outer/Axis)</a>
+    </li>
+    <li>
+      <a href="CatAndNumDisplay.html">Category &amp; Numeric Display</a>
+    </li>
+    <li>
+      <a href="AxisRange.html">Axis Range, Breaks, and Ordering</a>
+    </li>
+    <li>
+      <a href="subsets.html">Subsets</a>
+    </li>
+    <li>
+      <a href="themes.html">Themes</a>
+    </li>
+    <li>
+      <a href="facets.html">Facets</a>
+    </li>
+    <li>
+      <a href="Legends.html">Legends</a>
+    </li>
+    <li>
+      <a href="Annotations.html">Annotations</a>
+    </li>
+    <li>
+      <a href="Position.html">Position Adjustments</a>
+    </li>
+    <li class="dropdown-header">Adding Summary Statistics</li>
+    <li class="dropdown-header">Adjusting Non-Color Aesthetics</li>
+    <li class="dropdown-header">Color</li>
+    <li class="dropdown-header">Interactvity</li>
+  </ul>
+</li>
+<li>
+  <a href="WranglingDataIntro.html">Wranging Data</a>
+</li>
+<li>
+  <a href="markdown.html">Markdown Help</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Minor Position Adjustments</h1>
+
+</div>
+
+
+<p>To make minor adjustments to position of bars, points, lines, and
+densities we will specify the “position” in our layers. There are
+several ways to adjust the position (generally speaking). Some of the
+most common include:</p>
+<ul>
+<li><p>Identity (not adjusting position)</p></li>
+<li><p>Dodge (nudge position of categories horizontally from
+overlapping)</p></li>
+<li><p>Stack (display bars &amp; densities on top of one another
+vertically)</p></li>
+<li><p>Fill (adjust stacked items to be proportional)</p></li>
+<li><p>Jitter (add noise to overlapping points)</p></li>
+<li><p>Jitterdodge (add noise to points and nudge groups
+horizontally)</p></li>
+<li><p>Nudge (offset text in either x or y direction)</p></li>
+</ul>
+<p>The following <a
+href="https://ggplot2.tidyverse.org/reference/layer_positions.html">chapter</a>
+in ggplot2 book covers more details about position.</p>
+<div id="position-identity" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Position Identity</h1>
+<p>Some graphs will automatically adjust the position of elements
+(e.g. the histograms below automatically stack bars). In case we don’t
+want the bars stacked, we can specify to keep the position as-is using
+position = position_identity().</p>
+<p><strong>Example:</strong> gf_plot( Y ~ X , data = Dataset. position =
+position_identity() )</p>
+<pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~island, alpha = 0.5) %&gt;%
+  gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;% 
+  gf_labs(title = &quot;Default Stacked&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~island, alpha = 0.5, position = position_identity()) %&gt;%
+  gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;% 
+  gf_labs(title = &quot;Position Identity&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5) %&gt;%
+  gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;% 
+  gf_labs(title = &quot;Default Stacked&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-2-3.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
+  gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;% 
+  gf_labs(title = &quot;Position Identity&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-2-4.png" width="672" /></p>
+</div>
+<div id="dodge" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Dodge</h1>
+<p>For bargraphs, the default is to stack the categories. If you want to
+have the bars for each category side-by-side you can dodge the position
+using position = position_dodge.</p>
+<p><strong>Example (original):</strong> gf_plot( ~ X , data = Dataset ,
+position = position_dodge())</p>
+<p><strong>Example (with specifications):</strong> gf_plot( ~ X , data =
+Dataset , position = position_dodge2(preserve = “single”))</p>
+<pre class="r"><code>gf_bar(~flight_freq, data = fly, fill = ~rude_to_recline) %&gt;%
+  gf_refine(scale_fill_brewer(palette = &quot;Blues&quot;)) %&gt;%
+  gf_labs(x = &quot;How often do you fly?&quot;, fill = &quot;Rude to\nRecline?&quot;, title = &quot;Default Bargraph&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>gf_bar(~flight_freq, data = fly, fill = ~rude_to_recline, position = position_dodge()) %&gt;%
+  gf_refine(scale_fill_brewer(palette = &quot;Blues&quot;)) %&gt;%
+  gf_labs(x = &quot;How often do you fly?&quot;, fill = &quot;Rude to\nRecline?&quot;, title = &quot;Position Dodge&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>gf_bar(~flight_freq, data = fly, fill = ~rude_to_recline, position = position_dodge2()) %&gt;%
+  gf_refine(scale_fill_brewer(palette = &quot;Blues&quot;)) %&gt;%
+  gf_labs(x = &quot;How often do you fly?&quot;, fill = &quot;Rude to\nRecline?&quot;, title = &quot;Position Dodge2&quot;, subtitle = &quot;Added Space Between Bars&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+<p>The default position_dodge will adjust the width of the bars for
+inconsistent numbers of categories. To keep the width the same, specify
+preserve = “single”.</p>
+<pre class="r"><code>gf_bar(~as.factor(cyl), data = mtcars, fill=~as.factor(vs)) %&gt;%
+  gf_labs(title = &quot;Default Stack&quot;, x = &quot;Cylinders&quot;, fill = &quot;vs&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>gf_bar(~as.factor(cyl), data = mtcars, fill=~as.factor(vs), position = position_dodge()) %&gt;%
+  gf_labs(title = &quot;Default Position Dodge&quot;, x = &quot;Cylinders&quot;, fill = &quot;vs&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>gf_bar(~as.factor(cyl), data = mtcars, fill=~as.factor(vs), position = position_dodge2(preserve = &quot;single&quot;)) %&gt;%
+  gf_labs(title = &quot;Position Dodge2&quot;, subtitle = &quot;Preserve Bar Width&quot;, x = &quot;Cylinders&quot;, fill = &quot;vs&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
+</div>
+<div id="position-fill" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Position Fill</h1>
+<p>Instead of just stacking bars &amp; densities on top of one another,
+it is sometimes helpful to translate the stacks into percentages instead
+of raw counts. Use position = position_fill() in this case.</p>
+<p><strong>Example:</strong> gf_plot( ~ X , data = Dataset , position =
+position_fill())</p>
+<pre class="r"><code>gf_bar(~flight_freq, data = fly, fill = ~rude_to_recline) %&gt;%
+  gf_refine(scale_fill_brewer(palette = &quot;Blues&quot;)) %&gt;%
+  gf_labs(x = &quot;How often do you fly?&quot;, fill = &quot;Rude to\nRecline?&quot;, title = &quot;Default Bargraph&quot;) %&gt;%
+  gf_theme(legend.position = &quot;bottom&quot;) </code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>gf_bar(~flight_freq, data = fly, fill = ~rude_to_recline, position = position_fill()) %&gt;%
+  gf_labs(x = &quot;How often do you fly?&quot;, fill = &quot;Rude to\nRecline?&quot;, title = &quot;Position Fill (Proportions)&quot;, y = &quot;Proportion&quot;) %&gt;%
+  gf_refine(scale_fill_brewer(palette = &quot;Blues&quot;))%&gt;%
+  gf_theme(legend.position = &quot;bottom&quot;) </code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre class="r"><code>gf_bar(~as.factor(cyl), data = mtcars, fill=~as.factor(vs)) %&gt;%
+  gf_labs(title = &quot;Default Stack&quot;, x = &quot;Cylinders&quot;, fill = &quot;vs&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+<pre class="r"><code>gf_bar(~as.factor(cyl), data = mtcars, fill=~as.factor(vs), position = position_fill()) %&gt;%
+  gf_labs(title = &quot;Position Fill&quot;, x = &quot;Cylinders&quot;, fill = &quot;vs&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-5-4.png" width="672" /></p>
+<p>Position fill can be used with other graphs too. Below are examples
+of histograms using the default stack and then fill.</p>
+<pre class="r"><code>gf_histogram(~price, data = diamonds, fill = ~cut) %&gt;%
+  gf_labs(title = &quot;Default Stacked Histogram&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~price, data = diamonds, fill = ~cut, position = position_fill()) %&gt;%
+  gf_labs(title = &quot;Proportion Filled Histogram&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<p>The following examples of density plots show the overlapping
+densities (default), stacked densities, and then position filled
+densities.</p>
+<pre class="r"><code>gf_density(~price, data = diamonds, fill = ~cut) %&gt;%
+  gf_labs(title = &quot;Default Overlapping Densities&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>gf_density(~price, data = diamonds, fill = ~cut, position = position_stack()) %&gt;%
+  gf_labs(title = &quot;Stacked Densities&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<pre class="r"><code>gf_density(~price, data = diamonds, fill = ~cut, position = position_fill()) %&gt;%
+  gf_labs(title = &quot;Proportion Filled Densities&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
+<pre class="r"><code>gf_density(~age, data = gss_sm, fill=~marital) %&gt;%
+  gf_labs(title = &quot;Default Overlapping Densities&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-7-4.png" width="672" /></p>
+<pre class="r"><code>gf_density(~age, data = gss_sm, fill=~marital, position = position_stack()) %&gt;%
+  gf_labs(title = &quot;Stacked Densities&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-7-5.png" width="672" /></p>
+<pre class="r"><code>gf_density(~age, data = gss_sm, fill=~marital, position = position_fill()) %&gt;%
+  gf_labs(title = &quot;Proportion Filled Densities&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-7-6.png" width="672" /></p>
+</div>
+<div id="jitter-point-position" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Jitter Point
+Position</h1>
+<p>When points overlap it is helpful to jitter the position to see the
+overlapping points. Also, adding transparency is usually helpful. There
+are a few ways to jitter point positions.</p>
+<p><strong>Jitter Specific Variable:</strong> gf_plot( Y ~ jitter(X),
+data = Dataset)</p>
+<p><strong>Jitter Plot:</strong> gf_jitter( Y ~ X , data = Dataset,
+width = 0.3, height = 0.2)</p>
+<p><strong>Jitter Position:</strong> gf_plot( Y ~ X , data = Dataset ,
+position = position_jitter(height = 0, width = 0.2))</p>
+<pre class="r"><code>gf_point(Siblings~BirthOrder, data = StudentSurvey) %&gt;%
+  gf_labs(title = &quot;Default Graph Overlapping Points&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(Siblings~jitter(BirthOrder), data = StudentSurvey, alpha = 0.3) %&gt;%
+  gf_labs(title = &quot;Just Jitter Birth Order&quot;, subtitle = &quot;Specifying jitter around variable&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(Siblings~BirthOrder, data = StudentSurvey, alpha = 0.3, position = position_jitter(height = 0, width = 0.2)) %&gt;%
+  gf_labs(title = &quot;Just Jitter Birth Order&quot;, subtitle = &quot;Specifying Position Jitter&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+<pre class="r"><code>gf_jitter(Siblings~BirthOrder, data = StudentSurvey, alpha = 0.4) %&gt;%
+  gf_labs(title = &quot;Jitter both variables using a jitter plot&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
+<pre class="r"><code>gf_point(Siblings~BirthOrder, data = StudentSurvey, position = position_jitter(), alpha = 0.3) %&gt;%
+  gf_labs(title = &quot;Jitter both variables using position jitter&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-8-5.png" width="672" /></p>
+<pre class="r"><code>gf_jitter(Siblings~BirthOrder, data = StudentSurvey, alpha = 0.4, width = 0.3, height = 0.2)  %&gt;%
+  gf_labs(title = &quot;Jitter both variables using a jitter plot&quot;, subtitle = &quot;Specifying width &amp; height&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-8-6.png" width="672" /></p>
+<pre class="r"><code>gf_point(Siblings~BirthOrder, data = StudentSurvey, position = position_jitter(width = 0.3, height = 0.2), alpha = 0.3)  %&gt;%
+  gf_labs(title = &quot;Jitter both variables using position jitter&quot;, subtitle = &quot;Specifying width &amp; height&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-8-7.png" width="672" /></p>
+</div>
+<div id="jitterdoge-points-lines" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Jitterdoge Points &amp;
+Lines</h1>
+<p>If you’d like to both jitter position of points and dodge overlapping
+categories, use jitterdodge.</p>
+<p><strong>Example:</strong> gf_plot(Y~X, data = Dataset, position =
+position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3))</p>
+<pre class="r"><code>gf_point(body_mass_g~sex, data = penguins, color = ~species)%&gt;%
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_labs(title = &quot;Default overlapping points &amp; categories&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(body_mass_g~sex, data = penguins, color = ~species, position = position_jitterdodge()) %&gt;%
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_labs(title = &quot;Default JitterDodge&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(body_mass_g~sex, data = penguins, color = ~species, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3), alpha = 0.3) %&gt;%
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_labs(title = &quot;Jitterdodge specifying jitter &amp; dodge widths&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
+<p>The following examples overlay summary lines on the plot. So the
+categories &amp; lines match up, it is best to keep the jitterdodge
+specifications the same throughout all layers.</p>
+<pre class="r"><code>gf_point(body_mass_g~sex, data = penguins, color = ~species, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3, seed = 123), alpha = 0.3) %&gt;%
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_line(body_mass_g~sex, color = ~species, data = penguins, group = ~species, stat = &quot;summary&quot;, size = 1) %&gt;%
+  gf_labs(title = &quot;No jitterdodge on lines&quot;)</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()`</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(body_mass_g~sex, data = penguins, color = ~species, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3, seed = 123), alpha = 0.3) %&gt;%
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_line(body_mass_g~sex, color = ~species, data = penguins, group = ~species, stat = &quot;summary&quot;, size = 1, position = position_jitterdodge()) %&gt;%
+  gf_labs(title = &quot;Default jitterdodge lines&quot;)</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()`</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(body_mass_g~sex, data = penguins, color = ~species, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3, seed = 123), alpha = 0.3) %&gt;%
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_line(body_mass_g~sex, color = ~species, data = penguins, group = ~species, stat = &quot;summary&quot;, size = 1, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3)) %&gt;%
+  gf_labs(title = &quot;Specify widths in jitterdodge&quot;)</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()`</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-10-3.png" width="672" /></p>
+</div>
+<div id="nudge-text-position" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Nudge Text
+Position</h1>
+<p>To adjust text away from elements in your visual, you can use
+position_nudge.</p>
+<p><strong>Example:</strong> gf_text( label = ~TextVar , position =
+position_nudge())</p>
+<pre class="r"><code>gf_point(Yield~AmmoniumAmount|AmmoniumQuality, data=ammonium2, color = ~ProdUnit, shape = ~ProdUnit) %&gt;%
+  gf_text(label = ~Block) %&gt;%
+  gf_labs(x = &quot;Ammonium Amount&quot;, title = &quot;Using hjust to nudge labels&quot;, shape = &quot;Production\n Unit&quot;, color = &quot;Production\n Unit&quot;) %&gt;%
+  gf_labs(title = &quot;Default Overlapping Labels&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(Yield~AmmoniumAmount|AmmoniumQuality, data=ammonium2, color = ~ProdUnit, shape = ~ProdUnit) %&gt;%
+  gf_text(label = ~Block, position = position_nudge(x = -0.1)) %&gt;%
+  gf_labs(x = &quot;Ammonium Amount&quot;, title = &quot;Using hjust to nudge labels&quot;, shape = &quot;Production\n Unit&quot;, color = &quot;Production\n Unit&quot;) %&gt;%
+  gf_labs(title = &quot;Nudge labels -0.1&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(Yield~AmmoniumAmount|AmmoniumQuality, data=ammonium2, color = ~ProdUnit, shape = ~ProdUnit) %&gt;%
+  gf_text(label = ~Block, position = position_nudge(x = 0.1)) %&gt;%
+  gf_labs(x = &quot;Ammonium Amount&quot;, title = &quot;Using hjust to nudge labels&quot;, shape = &quot;Production\n Unit&quot;, color = &quot;Production\n Unit&quot;) %&gt;%
+  gf_labs(title = &quot;Nudge labels 0.1&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-12-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(Yield~AmmoniumAmount|AmmoniumQuality, data=ammonium2, color = ~ProdUnit, shape = ~ProdUnit) %&gt;%
+  gf_text(label = ~Block, hjust = 2) %&gt;%
+  gf_labs(x = &quot;Ammonium Amount&quot;, title = &quot;Using hjust to nudge labels&quot;, shape = &quot;Production\n Unit&quot;, color = &quot;Production\n Unit&quot;)  %&gt;%
+  gf_labs(title = &quot;Nudge labels Using hjust instead&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-12-4.png" width="672" /></p>
+<p>To adjust halfway, use vjust = 0.5 or hjust = 0.5</p>
+<p><strong>Example:</strong> gf_text( , position = position_stack(vjust
+= 0.5))</p>
+<pre class="r"><code>gf_col(Treatment~PercentPatients, data=clinical, fill=~Response) %&gt;%
+  gf_refine(scale_fill_brewer(palette = &quot;RdYlGn&quot;, direction = -1)) %&gt;%
+  gf_text(Treatment~PercentPatients, label=~round(PercentPatients, digits = 0), position = position_stack()) %&gt;%
+  gf_labs(x = &quot;Cumulative Percentage of Patients&quot;, title = &quot;Add labels using position_stack&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>gf_col(Treatment~PercentPatients, data=clinical, fill=~Response) %&gt;%
+  gf_refine(scale_fill_brewer(palette = &quot;RdYlGn&quot;, direction = -1)) %&gt;%
+  gf_text(Treatment~PercentPatients, label=~round(PercentPatients, digits = 0), position = position_stack(vjust = 0.5)) %&gt;%
+  gf_labs(x = &quot;Cumulative Percentage of Patients&quot;, title = &quot;Adjust labels using position_stack &amp; vjust&quot;)</code></pre>
+<p><img src="Position_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

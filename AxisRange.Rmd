@@ -365,6 +365,48 @@ grid.arrange(original, both.reverse, nrow = 1)
 
 ```
 
+## Reverse Fill
+
+The following example looks at a bargraph and different ways to reverse the fill categories and colors used to fill.
+
+```{r}
+gf_bar(~cut, data = diamonds) %>%
+  gf_labs(title = "Default Graph")
+
+gf_bar(~cut, data = diamonds) %>%
+  gf_refine(scale_x_discrete(limits = rev)) %>%
+  gf_labs(title = "Reverse X Axis")
+```
+
+**Reverse fill categories only:** fill = ~ fct_rev(Var)
+
+**Reverse fill colors & categories:** scale_fill_viridis(discrete = TRUE, limits = rev)
+
+**Reverse legend to match reversed fill & cateogeis:** gf_theme(guides(fill=guide_legend(reverse=TRUE)))
+
+```{r, include=FALSE}
+require(viridis)
+```
+
+
+```{r, warning=FALSE}
+gf_bar(~cut, data = diamonds, fill = ~clarity) %>%
+  gf_labs(title = "Default Graph With Fill")
+
+gf_bar(~cut, data = diamonds, fill = ~fct_rev(clarity)) %>%
+  gf_labs(title = "Reverse Fill Categories", subtitle = "Color Order The Same", fill = "clarity")
+
+
+gf_bar(~cut, data = diamonds, fill = ~clarity) %>%
+  gf_refine(scale_fill_viridis(discrete = TRUE, limits = rev)) %>%
+  gf_labs(title = "Reverse Color Order & Categories") 
+
+gf_bar(~cut, data = diamonds, fill = ~clarity) %>%
+  gf_refine(scale_fill_viridis(discrete = TRUE, limits = rev)) %>%
+  gf_labs(title = "Match Legend to Reverse Color Order ") %>%
+  gf_theme(guides(fill=guide_legend(reverse=TRUE)))
+```
+
 # Order of Categories
 
 We can adjust the default order of categories a few ways.

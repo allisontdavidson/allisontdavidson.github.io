@@ -132,6 +132,24 @@ inward = gf_dist("chisq", df=5)%>%
 grid.arrange(default, left, right, inward)
 ```
 
+## Adding Text using Annotate
+
+You may notice that gf_text looks a bit fuzzy/pixilated/bold.  To make a more crisp text annotation, you can also borrow from the ggplot annotate using + to add layers (instead of %>%).
+
+**Example:** gf_plot() + annotate("text", x = 5, y = 1, label = "Text Label")
+
+```{r}
+gf_dist("chisq", df=5) %>%
+gf_dist("chisq", df=10, col="orange") %>%
+gf_dist("chisq", df=20, col="darkcyan", linetype = "dashed") %>%
+  gf_theme(theme_classic()) %>%
+  gf_labs(title = "Adding Labels Using Annotate") +
+  annotate("text", x = 7, y = 0.12, label = "df = 5", hjust = "left") +
+  annotate("text", x = 15, y = 0.08, label = "df = 10", color = "orange", hjust = "left") +
+  annotate("text", x = 26, y = 0.05, label = "df = 20", color = "darkcyan", hjust = "left")
+```
+
+
 # Adding Text to Locations Based on Data
 
 To add text to a specific location based on data, you use the same gf_text( ) command, but instead of specifying x and y directly, we use the ggformula Y \~ X to either supply variable values.
@@ -241,7 +259,7 @@ In the following example we'll see a few things.
 ```{r, warning = FALSE}
 gf_jitter(WeightGain~Amount, data=rats.tidy, color=~Source, alpha = 0.4, shape = ~Source, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.2)) %>%
   gf_line(WeightGain~Amount, color = ~Source, data=rats.tidy, group=~Source, stat="summary", linetype = ~Source, size = 2) %>%
-  gf_labs(y = "Weight Gain", x = "Amount of Protein", title = "Weight Gain in Rats") %>%
+  gf_labs(y = "Weight Gain", x = "Amount of Protein", title = "Add labels at summary statistic") %>%
   gf_text(data = subset(rats.tidy, Amount == "High"), label = ~Source, stat = "summary", hjust = -0.1) %>%
   gf_theme(legend.position = "none")
 ```
@@ -509,7 +527,7 @@ There are a few ways to add regression lines and intervals to your plot.
 
 The examples below use the gf_lm() defaults which utilize simple linear regression models.  You can still alter the color and linetype of the trendline and also add confidence intervals for the mean response and prediction bands.
 
-```{r}
+```{r, warning = FALSE}
 gf_point(HOFScore~GamesStarted, data = Quarterbacks) %>%
   gf_lm()
 
@@ -715,7 +733,7 @@ gf_point(Petal.Length~Petal.Width, data=iris, color = ~Species) %>%
   gf_refine(scale_color_viridis(discrete = TRUE)) %>%
   gf_labs(title = "No Gray Reference Dots")
 
-gf_point(Petal.Length~Petal.Width, data=transform(iris, Species = NULL), color = "gray85", alpha = 0.4) %>%
+gf_point(Petal.Length~Petal.Width, data=transform(iris, Species = NULL), color = "gray65", alpha = 0.4) %>%
   gf_point(Petal.Length~Petal.Width, data=iris, color = ~Species) %>%
   gf_facet_wrap(~Species) %>%
   gf_theme(legend.position = "none") %>%
@@ -730,7 +748,7 @@ gf_histogram(~price, data = diamonds, fill=~cut, show.legend = FALSE) %>%
   gf_facet_wrap(~cut) %>%
   gf_labs(title = "No Gray Reference")
 
-gf_histogram(~price, data = transform(diamonds, cut = NULL), fill="gray85", show.legend = FALSE) %>%
+gf_histogram(~price, data = transform(diamonds, cut = NULL), fill="gray65", show.legend = FALSE) %>%
 gf_histogram(~price, data = diamonds, fill=~cut, show.legend = FALSE) %>%
   gf_facet_wrap(~cut) %>%
   gf_labs(title = "Gray Reference Added")
@@ -759,8 +777,8 @@ gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %>
 gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %>%
   gf_facet_wrap(~Type) %>%
   gf_lm(show.legend = FALSE) %>%
-  gf_lm(interval = "prediction", fill = ~Type, alpha = 0.1, show.legend = FALSE)%>%
-  gf_lm(interval = "confidence", fill = ~Type, alpha = 0.2, show.legend = FALSE)%>%
+  gf_lm(interval = "prediction", fill = ~Type, alpha = 0.3, show.legend = FALSE)%>%
+  gf_lm(interval = "confidence", fill = ~Type, alpha = 0.3, show.legend = FALSE)%>%
   gf_labs(title = "Prediction & Confidence Bands Added")
 ```
 

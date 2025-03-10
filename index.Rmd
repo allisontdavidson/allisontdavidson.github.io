@@ -30,14 +30,26 @@ This compilation utilizes many packages - but here are a few key ones to start:
 -   tidyr (wrangle data)
 -   viridis (viridis color palettes)
 -   ggrepel (avoid overlapping labels)
+-   ggmosaic (creating mosaic plots)
+-   socviz (several datasets)
 
-## Additional Resources
+
+## Introduction to Visualization Resources
+
 
 This compilation assumes a basic understanding of creating the initial graph - and will therefore focus on ways to refine a graph further. As such, a few other resources for those wanting more introduction to graphing are included below.
 
 -   **Data Viz Basics:** Claus O. Wilke has a great resource discussing many [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/) made freely available.
 
 -   **R Graph Ideas & Codes:** The [R Graph Gallery](https://r-graph-gallery.com/index.html) gives many examples (and code) of graphs available.
+
+- **ggformula intro:** The following [article](https://www.mosaic-web.org/ggformula/articles/pkgdown/ggformula-long.html) discusses many different types of plots and how to use ggformula to create them.
+
+
+## Additional Refinement Resources
+
+
+Throughout the website I link to many resources - but most commonly, I will reference the ggplot2 book listed below.
 
 -   **Refinements using ggplot2:** The [ggplot2](https://ggplot2-book.org/mastery.html) book is a wealth of information not only on creating graphs but also refining them.
 

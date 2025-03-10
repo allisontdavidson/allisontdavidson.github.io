@@ -352,7 +352,9 @@ div.tocify {
     <li>
       <a href="Annotations.html">Annotations</a>
     </li>
-    <li class="dropdown-header">Position Adjustments</li>
+    <li>
+      <a href="Position.html">Position Adjustments</a>
+    </li>
     <li class="dropdown-header">Adding Summary Statistics</li>
     <li class="dropdown-header">Adjusting Non-Color Aesthetics</li>
     <li class="dropdown-header">Color</li>
@@ -473,6 +475,25 @@ inward = gf_dist(&quot;chisq&quot;, df=5)%&gt;%
 
 grid.arrange(default, left, right, inward)</code></pre>
 <p><img src="Annotations_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div id="adding-text-using-annotate" class="section level2"
+number="1.1">
+<h2><span class="header-section-number">1.1</span> Adding Text using
+Annotate</h2>
+<p>You may notice that gf_text looks a bit fuzzy/pixilated/bold. To make
+a more crisp text annotation, you can also borrow from the ggplot
+annotate using + to add layers (instead of %&gt;%).</p>
+<p><strong>Example:</strong> gf_plot() + annotate(“text”, x = 5, y = 1,
+label = “Text Label”)</p>
+<pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5) %&gt;%
+gf_dist(&quot;chisq&quot;, df=10, col=&quot;orange&quot;) %&gt;%
+gf_dist(&quot;chisq&quot;, df=20, col=&quot;darkcyan&quot;, linetype = &quot;dashed&quot;) %&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_labs(title = &quot;Adding Labels Using Annotate&quot;) +
+  annotate(&quot;text&quot;, x = 7, y = 0.12, label = &quot;df = 5&quot;, hjust = &quot;left&quot;) +
+  annotate(&quot;text&quot;, x = 15, y = 0.08, label = &quot;df = 10&quot;, color = &quot;orange&quot;, hjust = &quot;left&quot;) +
+  annotate(&quot;text&quot;, x = 26, y = 0.05, label = &quot;df = 20&quot;, color = &quot;darkcyan&quot;, hjust = &quot;left&quot;)</code></pre>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
 </div>
 <div id="adding-text-to-locations-based-on-data" class="section level1"
 number="2">
@@ -496,11 +517,11 @@ in a certain direction.</p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Labels without Nudge&quot;) %&gt;%
   gf_text(HOFScore~GamesStarted, data = subset(Quarterbacks, GamesStarted &gt; 250), label = ~Player, hjust = &quot;right&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Labels with nudge_x = -3&quot;) %&gt;%
   gf_text(HOFScore~GamesStarted, data = subset(Quarterbacks, GamesStarted &gt; 250), label = ~Player, hjust = &quot;right&quot;, nudge_x = -3)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
 </div>
 <div id="either-x-or-y-is-defined-by-variables-in-dataset"
 class="section level2" number="2.2">
@@ -515,7 +536,7 @@ provide R with a specified height of 0.1.</p>
 ~NameVar )</p>
 <pre class="r"><code>gf_dotplot(~Salary, data = BaseballSalaries2019, binwidth = 0.3) %&gt;%
   gf_text(0.1~Salary, data = subset(BaseballSalaries2019, Salary &gt;= 40), label = ~Name, hjust = &quot;inward&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Alternatively, in the example below we have the y-variable (birhts)
 but we only want to label he end of the lines. In this case we can
 specify where exactly the x-location is by using
@@ -529,13 +550,13 @@ visual range or adjusting the x-axis range.</p>
   gf_theme(legend.position = &quot;none&quot;) %&gt;%
   gf_refine(scale_x_date(expand = expansion(add = 25))) %&gt;%
   gf_labs(title = &quot;Add Labels &amp; Expand Visual Range&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <pre class="r"><code>gf_line(births~date, data = Births78, col = ~wday) %&gt;%
   gf_text(births~as.Date(&quot;1978-12-31&quot;), data = subset(Births78, date &gt; as.Date(&quot;1978-12-24&quot;)), label = ~wday, hjust = &quot;left&quot;) %&gt;%
   gf_theme(legend.position = &quot;none&quot;) %&gt;%
   gf_lims(x = c(as.Date(&quot;1978-01-01&quot;), as.Date(&quot;1979-01-03&quot;))) %&gt;%
   gf_labs(title = &quot;Add labels &amp; Ajust X-Axis Range&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
 </div>
 <div id="locations-calculated-from-data" class="section level2"
 number="2.3">
@@ -564,12 +585,12 @@ nudge the labels away from the reference lines.</p></li>
 </ol>
 <pre class="r"><code>gf_jitter(WeightGain~Amount, data=rats.tidy, color=~Source, alpha = 0.4, shape = ~Source, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.2)) %&gt;%
   gf_line(WeightGain~Amount, color = ~Source, data=rats.tidy, group=~Source, stat=&quot;summary&quot;, linetype = ~Source, size = 2) %&gt;%
-  gf_labs(y = &quot;Weight Gain&quot;, x = &quot;Amount of Protein&quot;, title = &quot;Weight Gain in Rats&quot;) %&gt;%
+  gf_labs(y = &quot;Weight Gain&quot;, x = &quot;Amount of Protein&quot;, title = &quot;Add labels at summary statistic&quot;) %&gt;%
   gf_text(data = subset(rats.tidy, Amount == &quot;High&quot;), label = ~Source, stat = &quot;summary&quot;, hjust = -0.1) %&gt;%
   gf_theme(legend.position = &quot;none&quot;)</code></pre>
 <pre><code>## No summary function supplied, defaulting to `mean_se()`
 ## No summary function supplied, defaulting to `mean_se()`</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 <div id="create-new-dataset-of-values" class="section level3"
 number="2.3.2">
@@ -594,12 +615,12 @@ gf_point(Sepal.Length~Sepal.Width, data=iris, color = ~Species) %&gt;%
   gf_text(Sepal.Length.Ave~Sepal.Width.Ave, label=~Species, data = irisLabels) %&gt;%
   gf_theme(legend.position = &quot;none&quot;) %&gt;%
   gf_labs(title = &quot;gf_text( ) (hard to read)&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <pre class="r"><code>gf_point(Sepal.Length~Sepal.Width, data=iris, color = ~Species) %&gt;%
   gf_label(Sepal.Length.Ave~Sepal.Width.Ave, label=~Species, data = irisLabels) %&gt;%
   gf_theme(legend.position = &quot;none&quot;) %&gt;%
   gf_labs(title = &quot;gf_label( ) (easier to read)&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
 </div>
 <div id="use-calculated-data-values" class="section level3"
 number="2.3.3">
@@ -618,12 +639,12 @@ gf_text command:</p>
   gf_refine(scale_fill_brewer(palette = &quot;RdYlGn&quot;, direction = -1)) %&gt;%
   gf_text(Treatment~(100-CumPercent+PercentPatients/2), label=~round(PercentPatients, digits = 0)) %&gt;%
   gf_labs(x = &quot;Cumulative Percentage of Patients&quot;, title = &quot;Use Formula to Specify Location of Labels&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre class="r"><code>gf_col(Treatment~PercentPatients, data=clinical, fill=~Response) %&gt;%
   gf_refine(scale_fill_brewer(palette = &quot;RdYlGn&quot;, direction = -1)) %&gt;%
   gf_text(Treatment~PercentPatients, label=~round(PercentPatients, digits = 0), position = position_stack(vjust = 0.5)) %&gt;%
   gf_labs(x = &quot;Cumulative Percentage of Patients&quot;, title = &quot;Adjust Position using position_stack &amp; vjust&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -637,11 +658,11 @@ displayed if we adjust for overlapping points.</p>
 <pre class="r"><code>gf_dotplot(~Salary, data = BaseballSalaries2019, binwidth = 0.3) %&gt;%
   gf_text(0.1~Salary, data = subset(BaseballSalaries2019, Salary &gt;= 28), label = ~Name) %&gt;%
   gf_labs(title = &quot;Plot All Names Earning 28+ Million&quot;, subtitle = &quot;Note many overlapping names&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <pre class="r"><code>gf_dotplot(~Salary, data = BaseballSalaries2019, binwidth = 0.3) %&gt;%
   gf_text(0.1~Salary, data = subset(BaseballSalaries2019, Salary &gt;= 28), label = ~Name, check_overlap = TRUE) %&gt;%
   gf_labs(title = &quot;Use option check_overlap = TRUE&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
 <div id="ggrepel" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> GGrepel</h2>
 <p>Allowing for a bit more flexibility in overlapping labels is the
@@ -663,11 +684,11 @@ these options.</p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Label Points Without GGrepel&quot;) %&gt;%
   gf_text(HOFScore~GamesStarted, data = subset(Quarterbacks, GamesStarted &gt; 180 | HOFScore &gt; 100), label = ~Player, hjust = &quot;right&quot;, nudge_x = -3, size = 3)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Label Points WITH GGrepel&quot;) +
   geom_text_repel(data = subset(Quarterbacks, GamesStarted &gt; 185 | HOFScore &gt; 100), aes(y = HOFScore, x = GamesStarted, label = Player), min.segment.length = 0.5, box.padding = 0.5, size = 3)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
 <p>Below is an example where the x value is from the dataset, but the y
 location is a numeric value (e.g. 0). Note, ggrepel may change as you
 rerun your code (as it may use a random generator to determine spacing).
@@ -679,7 +700,7 @@ change of the label location to a minimum.</p>
 gf_dotplot(~Salary, data = BaseballSalaries2019, binwidth = 0.3) %&gt;%
   gf_labs(title = &quot;GGrepel in Dotplot&quot;) +
   geom_text_repel(data = subset(BaseballSalaries2019, Salary &gt;= 30), aes(y = 0, x = Salary, label = Name), max.overlaps = Inf, size = 3, min.segment.length = 0, nudge_y = 0.1, box.padding = 0.7)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
 </div>
 <div id="plotting-labels-as-datapoints" class="section level1"
@@ -692,7 +713,7 @@ labels as “points” instead.</p>
 <pre class="r"><code>gf_text(PercentFat~Age, data=fat, label = ~Sex, color = ~Sex) %&gt;%
   gf_theme(legend.position = &quot;none&quot;) %&gt;%
   gf_labs(y = &quot;Percent Body Fat&quot;, title = &quot;Use Text as Points&quot;, subtitle = &quot;Color By Gender&quot;) </code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 <div id="adding-reference-points" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Adding Reference
@@ -711,7 +732,7 @@ gf_polygon(lat~long, data=japan, group = ~group, fill=NA, color = &quot;black&qu
   gf_theme(theme_map()) %&gt;%
   gf_refine(coord_equal()) %&gt;%
   gf_theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>Alternatively, one can calculate values and use those the plot
 reference points (e.g. the “middle” of a group).</p>
 <pre class="r"><code>irisLabels = iris %&gt;%
@@ -724,7 +745,7 @@ group_by(Species) %&gt;%
 gf_point(Sepal.Length~Sepal.Width, data=iris, color = ~Species, alpha = 0.3) %&gt;%
   gf_point(Sepal.Length.Ave~Sepal.Width.Ave, color=~NewSpecies, data = irisLabels, size = 5) %&gt;%
   gf_theme(legend.position = &quot;none&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 <div id="adding-reference-lines" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Adding Reference
@@ -738,7 +759,7 @@ reference guide.</p>
 <p>For linetype specifically, the following shows the names of several
 differnt linetypes that can be specified.</p>
 <pre class="r"><code>show_line_types()</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <div id="vertical-lines" class="section level2" number="6.1">
 <h2><span class="header-section-number">6.1</span> Vertical Lines</h2>
 <p>To add vertical reference lines to your plot, use the gf_vline( )
@@ -749,7 +770,7 @@ command.</p>
   gf_vline(xintercept = mean(~GamesStarted, data = na.omit(Quarterbacks))) %&gt;%
   gf_text(200~50, label = &quot;Below\nAverage&quot;, color = &quot;gray70&quot;) %&gt;%
   gf_text(200~150, label = &quot;Above\nAverage&quot;, color = &quot;gray70&quot;) </code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 </div>
 <div id="horizontal-lines" class="section level2" number="6.2">
 <h2><span class="header-section-number">6.2</span> Horizontal Lines</h2>
@@ -761,7 +782,7 @@ command.</p>
   gf_hline(yintercept = 100) %&gt;%
   gf_text(200~100, label = &quot;HOF Worthy&quot;, color = &quot;gray70&quot;) %&gt;%
   gf_text(50~300, label = &quot;Not in HOF&quot;, color = &quot;gray70&quot;, hjust = &quot;inward&quot;) </code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 </div>
 <div id="sloped-lines" class="section level2" number="6.3">
 <h2><span class="header-section-number">6.3</span> Sloped Lines</h2>
@@ -774,7 +795,7 @@ command.</p>
   gf_abline(slope = 1 , linetype = &quot;dashed&quot; , color = &quot;gray50&quot;) %&gt;%
   gf_text(70~20, hjust = 0, label = &quot;Husband Older&quot; , size = 6 , color = &quot;gray80&quot;) %&gt;%
   gf_text(30~55, hjust = 0, label = &quot;Wife Older&quot;, size = 6 , color = &quot;gray80&quot; )</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 </div>
 <div id="qq-plots" class="section level2" number="6.4">
 <h2><span class="header-section-number">6.4</span> QQ plots</h2>
@@ -786,7 +807,7 @@ gf_qqline()</p>
 <pre class="r"><code>gf_qq(~Salary, data = BaseballSalaries2019) %&gt;%
   gf_qqline() %&gt;%
   gf_labs(title = &quot;QQ plot with reference line added&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 </div>
 <div id="regression" class="section level2" number="6.5">
 <h2><span class="header-section-number">6.5</span> Regression</h2>
@@ -811,51 +832,20 @@ the trendline and also add confidence intervals for the mean response
 and prediction bands.</p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_lm()</code></pre>
-<pre><code>## Warning: Removed 2 rows containing non-finite outside the scale range
-## (`stat_lm()`).</code></pre>
-<pre><code>## Warning: Removed 2 rows containing missing values or values outside the scale range
-## (`geom_point()`).</code></pre>
-<pre><code>## Warning: Using the `size` aesthetic with geom_line was deprecated in ggplot2 3.4.0.
-## ℹ Please use the `linewidth` aesthetic instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_lm(color = &quot;black&quot;, linetype = &quot;dashed&quot;)</code></pre>
-<pre><code>## Warning: Removed 2 rows containing non-finite outside the scale range
-## (`stat_lm()`).</code></pre>
-<pre><code>## Warning: Removed 2 rows containing missing values or values outside the scale range
-## (`geom_point()`).</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-30-2.png" width="672" /></p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks)  %&gt;%
   gf_lm(interval = &quot;confidence&quot;, alpha = 0.3, color = &quot;black&quot;, linetype = &quot;dashed&quot;)</code></pre>
-<pre><code>## Warning: Removed 2 rows containing non-finite outside the scale range (`stat_lm()`).
-## Removed 2 rows containing missing values or values outside the scale range
-## (`geom_point()`).</code></pre>
-<pre><code>## Warning: Using the `size` aesthetic with geom_ribbon was deprecated in ggplot2 3.4.0.
-## ℹ Please use the `linewidth` aesthetic instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-29-3.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-30-3.png" width="672" /></p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks)  %&gt;%
   gf_lm(interval = &quot;prediction&quot;, alpha = 0.3, fill = &quot;blue&quot;, color = &quot;black&quot;, linetype = &quot;dashed&quot;)</code></pre>
-<pre><code>## Warning: Removed 2 rows containing non-finite outside the scale range
-## (`stat_lm()`).</code></pre>
-<pre><code>## Warning: Removed 2 rows containing missing values or values outside the scale range
-## (`geom_point()`).</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-29-4.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-30-4.png" width="672" /></p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks)  %&gt;%
   gf_lm(interval = &quot;prediction&quot;, alpha = 0.1, fill = &quot;blue&quot;, color = &quot;black&quot;, linetype = &quot;dashed&quot;)%&gt;%
   gf_lm(interval = &quot;confidence&quot;, alpha = 0.3, color = &quot;black&quot;, linetype = &quot;dashed&quot;)</code></pre>
-<pre><code>## Warning: Removed 2 rows containing non-finite outside the scale range
-## (`stat_lm()`).</code></pre>
-<pre><code>## Warning: Removed 2 rows containing non-finite outside the scale range
-## (`stat_lm()`).</code></pre>
-<pre><code>## Warning: Removed 2 rows containing missing values or values outside the scale range
-## (`geom_point()`).</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-29-5.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-30-5.png" width="672" /></p>
 <p>The following example manually specifies the function to be
 plotted.</p>
 <pre class="r"><code>simple.model = lm(HOFScore~GamesStarted, data = Quarterbacks)
@@ -882,7 +872,7 @@ summary(simple.model)</code></pre>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_fun(-19.75 + 0.557 * GamesStarted~ GamesStarted) %&gt;%
   gf_labs(title = &quot;Manually Adding Function to Graph&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 </div>
 <div id="plotting-transformations" class="section level3"
 number="6.5.2">
@@ -905,13 +895,13 @@ gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_fun(poly2.F(GamesStarted)~GamesStarted, linetype = ~&quot;Polynomial 2 Model&quot;) %&gt;%
   gf_theme(legend.position = &quot;top&quot;, legend.title = element_blank()) %&gt;%
   gf_refine(coord_cartesian(ylim = c(0,300)))</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_fun(poly3.F(GamesStarted)~GamesStarted, linetype = ~&quot;Polynomial 3 Model&quot;)  %&gt;%
   gf_fun(poly2.F(GamesStarted)~GamesStarted, linetype = ~&quot;Polynomial 2 Model&quot;) %&gt;%
   gf_theme(legend.position = &quot;top&quot;, legend.title = element_blank()) %&gt;%
   gf_refine(coord_cartesian(ylim = c(0,300)))</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-31-2.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-32-2.png" width="672" /></p>
 </div>
 <div id="multiple-regression" class="section level3" number="6.5.3">
 <h3><span class="header-section-number">6.5.3</span> Multiple
@@ -928,7 +918,7 @@ gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_fun(mult.F(GamesStarted, ChampionshipWins =2)~GamesStarted, col = ~&quot;Wins = 2&quot;) %&gt;%
   gf_fun(mult.F(GamesStarted, ChampionshipWins =4)~GamesStarted, col = ~&quot;Wins = 4&quot;) %&gt;%
   gf_labs(title = &quot;Adding Multiple Regression Reference Lines&quot;, color = &quot;Chaptionship\nWins&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 </div>
 <div id="smooth-curves" class="section level3" number="6.5.4">
 <h3><span class="header-section-number">6.5.4</span> Smooth Curves</h3>
@@ -940,11 +930,11 @@ plotted.</p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_smooth()</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39;</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_smooth(se= TRUE)</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39;</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-33-2.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-34-2.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -971,19 +961,19 @@ trying to use variables/data from the previous layers.</p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Adding Red Rectangle&quot;, subtitle = &quot;At the time of creating this, alpha seems to only work when data &amp; inherit specified&quot;) %&gt;%
   gf_rect(125+300~250+325, fill = &quot;red&quot;, alpha = 0.2)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Red Rectangle With Proper Alpha Transparency&quot;) %&gt;%
   gf_rect(125+300~250+325, fill = &quot;red&quot;, alpha = 0.2, data = data.frame(), inherit = FALSE)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-34-2.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-35-2.png" width="672" /></p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Red Rectangle Outline Only&quot;) %&gt;%
   gf_rect(125+300~250+325, color = &quot;red&quot;, alpha = 0.2, data = data.frame(), inherit = FALSE, fill = NA)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-34-3.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-35-3.png" width="672" /></p>
 <pre class="r"><code>gf_point(HOFScore~GamesStarted, data = Quarterbacks) %&gt;%
   gf_labs(y = &quot;Hall of Fame Score&quot;, x = &quot;Number of Games Started&quot;, title = &quot;Red Rectangle Dotted Outline&quot;) %&gt;%
   gf_rect(125+300~250+325, color = &quot;red&quot;, fill = NA, linetype = &quot;dashed&quot;, size = 2)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-34-4.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-35-4.png" width="672" /></p>
 <p>The following example is translated from the <a
 href="https://ggplot2-book.org/annotations">ggplot2</a> book. <a
 href="https://www.databrewer.co/R/gallery/ggplot2-segment-US-president-terms">This
@@ -998,7 +988,7 @@ gf_line(unemploy~date, data = economics) %&gt;%
   gf_text(2500~start, data = presidential, label = ~name, size = 3, hjust = &quot;left&quot;) %&gt;%
   gf_refine(scale_fill_manual(values = c(&quot;blue&quot;, &quot;red&quot;)),
             scale_color_manual(values = c(&quot;blue&quot;, &quot;red&quot;)))</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 </div>
 <div id="arrows-line-segments" class="section level2" number="7.2">
 <h2><span class="header-section-number">7.2</span> Arrows &amp; Line
@@ -1019,7 +1009,7 @@ straight line.</p>
   gf_rect(0.5+19.5~-0.3+5.1, fill = NA, size = 1) %&gt;%
   gf_curve(27+7~25+5.5, curvature = -0.3, color = &quot;darkcyan&quot;, arrow = arrow(), size = 1) %&gt;%
   gf_text(7~20, label = &quot;Kenshaw makes as \nmuch as 19 other \nplayers combined&quot;, color = &quot;black&quot;, size = 4)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 </div>
 <div id="fill-objects" class="section level2" number="7.3">
 <h2><span class="header-section-number">7.3</span> Fill Objects</h2>
@@ -1029,7 +1019,7 @@ to help highlight certain counties.</p>
   gf_refine(scale_fill_manual(values = c(&quot;white&quot;, &quot;gray70&quot;))) %&gt;%
   gf_theme(theme_map()) +
   geom_label_repel(data = subset(centroid.test, subregion %in% c(&quot;montgomery&quot;, &quot;deleware&quot;, &quot;philadelphia&quot;, &quot;bradford&quot;, &quot;allegheny&quot;)), aes(x = mean.long, y = mean.lat, label = subregion), box.padding = 0.5, show.legend = FALSE, fill = &quot;white&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 </div>
 </div>
 <div id="annotating-across-facets" class="section level1" number="8">
@@ -1051,26 +1041,26 @@ transform(Dataset, PanelVar = NULL), color = “gray85”, alpha = 0.4)</p>
   gf_theme(legend.position = &quot;none&quot;) %&gt;%
   gf_refine(scale_color_viridis(discrete = TRUE)) %&gt;%
   gf_labs(title = &quot;No Gray Reference Dots&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
-<pre class="r"><code>gf_point(Petal.Length~Petal.Width, data=transform(iris, Species = NULL), color = &quot;gray85&quot;, alpha = 0.4) %&gt;%
+<p><img src="Annotations_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(Petal.Length~Petal.Width, data=transform(iris, Species = NULL), color = &quot;gray65&quot;, alpha = 0.4) %&gt;%
   gf_point(Petal.Length~Petal.Width, data=iris, color = ~Species) %&gt;%
   gf_facet_wrap(~Species) %&gt;%
   gf_theme(legend.position = &quot;none&quot;) %&gt;%
   gf_refine(scale_color_viridis(discrete = TRUE)) %&gt;%
   gf_labs(title = &quot;Gray Reference Dots Added&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-40-2.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-41-2.png" width="672" /></p>
 <p>We use similar code as the example above if we want to add bars,
 lines, area etc to the background. Below is an example of a histgram
 instead of a scatterplot.</p>
 <pre class="r"><code>gf_histogram(~price, data = diamonds, fill=~cut, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~cut) %&gt;%
   gf_labs(title = &quot;No Gray Reference&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
-<pre class="r"><code>gf_histogram(~price, data = transform(diamonds, cut = NULL), fill=&quot;gray85&quot;, show.legend = FALSE) %&gt;%
+<p><img src="Annotations_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~price, data = transform(diamonds, cut = NULL), fill=&quot;gray65&quot;, show.legend = FALSE) %&gt;%
 gf_histogram(~price, data = diamonds, fill=~cut, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~cut) %&gt;%
   gf_labs(title = &quot;Gray Reference Added&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-41-2.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-42-2.png" width="672" /></p>
 </div>
 <div id="regression-lines" class="section level2" number="8.2">
 <h2><span class="header-section-number">8.2</span> Regression Lines</h2>
@@ -1079,25 +1069,25 @@ of car using the lm( ) command.</p>
 <pre class="r"><code>gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~Type) %&gt;%
   gf_labs(title = &quot;Default Scatterplot&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <pre class="r"><code>gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~Type) %&gt;%
   gf_lm(show.legend = FALSE)%&gt;%
   gf_labs(title = &quot;Regression Lines Added&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-42-2.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-43-2.png" width="672" /></p>
 <pre class="r"><code>gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~Type) %&gt;%
   gf_lm(show.legend = FALSE) %&gt;%
   gf_lm(interval = &quot;confidence&quot;, fill = ~Type, alpha = 0.3, show.legend = FALSE)%&gt;%
   gf_labs(title = &quot;Confidence Interval for Mean Response Added&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-42-3.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-43-3.png" width="672" /></p>
 <pre class="r"><code>gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~Type) %&gt;%
   gf_lm(show.legend = FALSE) %&gt;%
-  gf_lm(interval = &quot;prediction&quot;, fill = ~Type, alpha = 0.1, show.legend = FALSE)%&gt;%
-  gf_lm(interval = &quot;confidence&quot;, fill = ~Type, alpha = 0.2, show.legend = FALSE)%&gt;%
+  gf_lm(interval = &quot;prediction&quot;, fill = ~Type, alpha = 0.3, show.legend = FALSE)%&gt;%
+  gf_lm(interval = &quot;confidence&quot;, fill = ~Type, alpha = 0.3, show.legend = FALSE)%&gt;%
   gf_labs(title = &quot;Prediction &amp; Confidence Bands Added&quot;)</code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-42-4.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-43-4.png" width="672" /></p>
 </div>
 <div id="average-points" class="section level2" number="8.3">
 <h2><span class="header-section-number">8.3</span> Average Points</h2>
@@ -1119,7 +1109,7 @@ gf_point(Sepal.Length~Sepal.Width, data=iris, color = ~Species, alpha = 0.3) %&g
   gf_point(Sepal.Length.Ave~Sepal.Width.Ave, color=~NewSpecies, data = irisLabels, size = 5) %&gt;%
   gf_theme(legend.position = &quot;none&quot;) %&gt;%
   gf_facet_wrap(~Species) </code></pre>
-<p><img src="Annotations_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><img src="Annotations_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
 </div>
 </div>
 
