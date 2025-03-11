@@ -355,7 +355,9 @@ div.tocify {
     <li>
       <a href="Position.html">Position Adjustments</a>
     </li>
-    <li class="dropdown-header">Adding Summary Statistics</li>
+    <li>
+      <a href="SummaryStats.html">Adding Summary Statistics</a>
+    </li>
     <li class="dropdown-header">Adjusting Non-Color Aesthetics</li>
     <li class="dropdown-header">Color</li>
     <li class="dropdown-header">Interactvity</li>
@@ -587,8 +589,8 @@ through the scale_*_discrete command.</p>
 <h2><span class="header-section-number">1.4</span> Exapanding Visual
 Range</h2>
 <p>In addition to all methods of adjusting the axis ranges, we can also
-adjust the plot field using the exapnd option in scale_*<em>continuous
-or scale</em>*_discrete.</p>
+adjust the plot field using the exapnd option in scale_*_continuous or
+scale_*_discrete.</p>
 <p><strong>Example (discrete):</strong> scale_x_discrete(expand =
 expansion(add = 2))</p>
 <p><strong>Example (continuous):</strong> scale_y_continuous(exapnd =
@@ -869,6 +871,38 @@ gf_bar(~TopState , data=subset(ufo, country == &quot;us&quot;), fill = ~(TopStat
   gf_labs(title = &quot;Adjust Dataset for Top 10 States + Other&quot;, subtitle = &quot;Change Colors to Highlight Other Category&quot;, y = &quot;state&quot;, x = &quot;State&quot;) </code></pre>
 <p><img src="AxisRange_files/figure-html/unnamed-chunk-20-5.png" width="672" /></p>
 </div>
+</div>
+<div id="polar-coordinates" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Polar Coordinates</h1>
+<p>There may be times where you wish to convert rectangular elements to
+polar coordinates (to make circles/angles). One example is the use of
+polar coordinates to create pie charts. Below shows a few examples of
+altnerate ways to adjust a bargraph.</p>
+<p><strong>Convert to Polar:</strong> gf_refine(coord_polar(“y”, stat =
+0))</p>
+<pre class="r"><code>data(fly)
+
+
+gf_bar(~flight_freq, data = na.omit(fly), fill = ~rude_to_recline) %&gt;%
+  gf_refine(scale_fill_brewer(palette = &quot;Blues&quot;)) %&gt;%
+  gf_labs(x = &quot;How often do you fly?&quot;, fill = &quot;Rude to\nRecline?&quot;, title = &quot;Default Bar Graph&quot;)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<pre class="r"><code>gf_bar(~flight_freq, data = na.omit(fly), fill = ~rude_to_recline, position = position_fill()) %&gt;%
+  gf_labs(x = &quot;How often do you fly?&quot;, fill = &quot;Rude to\nRecline?&quot;, title = &quot;Proportion Fill&quot;, y = &quot;Proportion&quot;) %&gt;%
+  gf_refine(scale_fill_brewer(palette = &quot;Blues&quot;))</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
+<pre class="r"><code>ggplot(data = na.omit(fly)) +
+  geom_mosaic(aes(x = product(rude_to_recline, flight_freq), fill = rude_to_recline)) +
+  scale_fill_brewer(palette = &quot;Blues&quot;) +
+  theme(axis.text.x = element_text(angle = -45, hjust = 0, vjust = 0)) +
+  labs(x = &quot;How Often You Fly&quot;, y = &quot;Rude to Recline&quot;, fill = &quot;Rude to\nRecline&quot;, title = &quot;Mosaic Plot&quot;)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-21-3.png" width="672" /></p>
+<pre class="r"><code>gf_bar(~flight_freq, data = na.omit(fly), fill = ~rude_to_recline, position = &quot;fill&quot;, color = &quot;white&quot;, width = 1) %&gt;%
+  gf_facet_wrap(~flight_freq, nrow=1, scales = &quot;free_x&quot;) %&gt;%
+  gf_refine(scale_fill_brewer(palette = &quot;Blues&quot;), coord_polar(&quot;y&quot;, start = 0)) %&gt;%
+  gf_theme(theme_void()) %&gt;%
+  gf_labs(fill = &quot;Is It Rude\nTo Recline?&quot;, title = &quot;Polar Coordinates&quot;)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-21-4.png" width="672" /></p>
 </div>
 
 

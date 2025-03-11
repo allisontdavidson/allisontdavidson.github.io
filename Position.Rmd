@@ -47,19 +47,19 @@ gss_sm = na.omit(gss_sm)
 
 To make minor adjustments to position of bars, points, lines, and densities we will specify the "position" in our layers. There are several ways to adjust the position (generally speaking). Some of the most common include:
 
--   Identity (not adjusting position)
+-   **Identity** (not adjusting position)
 
--   Dodge (nudge position of categories horizontally from overlapping)
+-   **Dodge** (nudge position of categories horizontally from overlapping)
 
--   Stack (display bars & densities on top of one another vertically)
+-   **Stack** (display bars & densities on top of one another vertically)
 
--   Fill (adjust stacked items to be proportional)
+-   **Fill** (adjust stacked items to be proportional)
 
--   Jitter (add noise to overlapping points)
+-   **Jitter** (add noise to overlapping points)
 
--   Jitterdodge (add noise to points and nudge groups horizontally)
+-   **Jitterdodge** (add noise to points and nudge groups horizontally)
 
--   Nudge (offset text in either x or y direction)
+-   **Nudge** (offset text in either x or y direction)
 
 The following [chapter](https://ggplot2.tidyverse.org/reference/layer_positions.html) in ggplot2 book covers more details about position.
 
@@ -90,7 +90,7 @@ gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, po
 
 ```
 
-# Dodge
+# Dodge Bars
 
 For bargraphs, the default is to stack the categories.  If you want to have the bars for each category side-by-side you can dodge the position using position = position_dodge.  
 
@@ -130,7 +130,7 @@ gf_bar(~as.factor(cyl), data = mtcars, fill=~as.factor(vs), position = position_
 
 ```
 
-# Position Fill
+# Proportion Fill
 
 Instead of just stacking bars & densities on top of one another, it is sometimes helpful to translate the stacks into percentages instead of raw counts.  Use position = position_fill() in this case. 
 
@@ -190,7 +190,7 @@ gf_density(~age, data = gss_sm, fill=~marital, position = position_fill()) %>%
   gf_labs(title = "Proportion Filled Densities")
 ```
 
-# Jitter Point Position
+# Jitter PointS
 
 When points overlap it is helpful to jitter the position to see the overlapping points.  Also, adding transparency is usually helpful.  There are a few ways to jitter point positions.
 
@@ -268,7 +268,7 @@ gf_point(body_mass_g~sex, data = penguins, color = ~species, position = position
   gf_labs(title = "Specify widths in jitterdodge")
 ```
 
-# Nudge Text Position
+# Nudge Text
 
 To adjust text away from elements in your visual, you can use position_nudge.
 

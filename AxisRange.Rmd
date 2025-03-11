@@ -22,6 +22,7 @@ data(StudentSurvey)
 require(resampledata)
 data("Cuckoos")
 require(forcats)
+require(ggmosaic)
 ```
 
 This section looks at ways of adjusting the overall scale of each axis (e.g. instead of going from 0 to 100 going from 40 to 60) as well as reversing the order (e.g. instead of going from 1 to 100 going from 100 to 1).
@@ -225,7 +226,7 @@ gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 
 
 ## Exapanding Visual Range
 
-In addition to all methods of adjusting the axis ranges, we can also adjust the plot field using the exapnd option in scale_\*_continuous or scale_\*_discrete.
+In addition to all methods of adjusting the axis ranges, we can also adjust the plot field using the exapnd option in scale_\*\_continuous or scale_\*\_discrete.
 
 **Example (discrete):** scale_x_discrete(expand = expansion(add = 2))
 
@@ -502,6 +503,38 @@ gf_bar(~TopState , data=subset(ufo, country == "us"), fill = ~(TopState != "Othe
 ```
 
 
+# Polar Coordinates
+
+There may be times where you wish to convert rectangular elements to polar coordinates (to make circles/angles).  One example is the use of polar coordinates to create pie charts.  Below shows a few examples of altnerate ways to adjust a bargraph.
+
+**Convert to Polar:** gf_refine(coord_polar("y", stat = 0))
+
+```{r, warning = FALSE}
+data(fly)
+
+
+gf_bar(~flight_freq, data = na.omit(fly), fill = ~rude_to_recline) %>%
+  gf_refine(scale_fill_brewer(palette = "Blues")) %>%
+  gf_labs(x = "How often do you fly?", fill = "Rude to\nRecline?", title = "Default Bar Graph")
+  
+
+gf_bar(~flight_freq, data = na.omit(fly), fill = ~rude_to_recline, position = position_fill()) %>%
+  gf_labs(x = "How often do you fly?", fill = "Rude to\nRecline?", title = "Proportion Fill", y = "Proportion") %>%
+  gf_refine(scale_fill_brewer(palette = "Blues"))
+
+ggplot(data = na.omit(fly)) +
+  geom_mosaic(aes(x = product(rude_to_recline, flight_freq), fill = rude_to_recline)) +
+  scale_fill_brewer(palette = "Blues") +
+  theme(axis.text.x = element_text(angle = -45, hjust = 0, vjust = 0)) +
+  labs(x = "How Often You Fly", y = "Rude to Recline", fill = "Rude to\nRecline", title = "Mosaic Plot")
+
+gf_bar(~flight_freq, data = na.omit(fly), fill = ~rude_to_recline, position = "fill", color = "white", width = 1) %>%
+  gf_facet_wrap(~flight_freq, nrow=1, scales = "free_x") %>%
+  gf_refine(scale_fill_brewer(palette = "Blues"), coord_polar("y", start = 0)) %>%
+  gf_theme(theme_void()) %>%
+  gf_labs(fill = "Is It Rude\nTo Recline?", title = "Polar Coordinates")
+
+```
 
 
 

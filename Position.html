@@ -355,7 +355,9 @@ div.tocify {
     <li>
       <a href="Position.html">Position Adjustments</a>
     </li>
-    <li class="dropdown-header">Adding Summary Statistics</li>
+    <li>
+      <a href="SummaryStats.html">Adding Summary Statistics</a>
+    </li>
     <li class="dropdown-header">Adjusting Non-Color Aesthetics</li>
     <li class="dropdown-header">Color</li>
     <li class="dropdown-header">Interactvity</li>
@@ -389,16 +391,19 @@ densities we will specify the “position” in our layers. There are
 several ways to adjust the position (generally speaking). Some of the
 most common include:</p>
 <ul>
-<li><p>Identity (not adjusting position)</p></li>
-<li><p>Dodge (nudge position of categories horizontally from
-overlapping)</p></li>
-<li><p>Stack (display bars &amp; densities on top of one another
-vertically)</p></li>
-<li><p>Fill (adjust stacked items to be proportional)</p></li>
-<li><p>Jitter (add noise to overlapping points)</p></li>
-<li><p>Jitterdodge (add noise to points and nudge groups
-horizontally)</p></li>
-<li><p>Nudge (offset text in either x or y direction)</p></li>
+<li><p><strong>Identity</strong> (not adjusting position)</p></li>
+<li><p><strong>Dodge</strong> (nudge position of categories horizontally
+from overlapping)</p></li>
+<li><p><strong>Stack</strong> (display bars &amp; densities on top of
+one another vertically)</p></li>
+<li><p><strong>Fill</strong> (adjust stacked items to be
+proportional)</p></li>
+<li><p><strong>Jitter</strong> (add noise to overlapping
+points)</p></li>
+<li><p><strong>Jitterdodge</strong> (add noise to points and nudge
+groups horizontally)</p></li>
+<li><p><strong>Nudge</strong> (offset text in either x or y
+direction)</p></li>
 </ul>
 <p>The following <a
 href="https://ggplot2.tidyverse.org/reference/layer_positions.html">chapter</a>
@@ -428,8 +433,8 @@ position_identity() )</p>
   gf_labs(title = &quot;Position Identity&quot;)</code></pre>
 <p><img src="Position_files/figure-html/unnamed-chunk-2-4.png" width="672" /></p>
 </div>
-<div id="dodge" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Dodge</h1>
+<div id="dodge-bars" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Dodge Bars</h1>
 <p>For bargraphs, the default is to stack the categories. If you want to
 have the bars for each category side-by-side you can dodge the position
 using position = position_dodge.</p>
@@ -462,8 +467,8 @@ preserve = “single”.</p>
   gf_labs(title = &quot;Position Dodge2&quot;, subtitle = &quot;Preserve Bar Width&quot;, x = &quot;Cylinders&quot;, fill = &quot;vs&quot;)</code></pre>
 <p><img src="Position_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
 </div>
-<div id="position-fill" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Position Fill</h1>
+<div id="proportion-fill" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Proportion Fill</h1>
 <p>Instead of just stacking bars &amp; densities on top of one another,
 it is sometimes helpful to translate the stacks into percentages instead
 of raw counts. Use position = position_fill() in this case.</p>
@@ -515,9 +520,8 @@ densities.</p>
   gf_labs(title = &quot;Proportion Filled Densities&quot;)</code></pre>
 <p><img src="Position_files/figure-html/unnamed-chunk-7-6.png" width="672" /></p>
 </div>
-<div id="jitter-point-position" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Jitter Point
-Position</h1>
+<div id="jitter-points" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Jitter PointS</h1>
 <p>When points overlap it is helpful to jitter the position to see the
 overlapping points. Also, adding transparency is usually helpful. There
 are a few ways to jitter point positions.</p>
@@ -595,9 +599,8 @@ specifications the same throughout all layers.</p>
 <pre><code>## No summary function supplied, defaulting to `mean_se()`</code></pre>
 <p><img src="Position_files/figure-html/unnamed-chunk-10-3.png" width="672" /></p>
 </div>
-<div id="nudge-text-position" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Nudge Text
-Position</h1>
+<div id="nudge-text" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Nudge Text</h1>
 <p>To adjust text away from elements in your visual, you can use
 position_nudge.</p>
 <p><strong>Example:</strong> gf_text( label = ~TextVar , position =

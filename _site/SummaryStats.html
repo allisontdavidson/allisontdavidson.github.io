@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Adding Summary Statistics</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Data Visualization</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Intro</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Refinements
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="TitleLabels.html">Title Labels (Big/Outer/Axis)</a>
+    </li>
+    <li>
+      <a href="CatAndNumDisplay.html">Category &amp; Numeric Display</a>
+    </li>
+    <li>
+      <a href="AxisRange.html">Axis Range, Breaks, and Ordering</a>
+    </li>
+    <li>
+      <a href="subsets.html">Subsets</a>
+    </li>
+    <li>
+      <a href="themes.html">Themes</a>
+    </li>
+    <li>
+      <a href="facets.html">Facets</a>
+    </li>
+    <li>
+      <a href="Legends.html">Legends</a>
+    </li>
+    <li>
+      <a href="Annotations.html">Annotations</a>
+    </li>
+    <li>
+      <a href="Position.html">Position Adjustments</a>
+    </li>
+    <li>
+      <a href="SummaryStats.html">Adding Summary Statistics</a>
+    </li>
+    <li class="dropdown-header">Adjusting Non-Color Aesthetics</li>
+    <li class="dropdown-header">Color</li>
+    <li class="dropdown-header">Interactvity</li>
+  </ul>
+</li>
+<li>
+  <a href="WranglingDataIntro.html">Wranging Data</a>
+</li>
+<li>
+  <a href="markdown.html">Markdown Help</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Adding Summary Statistics</h1>
+
+</div>
+
+
+<p>This section covers utilization of built-in functions to plot summary
+statistics. The first several sections look at using typical graphing
+functions but instead of plotting actual data points from the dataset,
+we will plot a computed summary statistic instead. Then, we’ll use the
+gf_summary function to explore ways of building similar plots.</p>
+<div id="points-summary" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Points Summary</h1>
+<p>In this section, we create various plots and overlay a point on top
+of our visualization. This point can represent the mean, median, min,
+etc. The overlaid point utilizes a statistical summary function.</p>
+<p><strong>Example (mean):</strong> gf_plot(Y~X, data = Dataset) %&gt;%
+gf_point(Y~X, data = Dataset, stat = “summary”, fun = “mean”)</p>
+<p>The fun option can take on values such as mean, median, min, max,
+etc.</p>
+<pre class="r"><code>gf_jitter(continent~lifeExp, data = subset(gapminder, year == 2007), height = 0.2, alpha = 0.4) %&gt;%
+  gf_point(continent~lifeExp, data = subset(gapminder, year == 2007), stat = &quot;summary&quot;, size = 4, color = ~continent, show.legend = FALSE, fun = &quot;median&quot;) %&gt;%
+  gf_refine(scale_color_manual(values = continent_colors)) %&gt;%
+  gf_labs(title = &quot;Overlay median values per continent&quot;, subtitle = &quot;fun = median&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>gf_jitter(continent~lifeExp, data = subset(gapminder, year == 2007), height = 0.2, alpha = 0.4) %&gt;%
+  gf_point(continent~lifeExp, data = subset(gapminder, year == 2007), stat = &quot;summary&quot;, size = 4, color = ~continent, show.legend = FALSE, fun = &quot;mean&quot;) %&gt;%
+  gf_refine(scale_color_manual(values = continent_colors))%&gt;%
+  gf_labs(title = &quot;Overlay mean values per continent&quot;, subtitle = &quot;fun = mean&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
+<pre class="r"><code>gf_jitter(continent~lifeExp, data = subset(gapminder, year == 2007), height = 0.2, alpha = 0.4) %&gt;%
+  gf_point(continent~lifeExp, data = subset(gapminder, year == 2007), stat = &quot;summary&quot;, size = 4, color = ~continent, show.legend = FALSE, fun = &quot;min&quot;) %&gt;%
+  gf_refine(scale_color_manual(values = continent_colors)) %&gt;%
+  gf_labs(title = &quot;Overlay minimum values per continent&quot;, subtitle = &quot;fun = min&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-2-3.png" width="672" /></p>
+<pre class="r"><code>gf_jitter(continent~lifeExp, data = subset(gapminder, year == 2007), height = 0.2, alpha = 0.1) %&gt;%
+  gf_point(continent~lifeExp, data = subset(gapminder, year == 2007), stat = &quot;summary&quot;, size = 4, color = ~continent, show.legend = FALSE, fun = &quot;min&quot;) %&gt;%
+  gf_point(continent~lifeExp, data = subset(gapminder, year == 2007), stat = &quot;summary&quot;, size = 4, color = ~continent, show.legend = FALSE, fun = &quot;max&quot;, shape = 17) %&gt;%
+  gf_refine(scale_color_manual(values = continent_colors)) %&gt;%
+  gf_labs(title = &quot;Overlay min &amp; max values per continent&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-2-4.png" width="672" /></p>
+</div>
+<div id="line-summary" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Line Summary</h1>
+<p>In this section we create a variety of lines that connect summary
+statistics. For example, a line connecting the median population over
+time. We then add group variables, and also explore lines across
+categorical data instead of just numeric.</p>
+<p><strong>Example (mean):</strong> gf_plot(Y~X, data = Dataset) %&gt;%
+gf_line(Y~X, data = Dataset, stat = “summary”, fun = “mean”)</p>
+<pre class="r"><code>gf_line(pop~year, data = gapminder, stat = &quot;summary&quot;, fun = &quot;median&quot;) %&gt;%
+  gf_labs(title = &quot;fun = median&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>gf_line(pop~year, data = gapminder, stat = &quot;summary&quot;, fun = &quot;median&quot;, group = ~continent, color = ~continent) %&gt;%
+  gf_labs(title = &quot;fun = median&quot;, subtitle = &quot;With continent groups&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>gf_line(body_mass_g~sex, color = ~species, data = penguins, group = ~species, stat = &quot;summary&quot;, size = 1, fun = &quot;mean&quot;) %&gt;% gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_labs(title = &quot;Summary lines across categories&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(body_mass_g~sex, data = penguins, color = ~species, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3, seed = 123), alpha = 0.3) %&gt;%
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_line(body_mass_g~sex, color = ~species, data = penguins, group = ~species, stat = &quot;summary&quot;, size = 1, position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.3), fun = &quot;mean&quot;) %&gt;%
+  gf_labs(title = &quot;Summary Lines with jitterdodge&quot;)</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
+</div>
+<div id="text-summary" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Text Summary</h1>
+<p>There are additional examples of adding text to visuals below (useful
+for labeling lines directly and being able to remove the legent);
+however, here is a quick example of using the summary function inside a
+gf_text command.</p>
+<p><strong>Example:</strong> gf_text(Y~X, data= Dataset, stat =
+“summary”, fun = “mean”)</p>
+<pre class="r"><code>gf_text(bill_length_mm~sex, data = penguins, label = ~species, color = ~species, stat = &quot;summary&quot;, show.legend = FALSE)</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()`</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="error-bars-cross-bars" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Error bars &amp; Cross
+bars</h1>
+<p>At the time of writing, the examples adding error bars and cross bars
+to visuals involve calculating endpoint values. The examples below
+follow this pattern and calculate high and low values for plotting these
+elements.</p>
+<div id="error-cross-bars-to-bargraphs" class="section level2"
+number="4.1">
+<h2><span class="header-section-number">4.1</span> Error &amp; Cross
+bars to Bargraphs</h2>
+<p>To add error bars, you need to specify the endpoints of the bars
+(high and low values). To add crossbars, you not only need to specify
+the endpoints but also the midpoint.</p>
+<p><strong>Error bar:</strong> gf_errorbar(lo + hi ~ X , data = Dataset,
+width = 0.2)</p>
+<p><strong>Cross bar:</strong> gf_crossbar(mid + lo + hi ~ X , data =
+Dataset, width = 0.2)</p>
+<pre class="r"><code>set.seed(128)
+
+diamonds2 = sample(diamonds, size=50) %&gt;%
+  group_by(cut) %&gt;%
+  mutate(Count = n(),
+         SE = sqrt(Count/50*(1-(Count/50))/50),
+         hi = Count/50 + SE,
+         lo = Count/50 - SE) %&gt;%
+  dplyr::select(cut, Count, SE, hi, lo) %&gt;%
+  unique()
+
+gf_col(Count/50~cut, data = diamonds2, fill = &quot;lightskyblue&quot;) %&gt;%
+  gf_errorbar(lo+hi~cut, data = diamonds2, width = 0.2) %&gt;%
+  gf_labs(y = &quot;Proportion&quot;, title = &quot;Adding Error Bars&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>gf_col(Count/50~cut, data = diamonds2, fill = &quot;lightskyblue&quot;, color = &quot;black&quot;) %&gt;%
+  gf_errorbar(Count/50+hi~cut, data = diamonds2, width = 0.2) %&gt;%
+  gf_labs(y = &quot;Proportion&quot;, title = &quot;Adding Just the Top of Error Bars&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre class="r"><code>gf_col(Count/50~cut, data = diamonds2, fill = &quot;lightskyblue&quot;) %&gt;%
+  gf_crossbar(Count/50+lo+hi~cut, data = diamonds2, width = 0.2) %&gt;%
+  gf_labs(y = &quot;Proportion&quot;, title = &quot;Adding Cross Bars&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+</div>
+<div id="error-cross-bars-around-points" class="section level2"
+number="4.2">
+<h2><span class="header-section-number">4.2</span> Error &amp; Cross
+bars around Points</h2>
+<p>The following example overlays error bars &amp; cross bars on a
+jitter plot. Again, high and low values were calculated from the data
+first, then used to plot the endpoints.</p>
+<pre class="r"><code>pengSumm = penguins %&gt;%
+  group_by(island, sex) %&gt;%
+  summarize(mean.length = mean(bill_length_mm),
+            sd.length = sd(bill_length_mm),
+            hi = mean.length + sd.length,
+            lo = mean.length - sd.length)</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;island&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code>gf_jitter(bill_length_mm~island, data = penguins, width = 0.2, color = ~sex, position = position_jitterdodge(), alpha = 0.4) %&gt;%
+  gf_errorbar(lo+hi~island, color = ~sex, data = pengSumm, position = position_dodge2(), inherit = FALSE) %&gt;%
+  gf_labs(title = &quot;Error Bars Added&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>gf_jitter(bill_length_mm~island, data = penguins, width = 0.2, color = ~sex, position = position_jitterdodge(), alpha = 0.4) %&gt;%
+  gf_crossbar(mean.length + lo+hi~island, color = ~sex, data = pengSumm, position = position_dodge2()) %&gt;%
+  gf_labs(title = &quot;Cross Bars Added&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+</div>
+</div>
+<div id="summary-function" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Summary Function</h1>
+<p>The gf_summary function works similarly to all other graphing
+functions in that it takes an Y~X formula. Additional options include
+fun or fun.data to specify what summary function is used and a geom
+option to specify what geom to draw.</p>
+<div id="numeric-summary-for-different-categories"
+class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Numeric Summary for
+Different Categories</h2>
+<p><strong>Example:</strong> gf_summary( Y ~ X , data = Dataset, fun =
+“mean” , geom = “bar” )</p>
+<pre class="r"><code>gf_summary(price~cut, data = diamonds, fun = &quot;mean&quot;) %&gt;%
+  gf_labs(title = &quot;Plot Points (default) for Average Price&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>gf_summary(price~cut, data = diamonds, fun = &quot;mean&quot;, geom = &quot;bar&quot;) %&gt;%
+  gf_labs(title = &quot;Plot Bars with Height = Average Price&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<p>These next examples explore interval ranges for each category, such
+as a confidence interval or specified min &amp; max values.</p>
+<p><strong>Confidence Intervals:</strong> gf_summary( … , fun.data =
+mean_cl_boot )</p>
+<p><strong>Confidence Crossbars:</strong> gf_summary( … , fun.data =
+mean_cl_boot, grom = “crossbar”)</p>
+<p><strong>Specified Min &amp; Max:</strong> gf_summary(… , fun =
+“mean”, fun.min = “min”, fun.max = “max”)</p>
+<pre class="r"><code>gf_jitter(continent~lifeExp, data = subset(gapminder, year == 2007), height = 0.2, alpha = 0.4) %&gt;%
+  gf_summary(continent~lifeExp, data = subset(gapminder, year == 2007), size = 2, color = ~continent, show.legend = FALSE, fun.data = &quot;mean_cl_boot&quot;, linewidth = 2) %&gt;%
+  gf_refine(scale_color_manual(values = continent_colors)) %&gt;%
+  gf_labs(title = &quot;mean_cl_boot error bars&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>gf_jitter(continent~lifeExp, data = subset(gapminder, year == 2007), height = 0.2, alpha = 0.4) %&gt;%
+  gf_summary(continent~lifeExp, data = subset(gapminder, year == 2007), size = 2, color = ~continent, show.legend = FALSE, fun.data = &quot;mean_cl_boot&quot;, linewidth = 1, geom = &quot;crossbar&quot;, width = 0.3) %&gt;%
+  gf_refine(scale_color_manual(values = continent_colors)) %&gt;%
+  gf_labs(title = &quot;mean_cl_boot cross bars&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<pre class="r"><code>gf_jitter(continent~lifeExp, data = subset(gapminder, year == 2007), height = 0.2, alpha = 0.4) %&gt;%
+  gf_summary(continent~lifeExp, data = subset(gapminder, year == 2007), size = 2, color = ~continent, show.legend = FALSE, fun = &quot;mean&quot;, fun.min = &quot;min&quot;, fun.max = &quot;max&quot;, linewidth = 2) %&gt;%
+  gf_refine(scale_color_manual(values = continent_colors))  %&gt;%
+  gf_labs(title = &quot;Specified min &amp; max ranges&quot;)</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+</div>
+<div id="numeric-summary-across-numeric-data" class="section level2"
+number="5.2">
+<h2><span class="header-section-number">5.2</span> Numeric Summary
+Across Numeric Data</h2>
+<p>The next examples look at summaries across time (a numeric variable
+in this case). The default is mean_se, but the function and geom can be
+specified as in the examples below.</p>
+<p><strong>Example:</strong> gf_summary( Y ~ X , data = Dataset , fun =
+“mean”, geom = “line”)</p>
+<p>The last example also adds text to a summary statistic location.</p>
+<pre class="r"><code>gf_summary(lifeExp~year, data = gapminder)</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()`</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>gf_summary(lifeExp~year, data = gapminder, color = ~continent) </code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()`</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<pre class="r"><code>gf_summary(lifeExp~year, data = gapminder, fun = &quot;mean&quot;, color = ~continent, geom = &quot;line&quot;) </code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
+<pre class="r"><code>gf_summary(lifeExp~year, data = gapminder, color = ~continent)%&gt;% 
+gf_summary(lifeExp~year, data = gapminder, fun=&quot;mean&quot;, color = ~continent, geom = &quot;line&quot;) %&gt;%
+  gf_lims(x = c(1950, 2015))%&gt;%
+  gf_text(lifeExp~year, data = subset(gapminder, year == 2007), hjust = &quot;outward&quot;, label = ~continent, stat = &quot;summary&quot;, position = position_nudge(x = 1), fun = &quot;mean&quot;)  %&gt;%
+  gf_theme(legend.position = &quot;none&quot;)</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()`</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-9-4.png" width="672" /></p>
+</div>
+<div id="numeric-summary-across-multiple-categories"
+class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Numeric Summary
+Across Multiple Categories</h2>
+<p>The following example resembles an interaction plot connecting
+averages across multiple categories and separate lines for different
+levels of a factor.</p>
+<p><strong>Example:</strong> gf_summary(Y~X, data = Dataset, group =
+~GroupVar, geom = “line”)</p>
+<pre class="r"><code>gf_summary(body_mass_g~sex, data = penguins, color = ~species, geom = &quot;line&quot;, group = ~species, size = 1, linetype = ~species) %&gt;%
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_text(body_mass_g~sex, data = subset(penguins, sex == &quot;male&quot;), color = ~species, label = ~species, stat = &quot;summary&quot;, hjust = &quot;left&quot;, position = position_nudge(x = 0.1)) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_labs(title = &quot;Interaction Plot with Text at Summary Locations&quot;)</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()`
+## No summary function supplied, defaulting to `mean_se()`</code></pre>
+<p><img src="SummaryStats_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

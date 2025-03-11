@@ -32,6 +32,12 @@ This compilation utilizes many packages - but here are a few key ones to start:
 -   ggrepel (avoid overlapping labels)
 -   ggmosaic (creating mosaic plots)
 -   socviz (several datasets)
+-   MASS (some datasets)
+-   maps (creating maps)
+-   palmerpenguins (neat dataset about penguins - similar to iris)
+-   ggridges (ridge plots)
+-   readr (reading in dataset and parse numbers)
+-   socviz (more datasets)
 
 
 ## Introduction to Visualization Resources

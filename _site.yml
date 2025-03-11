@@ -25,7 +25,7 @@ navbar:
         - text: "Position Adjustments"
           href: Position.html 
         - text: "Adding Summary Statistics"
-          #href: summarystats.html
+          href: SummaryStats.html
         - text: "Adjusting Non-Color Aesthetics"
           #href: NonColorAesthetics.html
         - text: "Color"
