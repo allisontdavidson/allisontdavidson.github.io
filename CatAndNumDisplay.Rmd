@@ -103,7 +103,7 @@ This will adjust what R puts on the x-axis, but it doesn't actually make Gender 
 
 ```{r}
 no.factor.gender = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%
-  gf_labs(x = "Gender", title = "Using scale_x_discrete Labels", subtitle = "But still treat Gender as numeric (not ideal)") %>%
+  gf_labs(x = "Gender", title = "Using scale_x_discrete Labels", subtitle = "But still treat Gender as numeric (not ideal)", caption = "Labels don't show up unless Gender is discrete") %>%
   gf_refine(scale_x_discrete(labels = c("0" = "F", "1" = "M"))) 
 
 as.factor.gender = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, width = 0.4, position= position_dodge(.5)) %>%

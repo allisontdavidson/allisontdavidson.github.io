@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Non-Color Aesthetics</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Data Visualization</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Intro</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Refinements
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="TitleLabels.html">Title Labels (Big/Outer/Axis)</a>
+    </li>
+    <li>
+      <a href="CatAndNumDisplay.html">Category &amp; Numeric Display</a>
+    </li>
+    <li>
+      <a href="AxisRange.html">Axis Range, Breaks, and Ordering</a>
+    </li>
+    <li>
+      <a href="subsets.html">Subsets</a>
+    </li>
+    <li>
+      <a href="themes.html">Themes</a>
+    </li>
+    <li>
+      <a href="facets.html">Facets</a>
+    </li>
+    <li>
+      <a href="Legends.html">Legends</a>
+    </li>
+    <li>
+      <a href="Annotations.html">Annotations</a>
+    </li>
+    <li>
+      <a href="Position.html">Position Adjustments</a>
+    </li>
+    <li>
+      <a href="SummaryStats.html">Adding Summary Statistics</a>
+    </li>
+    <li>
+      <a href="NonColorAesthetics.html">Adjusting Non-Color Aesthetics</a>
+    </li>
+    <li>
+      <a href="AdjustingColor.html">Adjusting Color</a>
+    </li>
+    <li>
+      <a href="PickingColor.html">Picking Colors &amp; Palettes</a>
+    </li>
+    <li class="dropdown-header">Interactvity</li>
+  </ul>
+</li>
+<li>
+  <a href="WranglingDataIntro.html">Wranging Data</a>
+</li>
+<li>
+  <a href="markdown.html">Markdown Help</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Non-Color Aesthetics</h1>
+
+</div>
+
+
+<p>This page covers aesthetics about your visual like transparency,
+size, shape, and linetype. Color gets its own page - so these are just
+some common non-color aesthetics you may wish to change about your
+graph.</p>
+<p>All changes can be make for a specific layer, be applied to a
+variable, and adjusted through a refine statement. Generally, all
+aesthetics will be adjusted as follows:</p>
+<p><strong>Explicitly Specified:</strong> gf_plot(Y~X, data = Dataset,
+size = 3)</p>
+<p><strong>Specified Using Variable:</strong> gf_plot(Y~X, data =
+Dataset, size = ~Var)</p>
+<p><strong>Shape &amp; linetype in Refine Statement:</strong>
+gf_refine(scale_*_manual(values = c(“Value1”, “Value2”, “Value3:”)))</p>
+<p><strong>Size in Refine Statement (continuous):</strong>
+gf_refine(scale_size_continuous(range = c(1,10)))</p>
+<p><strong>Size in Refine Statement (discrete):</strong>
+gf_refine(scale_size_discrete(range = c(1,10)))</p>
+<p><strong>Reverse Order of Aesthetics:</strong>
+gf_refine(scale_*_XXX(limits = rev))</p>
+<div id="transparency-alpha" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Transparency
+(alpha)</h1>
+<p>In my experience, transparency is the most commonly used non-color
+aesthetic that is really helpful to adjust. In all plots, transparency
+is adjusted using an alpha option. Alpha ranges from 1 (most opaque) to
+0 (most transparent).</p>
+<p><strong>Example:</strong> gf_plot(Y~X, data = Dataset, alpha =
+0.4)</p>
+<p>The following figures show different levels of alpha to see the
+change in transparency.</p>
+<pre class="r"><code>alpha1 = gf_density(~body_mass_g, data = penguins, fill = ~island, alpha = 1) %&gt;% gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_labs(title = &quot;alpha = 1&quot;)
+alpha7 = gf_density(~body_mass_g, data = penguins, fill = ~island, alpha = 0.7) %&gt;% gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_labs(title = &quot;alpha = 0.7&quot;)
+alpha4 = gf_density(~body_mass_g, data = penguins, fill = ~island, alpha = 0.4) %&gt;% gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_labs(title = &quot;alpha = 0.4&quot;)
+alpha01 = gf_density(~body_mass_g, data = penguins, fill = ~island, alpha = 0.1) %&gt;% gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_labs(title = &quot;alpha = 0.1&quot;)
+
+grid.arrange(alpha1, alpha7, alpha4, alpha01, nrow =2)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Alpha is most helpful (I feel) in seeing items that overlap. In the
+next subsections I give examples of different graphical elements that
+may overlap. In all examples, transparency is adjusted the same way
+(alpha = 0.3).</p>
+<div id="overalpping-points" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Overalpping
+Points</h2>
+<p>In the example below there are many overlapping points. Jitter
+certainly helps see many of these overlapping points - but some clumps
+are still difficult to see just how many points make up that clump.
+Adding transparency helps to see some of these overlapping points.</p>
+<pre class="r"><code>gf_jitter(Siblings~BirthOrder, data = StudentSurvey, width = 0.3, height = 0.2) %&gt;% gf_labs(title = &quot;Graph without transparency in points&quot;) </code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>gf_jitter(Siblings~BirthOrder, data = StudentSurvey, alpha = 0.4, width = 0.3, height = 0.2)%&gt;% gf_labs(title = &quot;Added transparency in points&quot;, subtitle = &quot;alpha = 0.4&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+</div>
+<div id="overalpping-density-ridges" class="section level2"
+number="1.2">
+<h2><span class="header-section-number">1.2</span> Overalpping Density
+Ridges</h2>
+<p>In this next example, there is minor overlapping of the density
+plots. Add a bit of transparency to get a feel for the slight
+overlap.</p>
+<pre class="r"><code>gf_density_ridges(cut~price, data = diamonds, scale = 2, fill=~cut, show.legend = FALSE) %&gt;% gf_labs(title = &quot;No Transparency&quot;)</code></pre>
+<pre><code>## Picking joint bandwidth of 458</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>gf_density_ridges(cut~price, data = diamonds, scale = 2, fill=~cut, alpha = 0.6, show.legend = FALSE)%&gt;% gf_labs(title = &quot;Added Transparency&quot;, subtitle = &quot;alpha = 0.6&quot;)</code></pre>
+<pre><code>## Picking joint bandwidth of 458</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+</div>
+<div id="overlapping-density-plots" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Overlapping Density
+Plots</h2>
+<p>By default the density plots do create slightly transparent densities
+(which is helpful!). The following example shows how to omit that
+transparency, and then also to adjust it to your liking.</p>
+<pre class="r"><code>gf_density(~body_mass_g, data = penguins, fill = ~island, alpha = 1) %&gt;% gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_labs(title = &quot;No Transparency&quot;, subtitle = &quot;alpha = 1&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>gf_density(~body_mass_g, data = penguins, fill = ~island, alpha = 0.4) %&gt;% gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;)))%&gt;%
+  gf_labs(title = &quot;Some Transparency&quot;, subtitle = &quot;alpha = 0.4&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+</div>
+<div id="overlapping-histograms" class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Overlapping
+Histograms</h2>
+<p>Similar to the density plot (above) the histograms below are shown
+with no transparency (alpha = 1) and some transparency (alpha =
+0.4).</p>
+<pre class="r"><code>gf_histogram(~body_mass_g, data = penguins, fill = ~island, position = position_identity(), alpha = 1) %&gt;% gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_labs(title = &quot;No Transparency&quot;, subtitle = &quot;alpha = 1&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~body_mass_g, data = penguins, fill = ~island, position = position_identity(), alpha = 0.4) %&gt;% gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;)))%&gt;%
+  gf_labs(title = &quot;Some Transparency&quot;, subtitle = &quot;alpha = 0.4&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+</div>
+<div id="variable-assigned-to-alpha" class="section level2"
+number="1.5">
+<h2><span class="header-section-number">1.5</span> Variable Assigned to
+Alpha</h2>
+<p>Instead of adjusting the alpha for all points, you can vary the alpha
+(transparency) by a variable.</p>
+<pre class="r"><code>gf_point(MPG.highway~Price, data = Cars93, size = ~Weight, alpha = ~Weight, color = &quot;purple&quot;) %&gt;%
+  gf_labs(title = &quot;Transparency adjusted by Weight&quot;, subtitle = &quot;alpha = ~Weight&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+</div>
+<div id="shape" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Shape</h1>
+<p>The default shape used in most graphs will be dots. To change from
+the default, we can specify shape using a number associated with the
+corresponding shape (see below).</p>
+<pre class="r"><code>show_point_shapes()</code></pre>
+<pre><code>## Scale for y is already present.
+## Adding another scale for y, which will replace the existing scale.</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div id="changing-single-shape" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Changing single
+shape</h2>
+<p>To change the shape of all points, you can specify the specific shape
+within the plot command.</p>
+<p><strong>Example:</strong> gf_plot(Y~X, data = Dataset, shape = 1)</p>
+<pre class="r"><code>gf_point(MPG.highway~Price, data = Cars93) %&gt;%
+  gf_labs(title = &quot;Default Shape&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(MPG.highway~Price, data = Cars93, shape = 1, size = 3) %&gt;%
+  gf_labs(title = &quot;Shape = 1&quot;, subtitle = &quot;Size adjusted to be larger&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(MPG.highway~Price, data = Cars93, shape = 25, size = 3, fill = &quot;darkcyan&quot;, alpha = 0.3) %&gt;%
+  gf_labs(title = &quot;Shape = 25&quot;, subtitle = &quot;Size, fill, and alpha adjusted&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
+</div>
+<div id="changing-multiple-shapes" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Changing multiple
+shapes</h2>
+<p>To adjust the shape to various levels of a variable, assign a
+variable to the shape option in your plot.</p>
+<p><strong>Example:</strong> gf_plot(Y~X, data = Dataset, shape =
+~Var)</p>
+<p><strong>Reverse Shapes Applied:</strong>
+gf_refine(scale_shape_discrete(limits = rev))</p>
+<p><strong>Specify shapes used (array):</strong>
+gf_refine(scale_shape_manual(values = c(10, 5, 8)))</p>
+<p><strong>Link specific shapes to levels of variable:</strong>
+gf_refine(scale_shape_manual(values = c(“Adelie” = 1, “Chinstrap” = 2,
+“Gentoo” = 5)))</p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %&gt;% 
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_labs(title = &quot;Assign Different Shapes to Each Species&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %&gt;% 
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;)),
+            scale_shape_discrete(limits = rev)) %&gt;%
+  gf_labs(title = &quot;Reverse Order Shape&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %&gt;% 
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;)),
+            scale_shape_manual(values = c(1, 0, 2)))  %&gt;%
+  gf_labs(title = &quot;Specify List of Shapes Used&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-10-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %&gt;% 
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;)),
+            scale_shape_manual(values = c(&quot;Adelie&quot; = 1, &quot;Chinstrap&quot; = 2, &quot;Gentoo&quot; = 5))) %&gt;%
+  gf_labs(title = &quot;Assign Each Level of Variable to Specific Shape&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-10-4.png" width="672" /></p>
+</div>
+</div>
+<div id="size" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Size</h1>
+<p>You can adjust the size of points, lines, and text in your plots.
+Below will be examples of each, but generally they all follow the same
+formula: size = 4.</p>
+<div id="point-size" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Point Size</h2>
+<p>Similar to other aesthetics, you can adjust size by specifying a
+specific size used, assign a variable to size, and manually adjust the
+range of sizes used.</p>
+<p><strong>Specify Size:</strong> gf_plot(Y~X, data = Dataset, size =
+4)</p>
+<p><strong>Assign Variable to Size:</strong> gf_plot(Y~X, data =
+Dataset, size =~Var)</p>
+<p><strong>Adjust Size Scale:</strong>
+gf_refine(scale_size_continuous(range = c(0.5, 10)))</p>
+<div id="specific-size" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Specific Size</h3>
+<p>You can change the size of every point, or, similar to the example
+below, you can change the size to some points to help them stand out a
+bit.</p>
+<pre class="r"><code>gf_point(MPG.highway~Price, data = Cars93) %&gt;%
+  gf_labs(title = &quot;Default Graph&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(MPG.highway~Price, data = Cars93) %&gt;%
+  gf_point(MPG.highway~Price, data = subset(Cars93, Manufacturer == &quot;Mazda&quot;), size = 4, color = &quot;orange&quot;) %&gt;%
+  gf_labs(title = &quot;Size &amp; Color Adjusted for Mazda Vehicles&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+</div>
+<div id="size-applied-to-discrete-variable" class="section level3"
+number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Size Applied to
+Discrete Variable</h3>
+<p>Size can be applied to discrete variables as well as continuous. The
+following examples show size applied to Origin of vehicles, reversing
+limits of size used, and changing the range of sizes used.</p>
+<pre class="r"><code>gf_point(MPG.highway~Price, data = Cars93, size = ~Origin, alpha = 0.2, color = ~Origin) %&gt;%
+  gf_labs(title = &quot;Size assigned to Origin&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(MPG.highway~Price, data = Cars93, size = ~Origin, alpha = 0.2, color = ~Origin) %&gt;%
+  gf_refine(scale_size_discrete(limits = rev)) %&gt;%
+  gf_labs(title = &quot;Reverse Size Limits&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(MPG.highway~Price, data = Cars93, size = ~Origin, alpha = 0.2, color = ~Origin) %&gt;%
+  gf_refine(scale_size_discrete(range = c(1, 5)))  %&gt;%
+  gf_labs(title = &quot;Specify Size Range&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-12-3.png" width="672" /></p>
+</div>
+<div id="size-applied-to-continuous-variable" class="section level3"
+number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> Size Applied to
+Continuous Variable</h3>
+<p>Size can be applied to continuous variables, as in the examples
+below. Size can be adjusted using the area (size_scale_continuous) or
+the radius of the circle (scale_radius).</p>
+<pre class="r"><code>gf_point(mpg~wt, data = mtcars, size = ~cyl, alpha = 0.4) %&gt;%
+  gf_labs(title = &quot;Sized by Cylinder&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(mpg~wt, data = mtcars, size = ~cyl, alpha = 0.4) %&gt;%
+  gf_refine(scale_size_continuous(range = c(1, 10))) %&gt;%
+  gf_labs(title = &quot;Size Range Adjusted&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(mpg~wt, data = mtcars, size = ~cyl, alpha = 0.4) %&gt;%
+  gf_refine(scale_radius(range = c(1, 10))) %&gt;%
+  gf_labs(title = &quot;Radius Range Adjusted&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-13-3.png" width="672" /></p>
+</div>
+<div id="binned-scales" class="section level3" number="3.1.4">
+<h3><span class="header-section-number">3.1.4</span> Binned Scales</h3>
+<p>Size that is applied to continuous variables can also be binned. More
+information on <a
+href="https://ggplot2-book.org/scales-other.html#sec-guide-bins">binned
+scales</a> can be found in the ggplot2 book. The following examples show
+the use of binned scales as well as re-labeling binned scales.</p>
+<pre class="r"><code>gf_point(lifeExp~gdpPercap, data = subset(gapminder, year == 2007), size = ~pop, alpha = 0.3, color = ~country) %&gt;%
+  gf_facet_wrap(~continent) %&gt;%
+  gf_refine(scale_color_manual(values = country_colors),
+            scale_x_continuous( labels = label_comma(scale_cut = cut_short_scale())),
+            scale_size_continuous(range = c(1,10),labels = label_comma(scale_cut = cut_short_scale()))) %&gt;%
+  gf_theme(guides(color = FALSE)) %&gt;%
+  gf_labs(title = &quot;Size Range Adjusted for Population&quot;)</code></pre>
+<pre><code>## Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use &quot;none&quot; instead as
+## of ggplot2 3.3.4.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(lifeExp~gdpPercap, data = subset(gapminder, year == 2007), size = ~pop, alpha = 0.3, color = ~country) %&gt;%
+  gf_facet_wrap(~continent) %&gt;%
+  gf_refine(scale_color_manual(values = country_colors),
+            scale_x_continuous( labels = label_comma(scale_cut = cut_short_scale())),
+            scale_size_binned(range = c(1,10),labels = label_comma(scale_cut = cut_short_scale()))) %&gt;%
+  gf_theme(guides(color = FALSE)) %&gt;%
+  gf_labs(title = &quot;Binned Population Size&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(lifeExp~gdpPercap, data = subset(gapminder, year == 2007), size = ~pop, alpha = 0.3, color = ~country) %&gt;%
+  gf_facet_wrap(~continent) %&gt;%
+  gf_refine(scale_color_manual(values = country_colors),
+            scale_x_continuous(labels = label_comma(scale_cut = cut_short_scale())),
+            scale_size_binned(range = c(1,10),labels = c(&quot;Very Small&quot;, &quot;Small&quot;, &quot;Medium&quot;, &quot;Large&quot;, &quot;Very Large&quot;))) %&gt;%
+  gf_theme(guides(color = FALSE)) %&gt;%
+  gf_labs(title = &quot;Adjusted Labels of Binned Scales&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-14-3.png" width="672" /></p>
+</div>
+</div>
+<div id="line-size" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Line Size</h2>
+<p>Adjust the size of lines similar to how you adjust size of points.
+You can adjust by specifying size, or by applying a variable to size. As
+of the time of writing, line size can be adjusted using size = 3 or
+linewidth = 3 and have similar results.</p>
+<pre class="r"><code>default = gf_line(unemploy~date, data = economics) %&gt;%
+  gf_labs(title = &quot;Default Line Size&quot;)
+
+line1 = gf_line(unemploy~date, data = economics, size = 1) %&gt;%
+  gf_labs(title = &quot;Line Size = 1&quot;)
+
+line2 = gf_line(unemploy~date, data = economics, size = 2) %&gt;%
+  gf_labs(title = &quot;Line Size = 2&quot;)
+
+grid.arrange(default, line1, line2, nrow = 3)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Similar to other aesthetics, linewidth can be defined by levels of a
+variable (both discrete and continuous).</p>
+<p><strong>Adjust Discrete Linewidth Range:</strong>
+gf_refine(scale_linewidth_discrete(range = c(0.1, 3)))</p>
+<p><strong>Adjust Continuous Linewidth Range:</strong>
+gf_refine(scale_linewidth_continuous(range = c(0.1, 3)))</p>
+<pre class="r"><code>gf_line(lifeExp~year, data = gapminder, stat = &quot;summary&quot;, fun = &quot;mean&quot;, linewidth = ~continent) %&gt;%
+  gf_labs(title = &quot;Linewidth using Discrete Variable&quot;)</code></pre>
+<pre><code>## Warning: Using linewidth for a discrete variable is not advised.</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>gf_line(lifeExp~year, data = gapminder, stat = &quot;summary&quot;, fun = &quot;mean&quot;, linewidth = ~continent) %&gt;%
+  gf_refine(scale_linewidth_discrete(range = c(0.1, 3))) %&gt;%
+  gf_labs(title = &quot;Linewidth Adjusted on Discrete Variable&quot;)</code></pre>
+<pre><code>## Warning: Using linewidth for a discrete variable is not advised.</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+<pre class="r"><code>gf_line(Temp~Day, data = airquality, linewidth = ~Month, group = ~Month)  %&gt;%
+  gf_labs(title = &quot;Linewidth using Continuous Variable&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-16-3.png" width="672" /></p>
+<pre class="r"><code>gf_line(Temp~Day, data = airquality, linewidth = ~Month, group = ~Month) %&gt;%
+  gf_refine(scale_linewidth_continuous(range = c(0.1, 3))) %&gt;%
+  gf_labs(title = &quot;Linewidth Adjusted on Continuous Variable&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-16-4.png" width="672" /></p>
+</div>
+<div id="text-size" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Text Size</h2>
+<p>Similar to points and lines, text size can be adjusted. Here is a
+simple example below.</p>
+<pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5) %&gt;%
+gf_dist(&quot;chisq&quot;, df=10, col=&quot;orange&quot;) %&gt;%
+gf_dist(&quot;chisq&quot;, df=20, col=&quot;darkcyan&quot;, linetype = &quot;dashed&quot;) %&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_text(x = 7, y = 0.12, label = &quot;size = 3&quot;, hjust = &quot;left&quot;, size = 4) %&gt;%
+  gf_text(x = 15, y = 0.08, label = &quot;size = 5&quot;, color = &quot;orange&quot;, hjust = &quot;left&quot;, size = 5) %&gt;%
+  gf_text(x = 26, y = 0.05, label = &quot;size = 7&quot;, color = &quot;darkcyan&quot;, hjust = &quot;left&quot;, size = 7) %&gt;%
+  gf_labs(title = &quot;Changing Size of Text&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+</div>
+<div id="line-type" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Line type</h1>
+<p>Line type can be adjusted similar to shape and size. The following
+are a list of line types available.</p>
+<pre class="r"><code>show_line_types()</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>The following example specifies line types for each layer
+created.</p>
+<pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5) %&gt;%
+gf_dist(&quot;chisq&quot;, df=10, col=&quot;orange&quot;, linetype = &quot;dotted&quot;) %&gt;%
+gf_dist(&quot;chisq&quot;, df=20, col=&quot;darkcyan&quot;, linetype = &quot;dashed&quot;) %&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_labs(title = &quot;Chaning Line Type&quot;) %&gt;%
+  gf_text(x = 7, y = 0.12, label = &quot;solid&quot;, hjust = &quot;left&quot;, size = 3) %&gt;%
+  gf_text(x = 15, y = 0.08, label = &quot;dotted&quot;, color = &quot;orange&quot;, hjust = &quot;left&quot;, size = 3) %&gt;%
+  gf_text(x = 26, y = 0.05, label = &quot;dashed&quot;, color = &quot;darkcyan&quot;, hjust = &quot;left&quot;, size = 3)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>The following examples show a few ways you can adjust line type by
+assigning a variable, and adjusting the specific line types used in a
+refine statement.</p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %&gt;% 
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_lm() %&gt;% 
+  gf_labs(title = &quot;Default lines are all solid&quot;)</code></pre>
+<pre><code>## Warning: Using the `size` aesthetic with geom_line was deprecated in ggplot2 3.4.0.
+## ℹ Please use the `linewidth` aesthetic instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %&gt;% 
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_lm(linetype = ~species, size = 1) %&gt;% 
+  gf_labs(title = &quot;linetype different for each species&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %&gt;%
+  gf_lm(linetype = ~species, size = 1) %&gt;% 
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;)),
+            scale_linetype_manual(values = c(&quot;Adelie&quot; = &quot;longdash&quot;, &quot;Chinstrap&quot; = &quot;solid&quot;, &quot;Gentoo&quot; = &quot;dotted&quot;))) %&gt;%
+  gf_labs(title = &quot;Specify which linetypes used for each species&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-20-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %&gt;%
+  gf_lm(linetype = ~species, size = 1) %&gt;% 
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;)),
+            scale_linetype_manual(values = c(&quot;longdash&quot;, &quot;solid&quot;, &quot;dotted&quot;)))  %&gt;%
+  gf_labs(title = &quot;Specify list of linetypes&quot;)</code></pre>
+<p><img src="NonColorAesthetics_files/figure-html/unnamed-chunk-20-4.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

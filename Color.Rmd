@@ -1,0 +1,317 @@
+---
+title: "Color"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: TRUE
+    toc_depth: 3
+    number_sections: TRUE
+    theme: lumen
+---
+
+```{r, include = FALSE}
+require(mosaic)
+require(mosaicData)
+require(Lock5Data)
+data(SalaryGender)
+data("BaseballSalaries2019")
+require(gridExtra)
+theme_set(theme_minimal())
+require(forcats)
+require(MASS)
+require(viridis)
+require(scales)
+require(tidyr)
+require(ggrepel)
+require(maps)
+data(world.cities)
+data("MarriageAges")
+library(ggpubr)
+require(ggrepel)
+require(ggmosaic)
+require(palmerpenguins)
+require(ggformula)
+require(ggridges)
+require(readr)
+require(socviz)
+require(stringr)
+
+data(fly)
+fly = na.omit(fly)
+
+data("penguins")
+penguins = na.omit(penguins)
+
+data("gss_sm")
+gss_sm = na.omit(gss_sm)
+require(gapminder)
+require(ggplot2)
+data("Birthdays")
+```
+
+
+[ggplot2](https://ggplot2-book.org/scales-colour.html) chapter on color theory and adjusting color.  
+
+
+```{r}
+colors()[1:10]
+```
+Here is the [website](https://r-graph-gallery.com/42-colors-names.html) where I got the code that created this sample list of colors.
+
+```{r, echo = FALSE}
+# No margin around chart
+par(mar=c(0,0,0,0))
+
+# Empty chart
+plot(0, 0, type = "n", xlim = c(0, 1), ylim = c(0, 1), axes = FALSE, xlab = "", ylab = "")
+
+# Settings
+line <- 25
+col <- 5
+
+# Add color background
+rect(  
+  rep((0:(col - 1)/col),line) ,  
+  sort(rep((0:(line - 1)/line),col),decreasing=T),   
+  rep((1:col/col),line) , 
+  sort(rep((1:line/line),col),decreasing=T),  
+  border = "white" , 
+  col=colors()[seq(1,line*col)])
+
+# Color names
+text(  
+  rep((0:(col - 1)/col),line)+0.1 ,  
+  sort(rep((0:(line - 1)/line),col),decreasing=T)+0.015 , 
+  colors()[seq(1,line*col)]  , 
+  cex=0.5)
+```
+
+```{r}
+#hcl_palettes()
+```
+
+
+
+```{r}
+penguins
+gapminder
+
+gf_line(lifeExp~year, data = gapminder, fun = "mean", stat = "summary", color = "#b715e5")
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = "#b715e5")
+gf_dens(~bill_length_mm, data = penguins, color = "#b715e5")
+
+bar.color = gf_bar(~species, data = penguins, color = "#b715e5") %>%
+  gf_labs(title = "color") %>%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
+bar.fill = gf_bar(~species, data = penguins, fill = "#b715e5") %>%
+  gf_labs(title = "fill") %>%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
+
+hist.color = gf_histogram(~bill_length_mm, data = penguins, color = "#b715e5") %>%
+  gf_labs(title = "color")
+hist.fill = gf_histogram(~bill_length_mm, data = penguins, fill = "#b715e5") %>%
+  gf_labs(title = "fill")
+
+box.color = gf_boxplot(bill_length_mm~species, data = penguins, color = "#b715e5") %>%
+  gf_labs(title = "color") %>%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
+box.fill = gf_boxplot(bill_length_mm~species, data = penguins, fill = "#b715e5") %>%
+  gf_labs(title = "fill") %>%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
+
+dens.color = gf_density(~bill_length_mm, data = penguins, color = "#b715e5") %>%
+  gf_labs(title = "color")
+dens.fill = gf_density(~bill_length_mm, data = penguins, fill = "#b715e5") %>%
+  gf_labs(title = "fill")
+
+grid.arrange(bar.color, bar.fill, hist.color, hist.fill, box.color, box.fill, dens.color, dens.fill, nrow = 2)
+```
+
+
+
+
+```{r}
+library(withr)
+
+pin = read.csv("https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Passwords/Common-Credentials/four-digit-pin-codes-sorted-by-frequency-withcount.csv", header = FALSE) %>%
+  rename(Pin = V1, Count = V2) 
+  
+pin$Pin = 
+  with_options(
+    c(scipen = 999), 
+    str_pad(pin$Pin, 4, pad = "0")
+    )
+
+pin = pin %>%
+  mutate(First = str_sub(Pin, 1, 2),
+         Second = str_sub(Pin, 3, 4))
+
+gf_tile(as.numeric(First)~as.numeric(Second), data = pin, fill=~Count) %>%
+  gf_refine(coord_fixed(),
+            scale_x_continuous(expand = expansion(add=0)),
+            scale_y_continuous(expand = expansion(add = 0)),
+            scale_fill_viridis(option = "G")) %>%
+  gf_labs(y = "First 2 Digits", x = "Second 2 Digits")
+```
+
+```{r}
+BirthdaysSum = Birthdays %>%
+  group_by(month, day) %>%
+  mutate(TotalBirths = sum(births)) %>%
+  dplyr::select(month, day, TotalBirths) %>%
+  unique()
+```
+
+```{r}
+gf_tile(month~day, data = subset(BirthdaysSum, TotalBirths > 300), fill=~TotalBirths) %>%
+  gf_refine(scale_fill_viridis(na.value = NA, 
+                               option = "magma", 
+                               labels = label_number(scale_cut = cut_short_scale())),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12))))
+
+max = max(~TotalBirths, data = BirthdaysSum)
+min = min(~TotalBirths, data = subset(BirthdaysSum, TotalBirths > 50000))
+
+gf_tile(month~day, data = subset(BirthdaysSum, TotalBirths > 300), fill=~TotalBirths) %>%
+  gf_refine(scale_fill_viridis(na.value = NA, 
+                               option = "magma", 
+                               labels = label_number(scale_cut = cut_short_scale()),
+                               limits = c(min,max)),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12)))) %>%
+  gf_tile(2~29, fill="black")
+
+gf_tile(month~day, data = BirthdaysSum, fill=~TotalBirths) %>%
+  gf_refine(scale_fill_gradientn(na.value = "white", labels = label_number(scale_cut = cut_short_scale()),
+                               colors = c("black", "#721f81", "#f1605d", "#fcfdbf"),
+                               values = c(0.1, 0.8, 0.9, 1)),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12)))) 
+
+gf_tile(month~day, data = BirthdaysSum, fill=~TotalBirths) %>%
+  gf_refine(scale_fill_gradientn(na.value = "white", labels = label_number(scale_cut = cut_short_scale()),
+                               colors = viridis(4, option = "magma"),
+                               values = c(0.1, 0.8, 0.9, 1)),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12)))) 
+
+gf_tile(month~day, data = BirthdaysSum, fill=~TotalBirths) %>%
+  gf_refine(scale_fill_gradientn(na.value = "white", labels = label_number(scale_cut = cut_short_scale()),
+                               colors = viridis(4, option = "magma"),
+                               values = c(0.1, min/max, (min+max)/max, 1)),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12)))) 
+```
+
+Viridis palette generator
+https://waldyrious.net/viridis-palette-generator/
+
+
+```{r}
+gf_tile(fct_reorder(city, avg_temp)~month, data = Weather, fill=~avg_temp, height = 1, width = 1) %>%
+  gf_refine(scale_fill_viridis(),
+            coord_fixed(expand = FALSE))
+```
+
+```{r}
+temps_months <- read_csv("https://wilkelab.org/SDS375/datasets/tempnormals.csv") %>%
+  group_by(location, month_name) %>%
+  summarize(mean = mean(temperature)) %>%
+  mutate(
+    month = factor(
+      month_name,
+      levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+    ),
+    location = factor(
+      location, levels = c("Death Valley", "Houston", "San Diego", "Chicago")
+    )
+  ) %>%
+  dplyr::select(-month_name)
+
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed())
+
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed(),
+            scale_fill_gradient2(low = "darkcyan", high = "darkred", mid = "yellow", 
+                                 midpoint = (min(~mean, data = temps_months) + max(~mean, data = temps_months))/2)) 
+```
+https://towardsdatascience.com/heatmaps-for-time-series/ 
+
+https://graphics.wsj.com/infectious-diseases-and-vaccines/ 
+
+```{r, fig.height = 8}
+measles = read.csv("https://gist.githubusercontent.com/rlvaugh/fd6ce822c98e38849d3ec51e3fd3441d/raw/5d896ec8b962aafb3b3194d63e336847e49749a5/measles_tycho.csv") %>%
+  mutate_at(1:53, as.numeric) %>%
+  pivot_longer(cols = 3:53, names_to = "State", values_to = "Cases") %>%
+  group_by(YEAR, State) %>%
+  summarise(Count = ifelse(all(is.na(Cases)), NA, sum(Cases, na.rm = TRUE)))
+
+colors = c('#e7f0fa',  # lightest blue
+          '#c9e2f6',  # light blue
+          '#95cbee',  # blue
+          '#0099dc',  # dark blue
+          '#4ab04a',  # green
+          '#ffd73e',  # yellow
+          '#eec73a',  # yellow brown
+          '#e29421',  # dark tan
+          '#f05336',  # orange
+          '#ce472e')  # red
+
+positions = c(0, 0.02, 0.03, 0.09, 0.1, 0.15, 0.25, 0.4, 0.5, 1)
+
+gf_tile(State~YEAR, data = measles, fill = ~Count) %>%
+  gf_vline(xintercept = 1963, color = "black", linetype = "dashed") %>%
+  gf_refine(coord_fixed(expand = FALSE),
+            scale_y_discrete(limits = rev),
+            scale_fill_gradientn(na.value = "white",
+                                 colors = colors,
+                                 values = positions,
+                                 guide = guide_colorbar(barwidth = 50),
+                                 breaks = seq(from = 0, to= 3000, by=500))) %>%
+  gf_theme(legend.position = "bottom", legend.title.position = "bottom",
+           legend.title = element_text(hjust = 0.5)) %>%
+  gf_labs(y = "", fill="Cases per 100,000") +
+  annotate(geom = "text", y = 48, x = 1964, label = "Vaccine", hjust = 0, fontface = "bold", size = 5)
+
+
+gf_tile(State~YEAR, data = measles, fill = ~Count) %>%
+  gf_vline(xintercept = 1963, color = "black", linetype = "dashed") %>%
+  gf_refine(coord_fixed(expand = FALSE),
+            scale_y_discrete(limits = rev),
+            scale_fill_gradientn(na.value = "white",
+                                 colors = colors,
+                                 values = positions,
+                                 breaks = seq(from = 0, to= 3000, by=500))) %>%
+  gf_theme(legend.position = "bottom", legend.title.position = "bottom",
+           legend.title = element_text(hjust = 0.5), legend.key.width = unit(1, "null")) %>%
+  gf_labs(y = "", fill="Cases per 100,000") +
+  annotate(geom = "text", y = 48, x = 1964, label = "Vaccine", hjust = 0, fontface = "bold", size = 5)
+
+```
+
+https://www.tidyverse.org/blog/2024/02/ggplot2-3-5-0-legends/
+
+
+
+
+```{r}
+x = seq(from = 0, to = 8*pi, by = 0.1)
+
+gf_line(sin(x)~x) %>%
+  gf_line(2*sin(x)~x, color = "purple", size = 2) %>%
+  gf_line(sin(x/2)~x, color = "orange", size = 1, linetype = "dashed") 
+```
+
+```{r}
+require(HSAUR)
+data("Forbes2000")
+
+gf_boxplot(rank~category, data = subset(Forbes2000, category %in% c("Insurance", "Trading companies", "Food markets")))
+           
+favstats(rank~fct_reorder(category, rank), data = Forbes2000)
+```
+

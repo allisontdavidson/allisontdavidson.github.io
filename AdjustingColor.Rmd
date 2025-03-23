@@ -1,0 +1,814 @@
+---
+title: "Adjusting Color"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: TRUE
+    toc_depth: 3
+    number_sections: TRUE
+    theme: lumen
+---
+
+```{r, include = FALSE}
+require(mosaic)
+require(mosaicData)
+require(Lock5Data)
+data(SalaryGender)
+data("BaseballSalaries2019")
+require(gridExtra)
+theme_set(theme_minimal())
+require(forcats)
+require(MASS)
+require(viridis)
+require(scales)
+require(tidyr)
+require(ggrepel)
+require(maps)
+data(world.cities)
+data("MarriageAges")
+library(ggpubr)
+require(ggrepel)
+require(ggmosaic)
+require(palmerpenguins)
+require(ggformula)
+require(ggridges)
+require(readr)
+require(socviz)
+require(stringr)
+require(paletteer) # palettes
+require(RColorBrewer) # palettes
+
+data(fly)
+fly = na.omit(fly)
+
+data("penguins")
+penguins = na.omit(penguins)
+
+data("gss_sm")
+gss_sm = na.omit(gss_sm)
+require(gapminder)
+require(ggplot2)
+data("Birthdays")
+require(colorspace)
+```
+
+Within a graph, you may want to alter the color of specific items. To do this, we first need to talk about how to change the color of some items (as it depends on what you want to alter). For example:
+
+-   [Use **color** for things like:]{.underline} points, lines, text, and outlines or boxplots
+
+-   [Use **fill** for things like:]{.underline} bars, densities (or areas), polygons, ribbons, and inside boxplots
+
+The general way to change color using color or fill option is:
+
+-   **Color:** gf_plot(Y \~ X, data = Dataset, **color** = "ColorName")
+
+-   **Fill:** gf_plot(Y \~ X, data = Dataset, **fill** = "ColorName")
+
+# Color Points & Lines
+
+Alter the color of points, lines, and text using color = "color". You can specify the color of points and/or lines with the color name, hex code, or rgb code.
+
+**Example:** gf_plot(Y \~ X, data = Dataset, color = "ColorName")
+
+```{r}
+point = gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = "#b715e5") %>%
+  gf_labs(title = "Points")
+
+line2 = gf_dens(~bill_length_mm, data = penguins, color = "#b715e5") %>%
+  gf_labs(title = "Lines")
+
+peng2 = penguins %>%
+  group_by(species) %>%
+  mutate(mean.length = mean(bill_length_mm),
+         mean.depth = mean(bill_depth_mm))
+
+text2 = gf_text(mean.length~mean.depth, data= peng2, label = ~species, color = "#b715e5", hjust = "inward") %>%
+  gf_labs(title = "Text")
+
+grid.arrange(point, line2, text2, nrow = 1)
+```
+
+# Fill Bars & Densities
+
+Bars and densities have color altered using the fill = "ColorName" command. The plot below shows the difference between trying to alter the color vs. fill of various plots. To alter the fill color, specify the color name, hex code, or rbg code.
+
+**Example:** gf_plot(Y \~ X, data = Dataset, fill = "ColorName")
+
+```{r}
+bar.color = gf_bar(~species, data = penguins, color = "#b715e5") %>%
+  gf_labs(title = "color") %>%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
+bar.fill = gf_bar(~species, data = penguins, fill = "#b715e5") %>%
+  gf_labs(title = "fill") %>%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
+
+hist.color = gf_histogram(~bill_length_mm, data = penguins, color = "#b715e5") %>%
+  gf_labs(title = "color")
+hist.fill = gf_histogram(~bill_length_mm, data = penguins, fill = "#b715e5") %>%
+  gf_labs(title = "fill")
+
+box.color = gf_boxplot(bill_length_mm~species, data = penguins, color = "#b715e5") %>%
+  gf_labs(title = "color") %>%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
+box.fill = gf_boxplot(bill_length_mm~species, data = penguins, fill = "#b715e5") %>%
+  gf_labs(title = "fill") %>%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
+
+dens.color = gf_density(~bill_length_mm, data = penguins, color = "#b715e5") %>%
+  gf_labs(title = "color")
+dens.fill = gf_density(~bill_length_mm, data = penguins, fill = "#b715e5") %>%
+  gf_labs(title = "fill")
+
+grid.arrange(bar.color, bar.fill, hist.color, hist.fill, box.color, box.fill, dens.color, dens.fill, nrow = 2)
+```
+
+# General Ways to Adjust Color
+
+There are 4 main ways we'll adjust color:
+
+**Color (or Fill) by Specified Color (name, hex or code):** color = "Color Name"
+
+**Color (or Fill) and Specify Label:** color = \~"Label Name"
+
+**Color (or Fill) by Variable:** color = \~ Variable
+
+**Color (or Fill) by Condition:** color = \~ (Var \< 10) or color = \~ (Var == "Category")
+
+# Specify Color
+
+In the example below, we layer many lines & text onto a plot. It is helpful to adjust the color of such elements. For each, we can adjust using the color = "ColorName" option. Again, any color can be specified using a name, hex code, or rgb code.
+
+**Color Name:** color = "orange"
+
+**Hex Code:** color = "#cda209"
+
+**RGB Proportions:** color = rgb(0.09, 0.2, 0.16)
+
+**RGB Values:** color = rgb(9, 205, 162, maxColorValue = 255)
+
+```{r}
+gf_dist("chisq", df=5) %>%
+gf_dist("chisq", df=10, color ="orange") %>%
+gf_dist("chisq", df=20, color ="darkcyan", linetype = "dashed") %>%
+  gf_theme(theme_classic()) %>%
+  gf_text(x = 7, y = 0.12, label = "df = 5", hjust = "left") %>%
+  gf_text(x = 15, y = 0.08, label = "df = 10", color = "orange", hjust = "left") %>%
+  gf_text(x = 26, y = 0.05, label = "df = 20", color = "darkcyan", hjust = "left") %>%
+  gf_labs(title = "Specify Color")
+```
+
+```{r}
+gf_dist("chisq", df=5, color = "purple") %>%
+gf_dist("chisq", df=10, color ="#cda209") %>%
+gf_dist("chisq", df=20, color = rgb(9, 205, 162, maxColorValue = 255), linetype = "dashed") %>%
+  gf_theme(theme_classic()) %>%
+  gf_text(x = 7, y = 0.12, label = "purple", hjust = "left", color = "purple") %>%
+  gf_text(x = 15, y = 0.08, label = "#cda209", color = "#cda209", hjust = "left") %>%
+  gf_text(x = 26, y = 0.05, label = "rgb(9, 205, 162, maxColorValue = 255)", color = rgb(9, 205, 162, maxColorValue = 255), hjust = "left") %>%
+  gf_labs(title = "Specify Color")
+```
+
+# Discrete Color
+
+How to color/fill by variable
+
+```{r}
+gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%>%
+  gf_labs(title = "Color by Species")
+
+gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %>%
+  gf_labs(title = "Fill by Species")
+```
+
+
+## Adjusting Default Colors
+
+For adjusting any color or fill, you want to use the corresponding scale adjustment:
+
+**Adjust Color:** scale_color_manual( )
+
+**Adjust Fill**: scale_fill_manual( )
+
+Then decide which palette type you want to use (there are many). If you want to reverse any palette, you can do so specifying within the same command using limits = rev.  Key things to think about are if you're categories are nominal (no order to them) or sequential (have some kind of order to them).  You'll want your palette or color choices to match the variable type you have.  More details can be found in [Chapter 4](https://clauswilke.com/dataviz/color-basics.html) and [Chapter 19](https://clauswilke.com/dataviz/color-pitfalls.html) of Wilke's Fundamentals of Data Visualization.
+
+**Reverse any palette:** scale_fill_manual( ... , limits = rev )
+
++------------+----------------------------------------------------------+
+| Color Type | Code Format                                              |
++============+==========================================================+
+| Manual     | scale_fill_manual( values = c( "Color 1" , "Color 2" ))  |
++------------+----------------------------------------------------------+
+| Hue        | scale_color_hue(h = c(60, 180))                          |
++------------+----------------------------------------------------------+
+| Grey       | scale_color_grey()                                       |
++------------+----------------------------------------------------------+
+| Brewer     | scale_fill_brewer( palette = "Greens" )                  |
++------------+----------------------------------------------------------+
+| Viridis    | scale_fill_viridis(discrete = TRUE, option = "magma")    |
++------------+----------------------------------------------------------+
+| Paletteer  | scale_color_paletteer_d("palettetown::charmeleon")       |
++------------+----------------------------------------------------------+
+| Colorspace | scale_color_discrete_qualitative(palette = "Dark 3")     |
+|            |                                                          |
+|            | scale_fill_discrete_sequential(palette = "Purples")      |
++------------+----------------------------------------------------------+
+
+## Manual Color
+
+You can certainly pick colors you just like the look of, but it may be helpful to think of how you want to use those colors.  For example, do you want to highlight a certain group or alert the reader to a specific portion of the graph?  Are there colors that are socially assoiated with certain categories (e.g. profit/loss or political party)?  Does your company want to use brand-specific colors?    
+
+Summary of how to color/fill
+Reverse
+Help guides/palette references
+
+```{r}
+gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%>%
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_labs(title = "Color by Species")
+
+gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %>%
+  gf_refine(scale_fill_manual(values = c("darkorange","purple","cyan4"), limits = rev)) %>% 
+  gf_labs(title = "Fill by Species")
+```
+
+## Spaced Color Hue
+
+[Scale_color_hue](https://ggplot2.tidyverse.org/reference/scale_hue.html) and scale_fill_hue will pick evenly spaced hue's between the two bounds you provide.
+
+```{r, echo = FALSE}
+x = seq(from = 1, to = 360, by = 10)
+x2 = seq(from = 30, to = 330, by = 30)
+gf_tile(1~x, fill = ~as.factor(x), show.legend = FALSE) %>%
+  gf_refine(scale_fill_hue(h = c(0,360)),
+            scale_x_continuous(breaks = breaks_width(30))) %>%
+  gf_labs(title = "Hue Values", y = "", x = "") %>%
+  gf_theme(axis.text.y = element_blank(), 
+           axis.ticks.y = element_blank())
+```
+
+```{r}
+gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%>%
+  gf_refine(scale_color_hue(h = c(60, 180))) %>%
+  gf_labs(title = "Color by Species")
+
+gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %>%
+  gf_refine(scale_fill_hue(h = c(180, 300), limits = rev)) %>% 
+  gf_labs(title = "Fill by Species")
+```
+
+## Grey scale
+
+scale\_\*\_grey() [documentation](https://ggplot2.tidyverse.org/reference/scale_grey.html)
+
+```{r}
+gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%>%
+  gf_refine(scale_color_grey()) %>%
+  gf_labs(title = "Color by Species")
+
+gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %>%
+  gf_refine(scale_fill_grey(limits = rev)) %>% 
+  gf_labs(title = "Fill by Species")
+```
+
+## Brewer Palette
+
+```{r}
+gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%>%
+  gf_refine(scale_color_brewer(palette = "Dark2")) %>%
+  gf_labs(title = "Color by Species")
+
+gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %>%
+  gf_refine(scale_fill_brewer(palette = "Dark2", limits = rev)) %>% 
+  gf_labs(title = "Fill by Species")
+```
+
+## Viridis Palette
+
+```{r}
+gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%>%
+  gf_refine(scale_color_viridis(discrete = TRUE)) %>%
+  gf_labs(title = "Color by Species")
+
+gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %>%
+  gf_refine(scale_fill_viridis(discrete = TRUE, option = "magma", limits = rev)) %>% 
+  gf_labs(title = "Fill by Species")
+```
+
+## Paletteer (Other Palettes)
+
+Take advantage of auto-fill! Note, once you start typing within scale_color_paletteer_d() you should have a scroll-menu to choose from all the types of palettes from all types of packages.
+
+```{r}
+gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%>%
+  gf_refine(scale_color_paletteer_d("palettetown::charmeleon")) %>%
+  gf_labs(title = "Color by Species")
+
+gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %>%
+  gf_refine(scale_fill_paletteer_d("awtools::ppalette", limits = rev)) %>% 
+  gf_labs(title = "Fill by Species")
+```
+
+## Colorspace
+
+Below are just a couple ways to use the colorspace package to adjust color.  The [reference page](https://colorspace.r-forge.r-project.org/reference/index.html) has many other details.
+
+```{r}
+gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%>%
+  gf_refine(scale_color_discrete_qualitative(palette = "Dark 3")) %>%
+  gf_labs(title = "Color by Species")
+
+gf_density(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity(), color = "black") %>%
+  gf_refine(scale_fill_discrete_sequential(palette = "Purples", limits = rev)) %>% 
+  gf_labs(title = "Fill by Species")
+```
+
+## Specify both Color & Variable
+
+```{r, include = FALSE}
+HighLow = Weather %>%
+  group_by(date) %>%
+  mutate(lowest = min(low_temp),
+         highest = max(high_temp))
+```
+
+```{r}
+gf_ribbon(lowest+highest~date, data = HighLow, fill="gray85") %>%
+gf_ribbon(low_temp+high_temp~date, data=Weather, fill=~city) %>%
+  gf_theme(theme_classic()) %>%
+  gf_theme(legend.position = "none") %>%
+  gf_facet_wrap(~city) %>%
+  gf_refine(scale_x_date(date_breaks = "8 months", date_labels = "%b %y")) %>%
+  gf_labs(x = "", y = "Temperature", title = "Fill by City (Variable)", subtitle = "Fill = gray85 for background reference") 
+```
+
+## Gapminder colors
+
+continent colors
+country colors
+
+ADD scatterplot of country colors
+
+```{r}
+gf_summary(lifeExp~year, data = gapminder, fun="mean", color = ~continent, geom = "line") %>%
+  gf_lims(x = c(1950, 2015))%>%
+  gf_text(lifeExp~year, data = subset(gapminder, year == 2007), hjust = "outward", label = ~continent, stat = "summary", position = position_nudge(x = 1), fun = "mean")  %>%
+  gf_theme(legend.position = "none") 
+
+gf_summary(lifeExp~year, data = gapminder, fun="mean", color = ~continent, geom = "line") %>%
+  gf_lims(x = c(1950, 2015))%>%
+  gf_text(lifeExp~year, data = subset(gapminder, year == 2007), hjust = "outward", label = ~continent, stat = "summary", position = position_nudge(x = 1), fun = "mean")  %>%
+  gf_theme(legend.position = "none") %>%
+  gf_refine(scale_color_manual(values = continent_colors))
+
+
+```
+
+
+# Continuous Color
+
+```{r, include = FALSE}
+df.volcano = as.data.frame(volcano) %>%
+  mutate(X = seq(from = 1, to = 87, by=1)) %>%
+  pivot_longer(cols = starts_with("V"), names_to = "Y", names_prefix = "V", values_to = "Z") %>%
+  mutate(Y = as.numeric(Y))
+
+temps_months <- read_csv("https://wilkelab.org/SDS375/datasets/tempnormals.csv") %>%
+  group_by(location, month_name) %>%
+  summarize(mean = mean(temperature)) %>%
+  mutate(
+    month = factor(
+      month_name,
+      levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+    ),
+    location = factor(
+      location, levels = c("Death Valley", "Houston", "San Diego", "Chicago")
+    )
+  ) %>%
+  dplyr::select(-month_name)
+```
+
+Default adding color to continuous variable:
+
+
+```{r}
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed()) %>%
+  gf_labs(title = "Fill by Continuous Variable")
+
+gf_raster(Z~X+Y, data = df.volcano) %>%
+  gf_theme(theme_void) %>%
+  gf_labs(title = "Raster Builds in Fill Option (Z~)")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %>%
+  gf_refine(scale_color_continuous(guide = "legend")) %>%
+  gf_labs(title = "Color by Continuous Variable")
+```
+
+
+
+## Manual Colors (Gradient)
+
+More details on how to adjust gradient scales can be found in the [reference page](https://ggplot2.tidyverse.org/reference/scale_gradient.html).  
+
+**scale_fill_gradient():** 2 colors (high & low)
+
+**scale_fill_gradient2():** 3 colors (high, low, & mid (can also specify midpoint number))
+
+**scale_fill_gradientn():** n colors (usually pre-defined like rainbow(5) or terrain.colors(7))
+
+Specify missing data using na.value = "white".
+
+**Example (Missing Data):** scale_fill_gradient(low = "black", high = "purple", na.value = "white")
+
+```{r}
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed(),
+            scale_fill_gradient2(low = "darkcyan", high = "darkred", mid = "yellow", 
+                                 midpoint = (min(~mean, data = temps_months) + max(~mean, data = temps_months))/2)) 
+
+gf_raster(Z~X+Y, data = df.volcano) %>%
+  gf_refine(scale_fill_gradient(low = "black", high = "purple"))  %>%
+  gf_theme(theme_void) 
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %>%
+  gf_refine(scale_color_gradientn(guide = "legend", colors = c("black", "purple4","purple1", "lavender")))
+
+```
+
+### Adjusting midpoint
+
+```{r}
+mid45 = gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(scale_fill_gradient2(low = "navy", high = "darkorange", mid = "white", 
+                                 midpoint = 45)) %>%
+  gf_labs(title = "Midpoint = 45")
+
+mid60 = gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(scale_fill_gradient2(low = "navy", high = "darkorange", mid = "white", 
+                                 midpoint = 60))%>%
+  gf_labs(title = "Midpoint = 60")
+
+mid75 = gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(scale_fill_gradient2(low = "navy", high = "darkorange", mid = "white", 
+                                 midpoint = 75))%>%
+  gf_labs(title = "Midpoint = 75")
+
+grid.arrange(mid45, mid60, mid75)
+```
+
+### Muted Colors
+
+To tone down colors you can use the "muted" function on any color values.
+
+**Mute Colors:** scale_fill_gradient2(low = "blue", high = "red", mid = muted("purple"))
+
+```{r}
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed(),
+            scale_fill_gradient2(low = "blue", high = "red", mid = "purple", midpoint = 60)) %>%
+  gf_labs(title = "Unmuted: Blue, Red, Purple")
+
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed(),
+            scale_fill_gradient2(low = "blue", high = "red", mid = muted("purple"), midpoint = 60)) %>%
+  gf_labs(title = "Muted Mid (Purple)")
+
+
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed(),
+            scale_fill_gradient2(low = "cyan", high = "magenta", mid = "yellow", midpoint = 60))  %>%
+  gf_labs(title = "Unmuted: Cyan, Magenta, Yellow")
+
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed(),
+            scale_fill_gradient2(low = muted("cyan"), high = muted("magenta"), mid = "yellow", midpoint = 60))   %>%
+  gf_labs(title = "Muted High & Low: Cyan, Magenta")
+```
+
+
+### Rainbow Palette
+
+Reverse (trans = "reverse"):  trans = "reverse"
+
+Reverse(rev(rainbow(5))): rev(rainbow(5))
+
+```{r}
+#Note this reverse doesn't work the same way!!!  
+gf_linerange(low_temp+high_temp~date|city~., data=Weather, color = ~(low_temp + high_temp)/2) %>%
+  gf_refine(scale_color_gradientn(colors = rainbow(5))) %>%
+  gf_labs(color = "Mid\nTemp", title = "Default Rainbow", y = "Temperature (F)", subtitle = "Logically the colors don't match up with heat/cold") %>%
+  gf_theme(theme_light())
+
+gf_linerange(low_temp+high_temp~date|city~., data=Weather, color = ~(low_temp + high_temp)/2) %>%
+  gf_refine(scale_color_gradientn(colors = rainbow(5), trans = "reverse")) %>%
+  gf_labs(color = "Mid\nTemp", title = "Default Rainbow", y = "Temperature (F)", subtitle = "Logically the colors don't match up with heat/cold") %>%
+  gf_theme(theme_light())
+
+gf_linerange(low_temp+high_temp~date|city~., data=Weather, color = ~(low_temp + high_temp)/2) %>%
+  gf_refine(scale_color_gradientn(colors = rev(rainbow(5)))) %>%
+  gf_labs(color = "Mid\nTemp", title = "Reverse Rainbow", y = "Temperature (F)", subtitle = "More Logical:  Hot temps = Reds and Cool Temps = Blues") %>%
+  gf_theme(theme_light())
+
+```
+
+### Terrain & Heat Colors
+
+Again, either trans = "reverse" or rev(heat.colors(5))
+
+```{r}
+gf_raster(Z~X+Y, data = df.volcano) %>%
+  gf_refine(scale_fill_gradientn(colors = terrain.colors(10)))  %>%
+  gf_theme(theme_void) %>%
+  gf_labs(title = "Terrain (10) Colors")
+
+gf_raster(Z~X+Y, data = df.volcano) %>%
+  gf_refine(scale_fill_gradientn(colors = terrain.colors(10), trans = "reverse"))  %>%
+  gf_theme(theme_void) %>%
+  gf_labs(title = "Terrain (10) Colors")
+
+gf_raster(Z~X+Y, data = df.volcano) %>%
+  gf_refine(scale_fill_gradientn(colors = rev(heat.colors(8))))  %>%
+  gf_theme(theme_void) %>%
+  gf_labs(title = "Heat (8) Colors Reversed")
+```
+# Brewer (Distiller) Palettes
+
+The distiller palettes are the same as Brewer, but this is currently the way to distinguish whether you're looking at discrete color ranges or continuous color ranges.  This [post](https://jmsallan.netlify.app/blog/the-brewer-palettes/) displays the palettes in an aesthetically pleasing way.  
+
+Note: hue & grey only work for discrete.
+Brewer works for continuous but is called distiller instead.
+
+Reverse (direction = 1):  default direction = -1 so to reverse direction = 1
+Reverse (trans = "reverse"): 
+
+```{r}
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed(),
+            scale_fill_distiller(palette = "Spectral")) %>%
+  gf_labs(title = "Diverging Palette: Spectral")
+
+gf_raster(Z~X+Y, data = df.volcano) %>%
+  gf_refine(scale_fill_distiller(palette = "BrBG"))  %>%
+  gf_theme(theme_void)  %>%
+  gf_labs(title = "Diverging Palette: BrBG")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %>%
+  gf_refine(scale_color_distiller(guide = "legend", palette = "BuPu"))  %>%
+  gf_labs(title = "Sequential Palette: BuPu")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %>%
+  gf_refine(scale_color_distiller(guide = "legend", palette = "BuPu", direction = 1)) %>%
+  gf_labs(title = "Reverse using direction = 1")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %>%
+  gf_refine(scale_color_distiller(guide = "legend", palette = "BuPu", trans = "reverse")) %>%
+  gf_labs(title = "Reverse using trans = reverse")
+```
+
+# Viridis 
+
+Reverse: trans = "reverse"
+
+Reverse: direction = -1 (opposite of how you reverse colors in discrete case!)
+
+```{r}
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed(),
+            scale_fill_viridis()) %>%
+  gf_labs(title = "Viridis Default")
+
+gf_raster(Z~X+Y, data = df.volcano) %>%
+  gf_theme(theme_void) %>%
+  gf_refine(scale_fill_viridis(option = "magma")) %>%
+  gf_labs(title = "Viridis: option = magma")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %>%
+  gf_refine(scale_color_viridis(guide = "legend", option = "mako")) %>%
+  gf_labs(title = "Original Mako")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %>%
+  gf_refine(scale_color_viridis(guide = "legend", option = "mako", direction = -1)) %>%
+  gf_labs(title = "Reverse Viridis: Mako, direction = -1")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %>%
+  gf_refine(scale_color_viridis(guide = "legend", option = "mako", trans = "reverse")) %>%
+  gf_labs(title = "Reverse Viridis: Mako, trans = reverse")
+```
+
+# Colorspace
+
+scale_<fill/color>_<discrete/continuous>_<qual/seq/div>()
+
+```{r}
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed(),
+            scale_fill_continuous_sequential(palette = "YlGnBu", rev = FALSE)) %>%
+  gf_labs(title = "Sequential: YlGnBu Reverse")
+
+gf_raster(Z~X+Y, data = df.volcano) %>%
+  gf_theme(theme_void) %>%
+  gf_refine(scale_fill_continuous_divergingx(palette = "Roma", mid = 140, rev = TRUE)) %>%
+  gf_labs(title = "Diverging: Mid Specified and Reversed")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %>%
+  gf_refine(scale_color_continuous_sequential(guide = "legend", palette = "mako")) %>%
+  gf_labs(title = "Sequential Mako")
+```
+
+
+
+
+
+# Adjusting Default Scales
+
+Adjust begin & end with viridis and colorspace scales.  
+
+```{r}
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed(),
+            scale_fill_viridis(option = "Mako")) %>%
+  gf_labs(title = "Original Mako Scales")
+
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed(),
+            scale_fill_viridis(option = "Mako", begin = 0.15, end = 0.8)) %>%
+  gf_labs(title = "Make Scales Adjusted Begin & End")
+
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed(),
+            scale_fill_continuous_sequential(palette = "YlGnBu", 
+                                             rev = FALSE)) %>%
+  gf_labs(title = "Original YlGnBu Reverse")
+
+gf_tile(location~month, data = temps_months, fill=~mean) %>%
+  gf_refine(coord_fixed(),
+            scale_fill_continuous_sequential(palette = "YlGnBu", 
+                                             rev = FALSE,
+                                             begin = 0.15)) %>%
+  gf_labs(title = "YlGnBu Reverse Adjusted Begin")
+```
+
+
+
+
+```{r}
+BirthdaysSum = Birthdays %>%
+  group_by(month, day) %>%
+  mutate(TotalBirths = sum(births)) %>%
+  dplyr::select(month, day, TotalBirths) %>%
+  unique()
+```
+
+
+```{r}
+
+
+
+
+gf_tile(month~day, data = subset(BirthdaysSum, TotalBirths > 300), fill=~TotalBirths) %>%
+  gf_refine(scale_fill_viridis(na.value = NA, 
+                               option = "magma", 
+                               labels = label_number(scale_cut = cut_short_scale())),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12))))
+
+
+max = max(~TotalBirths, data = BirthdaysSum)
+min = min(~TotalBirths, data = subset(BirthdaysSum, TotalBirths > 50000))
+
+gf_tile(month~day, data = subset(BirthdaysSum, TotalBirths > 300), fill=~TotalBirths) %>%
+  gf_refine(scale_fill_viridis(na.value = NA, 
+                               option = "magma", 
+                               labels = label_number(scale_cut = cut_short_scale()),
+                               limits = c(min,max)),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12)))) %>%
+  gf_tile(2~29, fill="black")
+
+gf_tile(month~day, data = BirthdaysSum, fill=~TotalBirths) %>%
+  gf_refine(scale_fill_gradientn(na.value = "white", labels = label_number(scale_cut = cut_short_scale()),
+                               colors = c("black", "#721f81", "#f1605d", "#fcfdbf"),
+                               values = c(0.1, 0.8, 0.9, 1)),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12)))) 
+
+gf_tile(month~day, data = BirthdaysSum, fill=~TotalBirths) %>%
+  gf_refine(scale_fill_gradientn(na.value = "white", labels = label_number(scale_cut = cut_short_scale()),
+                               colors = viridis(4, option = "magma"),
+                               values = c(0.1, 0.8, 0.9, 1)),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12)))) 
+
+gf_tile(month~day, data = BirthdaysSum, fill=~TotalBirths) %>%
+  gf_refine(scale_fill_gradientn(na.value = "white", labels = label_number(scale_cut = cut_short_scale()),
+                               colors = viridis(4, option = "magma"),
+                               values = c(0.1, min/max, (min+max)/max, 1)),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12)))) 
+```
+
+Viridis palette generator <https://waldyrious.net/viridis-palette-generator/>
+
+
+<https://towardsdatascience.com/heatmaps-for-time-series/>
+
+<https://graphics.wsj.com/infectious-diseases-and-vaccines/>
+
+```{r, fig.height = 8}
+measles = read.csv("https://gist.githubusercontent.com/rlvaugh/fd6ce822c98e38849d3ec51e3fd3441d/raw/5d896ec8b962aafb3b3194d63e336847e49749a5/measles_tycho.csv") %>%
+  mutate_at(1:53, as.numeric) %>%
+  pivot_longer(cols = 3:53, names_to = "State", values_to = "Cases") %>%
+  group_by(YEAR, State) %>%
+  summarise(Count = ifelse(all(is.na(Cases)), NA, sum(Cases, na.rm = TRUE)))
+
+colors = c('#e7f0fa',  # lightest blue
+          '#c9e2f6',  # light blue
+          '#95cbee',  # blue
+          '#0099dc',  # dark blue
+          '#4ab04a',  # green
+          '#ffd73e',  # yellow
+          '#eec73a',  # yellow brown
+          '#e29421',  # dark tan
+          '#f05336',  # orange
+          '#ce472e')  # red
+
+positions = c(0, 0.02, 0.03, 0.09, 0.1, 0.15, 0.25, 0.4, 0.5, 1)
+
+gf_tile(State~YEAR, data = measles, fill = ~Count) %>%
+  gf_vline(xintercept = 1963, color = "black", linetype = "dashed") %>%
+  gf_refine(coord_fixed(expand = FALSE),
+            scale_y_discrete(limits = rev),
+            scale_fill_gradientn(na.value = "white",
+                                 colors = colors,
+                                 values = positions,
+                                 guide = guide_colorbar(barwidth = 50),
+                                 breaks = seq(from = 0, to= 3000, by=500))) %>%
+  gf_theme(legend.position = "bottom", legend.title.position = "bottom",
+           legend.title = element_text(hjust = 0.5)) %>%
+  gf_labs(y = "", fill="Cases per 100,000") +
+  annotate(geom = "text", y = 48, x = 1964, label = "Vaccine", hjust = 0, fontface = "bold", size = 5)
+
+
+gf_tile(State~YEAR, data = measles, fill = ~Count) %>%
+  gf_vline(xintercept = 1963, color = "black", linetype = "dashed") %>%
+  gf_refine(coord_fixed(expand = FALSE),
+            scale_y_discrete(limits = rev),
+            scale_fill_gradientn(na.value = "white",
+                                 colors = colors,
+                                 values = positions,
+                                 breaks = seq(from = 0, to= 3000, by=500))) %>%
+  gf_theme(legend.position = "bottom", legend.title.position = "bottom",
+           legend.title = element_text(hjust = 0.5), legend.key.width = unit(1, "null")) %>%
+  gf_labs(y = "", fill="Cases per 100,000") +
+  annotate(geom = "text", y = 48, x = 1964, label = "Vaccine", hjust = 0, fontface = "bold", size = 5)
+
+```
+
+<https://www.tidyverse.org/blog/2024/02/ggplot2-3-5-0-legends/>
+
+
+
+
+
+
+
+
+# Other Neat Ideas
+
+This [blog post](https://albert-rapp.de/posts/ggplot2-tips/07_four_ways_colors_more_efficiently/07_four_ways_colors_more_efficiently.html) goes through an example of taking many categories, subsetting them, and then coloring similar shades of a color instead of many distinct colors.
+
+```{r, include = FALSE}
+dat <- mpg %>% 
+  mutate(
+    year = factor(year),
+    class_group = case_when(
+      class %in% c('2seater', 'compact', 'midsize') ~ "grp1",
+      class == 'minivan' ~ "grp2",
+      T ~ "grp3"
+    )
+  )
+```
+
+```{r, echo = FALSE, warning = FALSE}
+before = mpg %>% 
+  ggplot(aes(x = year, fill = class)) +
+  geom_bar() + labs(title = "Before")
+
+after = shades_plt <- dat %>% 
+  ggplot(aes(x = year, fill = class_group, alpha = class)) +
+  geom_bar() +
+  labs(
+    x = 'Year',
+    y = 'Counts',
+    alpha = 'Class',
+    title = 'After'
+  )
+
+grid.arrange(before, after, nrow = 1) 
+```
+
+
+
+

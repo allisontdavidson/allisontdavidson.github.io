@@ -358,8 +358,15 @@ div.tocify {
     <li>
       <a href="SummaryStats.html">Adding Summary Statistics</a>
     </li>
-    <li class="dropdown-header">Adjusting Non-Color Aesthetics</li>
-    <li class="dropdown-header">Color</li>
+    <li>
+      <a href="NonColorAesthetics.html">Adjusting Non-Color Aesthetics</a>
+    </li>
+    <li>
+      <a href="AdjustingColor.html">Adjusting Color</a>
+    </li>
+    <li>
+      <a href="PickingColor.html">Picking Colors &amp; Palettes</a>
+    </li>
     <li class="dropdown-header">Interactvity</li>
   </ul>
 </li>
@@ -473,8 +480,25 @@ data not in the area specified is no longer accounted for. This will
 matter if you’re overlaying things like linear model trendlines. The
 images below come from the ggplot2 cheat-sheet and I think illustrate
 things well.</p>
-<p><img src="NoClipping.jpg" alt="No Clipping" /> <img
-src="WithClipping.jpg" alt="With Clipping" /></p>
+<table>
+<colgroup>
+<col width="47%" />
+<col width="52%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Without Clipping</th>
+<th align="center">With Clipping</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><img src="NoClipping.jpg" alt="No Clipping" /></td>
+<td align="center"><img src="WithClipping.jpg"
+alt="With Clipping" /></td>
+</tr>
+</tbody>
+</table>
 <div id="adjust-scales-without-clipping" class="section level3"
 number="1.2.1">
 <h3><span class="header-section-number">1.2.1</span> Adjust Scales
@@ -483,10 +507,7 @@ Without Clipping</h3>
 gf_refine( ) statement with coord_cartesian( ) specifications.</p>
 <p><strong>Example:</strong> gf_plot( ) %&gt;%
 gf_refine(coord_cartesian(xlim = c(0, 100), ylim = c(10, 20)))</p>
-<div class="float">
-<img src="NoClipping.jpg" alt="No Clipping" />
-<div class="figcaption">No Clipping</div>
-</div>
+<p><img src="NoClipping.jpg" /></p>
 <pre class="r"><code>original = gf_point(Salary~Age, data = SalaryGender, color = ~as.factor(PhD)) %&gt;%
   gf_labs(color = &quot;PhD&quot;, title = &quot;All Data&quot;) %&gt;%
   gf_refine(scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;))) %&gt;%
@@ -504,11 +525,6 @@ noclipping = gf_point(Salary~Age, data = SalaryGender, color = ~as.factor(PhD)) 
   gf_theme(legend.position = c(0.2, 0.9))
 
 grid.arrange(original, noclipping, nrow = 1)</code></pre>
-<pre><code>## Warning: Using the `size` aesthetic with geom_line was deprecated in ggplot2 3.4.0.
-## ℹ Please use the `linewidth` aesthetic instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.</code></pre>
 <p><img src="AxisRange_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div id="adjust-scales-with-clipping" class="section level3"
@@ -520,10 +536,7 @@ example, you can merely create a subset and only use that data (by
 default, clipping out the other data). Alternatively you can use a
 gf_lims( ) command OR a scale_x_continuous( ) command within a refine
 statement.</p>
-<div class="float">
-<img src="WithClipping.jpg" alt="With Clipping" />
-<div class="figcaption">With Clipping</div>
-</div>
+<p><img src="WithClipping.jpg" /></p>
 <p><strong>Option 1:</strong> gf_lims(x = c(40,80)) or gf_lims(x = c(65,
 NA), y = c(3, NA))</p>
 <p><strong>Option 2:</strong> gf_refine(scale_x_continuous(limits =
@@ -577,13 +590,18 @@ grid.arrange(noshift, spread, ncol = 1)</code></pre>
 <p><img src="AxisRange_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>If you wanted to add a space for another label, one can be added
 through the scale_*_discrete command.</p>
-<p><strong>EXample:</strong> scale_x_discrete(limits = c(“Female”,
+<p><strong>Example:</strong> scale_x_discrete(limits = c(“Female”,
 “Male”, “Additional Label”))</p>
 <pre class="r"><code>gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
-  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Additional Label Added&quot;) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Additional Label Added (Right)&quot;) %&gt;%
   gf_refine(scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
             scale_x_discrete(limits = c(&quot;Female&quot;, &quot;Male&quot;, &quot;Additional Label&quot;))) </code></pre>
 <p><img src="AxisRange_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %&gt;%
+  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Additional Label Added (MIddle)&quot;) %&gt;%
+  gf_refine(scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
+            scale_x_discrete(limits = c(&quot;Female&quot;, &quot;New Label&quot;, &quot;Male&quot;))) </code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
 </div>
 <div id="exapanding-visual-range" class="section level2" number="1.4">
 <h2><span class="header-section-number">1.4</span> Exapanding Visual
@@ -702,53 +720,57 @@ you have. The general code to reverse scales is:</p>
 <p><strong>Continuous:</strong> gf_refine( scale_y_reverse( ) )</p>
 <p><strong>Discrete:</strong> gf_refine( scale_y_discrete( limits = rev
 ) )</p>
-<pre class="r"><code>original = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5), show.legend = FALSE) %&gt;%
-  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Original&quot;) %&gt;%
-  gf_refine(
-    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;))) 
-
-y.reverse = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5), show.legend = FALSE) %&gt;%
-  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender&quot;, title = &quot;Reverse Y&quot;, subtitle = &quot;scale_y_reverse()&quot;, y = &quot;Salary (reversed)&quot;) %&gt;%
-  gf_refine(
-    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
-    scale_y_reverse()) # Reverse Y axis continuous scale
-
-grid.arrange(original, y.reverse, nrow = 1)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<pre class="r"><code>x.reverse = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5), show.legend = FALSE) %&gt;%
-  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender (reversed)&quot;, title = &quot;Reverse X&quot;, subtitle = &quot;scale_x_discrete(limits = rev)&quot;) %&gt;%
-  gf_refine(
-    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
-    scale_x_discrete(limits = rev)) # Reverse X axis discrete scale
-
-grid.arrange(original, x.reverse, ncol = 1)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
-<pre class="r"><code>both.reverse = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5), show.legend = FALSE) %&gt;%
-  gf_labs(color = &quot;PhD&quot;, x = &quot;Gender (reversed)&quot;, title = &quot;Reverse Y and X&quot;, subtitle = &quot;scale_y_reverse() &amp;\nscale_x_discrete(limits = rev) &quot;, y = &quot;Salary (reversed)&quot;) %&gt;%
-  gf_refine(
-    scale_color_discrete(labels = c(&quot;0&quot; = &quot;No PhD&quot;, &quot;1&quot; = &quot;PhD&quot;)),
-    scale_y_reverse(), # Reverse Y axis continuous scale
-    scale_x_discrete(limits = rev)) # Reverse X axis discrete scale
-
-grid.arrange(original, both.reverse, nrow = 1)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-13-3.png" width="672" /></p>
-<div id="reverse-fill" class="section level2" number="3.1">
-<h2><span class="header-section-number">3.1</span> Reverse Fill</h2>
-<p>The following example looks at a bargraph and different ways to
-reverse the fill categories and colors used to fill.</p>
+<div id="reverse-continuous-scales" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Reverse Continuous
+Scales</h2>
+<p>In the following example, I wanted the months to “start” at the top
+of the graph, so January was the first line and December was the second.
+I also wanted to adjust the breaks so I could more easily tell the
+specific month for each row.</p>
+<p><strong>Example (continuous):</strong> gf_refine( scale_y_reverse( )
+)</p>
+<p><strong>Example (continuous with breaks):</strong> gf_refine(
+scale_y_reverse( breaks = c(seq(1:12)) ) )</p>
+<pre class="r"><code>gf_tile(month~wday, data = BirthdaysSimple, fill=~AveBirths) %&gt;%
+  gf_refine(scale_fill_viridis(option = &quot;mako&quot;)) %&gt;%
+  gf_labs(title = &quot;Default Y Scale&quot;)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>gf_tile(month~wday, data = BirthdaysSimple, fill=~AveBirths) %&gt;%
+  gf_refine(scale_fill_viridis(option = &quot;mako&quot;),
+            scale_y_reverse())  %&gt;%
+  gf_labs(title = &quot;Reverse Y Scale&quot;)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+<pre class="r"><code>gf_tile(month~wday, data = BirthdaysSimple, fill=~AveBirths) %&gt;%
+  gf_refine(scale_fill_viridis(option = &quot;mako&quot;),
+            scale_y_reverse(breaks = c(seq(1:12))))   %&gt;%
+  gf_labs(title = &quot;Reverse Y Scale&quot;, subtitle = &quot;And Adjusted Sequence&quot;)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-14-3.png" width="672" /></p>
+</div>
+<div id="reverse-discrete-scales" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Reverse Discrete
+Scales</h2>
+<p>To reverse a discrete scale, we need to use a slightly different
+code.</p>
+<p><strong>Example (discrete):</strong> gf_refine( scale_x_discrete(
+limits = rev ) )</p>
 <pre class="r"><code>gf_bar(~cut, data = diamonds) %&gt;%
   gf_labs(title = &quot;Default Graph&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <pre class="r"><code>gf_bar(~cut, data = diamonds) %&gt;%
   gf_refine(scale_x_discrete(limits = rev)) %&gt;%
-  gf_labs(title = &quot;Reverse X Axis&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
-<p><strong>Reverse fill categories only:</strong> fill = ~
+  gf_labs(title = &quot;Reverse Discrete X Axis&quot;, subtitle = &quot;scale_x_discrete(limits = rev)&quot;)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
+</div>
+<div id="reverse-fill" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Reverse Fill</h2>
+<p>The following example looks at a bargraph and different ways to
+reverse the fill categories and colors used to fill.</p>
+<p><strong>Reverse fill (categories only):</strong> fill = ~
 fct_rev(Var)</p>
 <p><strong>Reverse fill colors &amp; categories:</strong>
 scale_fill_viridis(discrete = TRUE, limits = rev)</p>
 <p><strong>Reverse legend to match reversed fill &amp;
-cateogeis:</strong>
+categories:</strong>
 gf_theme(guides(fill=guide_legend(reverse=TRUE)))</p>
 <pre class="r"><code>gf_bar(~cut, data = diamonds, fill = ~clarity) %&gt;%
   gf_labs(title = &quot;Default Graph With Fill&quot;)</code></pre>
@@ -872,12 +894,95 @@ gf_bar(~TopState , data=subset(ufo, country == &quot;us&quot;), fill = ~(TopStat
 <p><img src="AxisRange_files/figure-html/unnamed-chunk-20-5.png" width="672" /></p>
 </div>
 </div>
-<div id="polar-coordinates" class="section level1" number="5">
-<h1><span class="header-section-number">5</span> Polar Coordinates</h1>
+<div id="fixed-coordinates" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Fixed Coordinates</h1>
+<p>You may notice that graphs you create may stretch to use the space
+allotted. To avoid this, you can adjust the coordinates in a few ways.
+One is to “fix” the coordinates in a refine statement.</p>
+<p><strong>Example:</strong> gf_refine(coord_fixed())</p>
+<p>The following is a graph I recreated inspired by <a
+href="https://www.abc.net.au/news/2025-01-28/almost-one-in-ten-people-use-the-same-four-digit-pin/103946842">this</a>
+post on pin numbers. Since the X and Y axis should have a 1-1
+relationship, it makes sense to have “fixed” coordinates here.</p>
+<pre class="r"><code>gf_tile(as.numeric(First)~as.numeric(Second), data = pin, fill=~Count) %&gt;%
+  gf_refine(scale_x_continuous(expand = expansion(add=0)),
+            scale_y_continuous(expand = expansion(add = 0)),
+            scale_fill_viridis(option = &quot;G&quot;)) %&gt;%
+  gf_labs(y = &quot;First 2 Digits&quot;, x = &quot;Second 2 Digits&quot;, title = &quot;Default Coordinates&quot;) </code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre class="r"><code>gf_tile(as.numeric(First)~as.numeric(Second), data = pin, fill=~Count) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_x_continuous(expand = expansion(add=0)),
+            scale_y_continuous(expand = expansion(add = 0)),
+            scale_fill_viridis(option = &quot;G&quot;)) %&gt;%
+  gf_labs(y = &quot;First 2 Digits&quot;, x = &quot;Second 2 Digits&quot;, title = &quot;Fixed Coordinates&quot;) </code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
+</div>
+<div id="conic-coordinates" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Conic Coordinates</h1>
+<p>Another aspect for which you may want space preserved is with maps.
+You can still use “fixed” coordinates here, but there are also other
+coordinate fixes to account for curvature of the earth in your 2D plot.
+This <a
+href="https://ggplot2.tidyverse.org/reference/coord_map.html">reference
+guide</a> goes over many options.</p>
+<p><strong>Example (map specifying projection):</strong>
+gf_refine(coord_map(“orthographic”))</p>
+<p><strong>Example (helpful for US maps):</strong>
+gf_refine(coord_map(“conic”, lat0=30))</p>
+<p><strong>Example (faster map drawing):</strong>
+gf_refine(coord_quickmap())</p>
+<pre class="r"><code>japan1 = gf_polygon(lat~long, data=japan, group=~group, fill=&quot;white&quot;, color=&quot;black&quot;, size = 0.5) %&gt;%
+  gf_theme(theme_map()) %&gt;%
+  gf_labs(title = &quot;Default Stretch&quot;)
+
+india1 = gf_polygon(lat~long, data=india, group=~group, fill=&quot;white&quot;, color=&quot;black&quot;, size = 0.5) %&gt;%
+  gf_theme(theme_map()) 
+
+japan.fixed = gf_polygon(lat~long, data=japan, group=~group, fill=&quot;white&quot;, color=&quot;black&quot;, size = 0.5) %&gt;%
+  gf_theme(theme_map()) %&gt;%
+  gf_refine(coord_quickmap()) %&gt;%
+  gf_labs(title = &quot;Quickmap Coordinates&quot;)
+
+india.fixed = gf_polygon(lat~long, data=india, group=~group, fill=&quot;white&quot;, color=&quot;black&quot;, size = 0.5) %&gt;%
+  gf_theme(theme_map()) %&gt;%
+  gf_refine(coord_quickmap())
+
+grid.arrange(japan1, india1, japan.fixed, india.fixed, nrow = 2, ncol = 2)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<pre class="r"><code>grid.arrange(japan1,  india1, japan.fixed, india.fixed, nrow = 1)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
+<p>The following examples use specific map projections. Using
+?mapproject you can read about many other projections, but below you’ll
+also see a few examples.</p>
+<pre class="r"><code>defaultUSA = gf_polygon(lat~long, data=states, group = ~group, fill=&quot;white&quot;, color = &quot;black&quot;, size=0.05) %&gt;%
+  gf_theme(theme_map()) %&gt;%
+  gf_labs(title = &quot;Default Stretch&quot;)
+
+gilbertUSA = gf_polygon(lat~long, data=states, group = ~group, fill=&quot;white&quot;, color = &quot;black&quot;, size=0.05) %&gt;%
+  gf_theme(theme_map()) %&gt;%
+  gf_refine(coord_map(&quot;gilbert&quot;))%&gt;%
+  gf_labs(title = &quot;Gilbert&quot;)
+
+orthoUSA = gf_polygon(lat~long, data=states, group = ~group, fill=&quot;white&quot;, color = &quot;black&quot;, size=0.05) %&gt;%
+  gf_theme(theme_map()) %&gt;%
+  gf_refine(coord_map(&quot;orthographic&quot;))%&gt;%
+  gf_labs(title = &quot;Orthographic&quot;)
+
+conicUSA = gf_polygon(lat~long, data=states, group = ~group, fill=&quot;white&quot;, color = &quot;black&quot;, size=0.05) %&gt;%
+  gf_theme(theme_map()) %&gt;%
+  gf_refine(coord_map(&quot;conic&quot;, lat0=30)) %&gt;%
+  gf_labs(title = &quot;Conic&quot;)
+
+grid.arrange(defaultUSA, gilbertUSA, orthoUSA, conicUSA, nrow = 1)</code></pre>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+</div>
+<div id="polar-coordinates" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Polar Coordinates</h1>
 <p>There may be times where you wish to convert rectangular elements to
 polar coordinates (to make circles/angles). One example is the use of
 polar coordinates to create pie charts. Below shows a few examples of
-altnerate ways to adjust a bargraph.</p>
+alternate ways to adjust a bargraph.</p>
 <p><strong>Convert to Polar:</strong> gf_refine(coord_polar(“y”, stat =
 0))</p>
 <pre class="r"><code>data(fly)
@@ -886,23 +991,23 @@ altnerate ways to adjust a bargraph.</p>
 gf_bar(~flight_freq, data = na.omit(fly), fill = ~rude_to_recline) %&gt;%
   gf_refine(scale_fill_brewer(palette = &quot;Blues&quot;)) %&gt;%
   gf_labs(x = &quot;How often do you fly?&quot;, fill = &quot;Rude to\nRecline?&quot;, title = &quot;Default Bar Graph&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <pre class="r"><code>gf_bar(~flight_freq, data = na.omit(fly), fill = ~rude_to_recline, position = position_fill()) %&gt;%
   gf_labs(x = &quot;How often do you fly?&quot;, fill = &quot;Rude to\nRecline?&quot;, title = &quot;Proportion Fill&quot;, y = &quot;Proportion&quot;) %&gt;%
   gf_refine(scale_fill_brewer(palette = &quot;Blues&quot;))</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
 <pre class="r"><code>ggplot(data = na.omit(fly)) +
   geom_mosaic(aes(x = product(rude_to_recline, flight_freq), fill = rude_to_recline)) +
   scale_fill_brewer(palette = &quot;Blues&quot;) +
   theme(axis.text.x = element_text(angle = -45, hjust = 0, vjust = 0)) +
   labs(x = &quot;How Often You Fly&quot;, y = &quot;Rude to Recline&quot;, fill = &quot;Rude to\nRecline&quot;, title = &quot;Mosaic Plot&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-21-3.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-26-3.png" width="672" /></p>
 <pre class="r"><code>gf_bar(~flight_freq, data = na.omit(fly), fill = ~rude_to_recline, position = &quot;fill&quot;, color = &quot;white&quot;, width = 1) %&gt;%
   gf_facet_wrap(~flight_freq, nrow=1, scales = &quot;free_x&quot;) %&gt;%
   gf_refine(scale_fill_brewer(palette = &quot;Blues&quot;), coord_polar(&quot;y&quot;, start = 0)) %&gt;%
   gf_theme(theme_void()) %&gt;%
   gf_labs(fill = &quot;Is It Rude\nTo Recline?&quot;, title = &quot;Polar Coordinates&quot;)</code></pre>
-<p><img src="AxisRange_files/figure-html/unnamed-chunk-21-4.png" width="672" /></p>
+<p><img src="AxisRange_files/figure-html/unnamed-chunk-26-4.png" width="672" /></p>
 </div>
 
 

@@ -27,9 +27,11 @@ navbar:
         - text: "Adding Summary Statistics"
           href: SummaryStats.html
         - text: "Adjusting Non-Color Aesthetics"
-          #href: NonColorAesthetics.html
-        - text: "Color"
-          #href: color.html
+          href: NonColorAesthetics.html
+        - text: "Adjusting Color"
+          href: AdjustingColor.html
+        - text: "Picking Colors & Palettes"
+          href: PickingColor.html
         - text: "Interactvity"
           #href: Interactivity.html 
     - text: "Wranging Data"

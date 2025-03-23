@@ -358,8 +358,15 @@ div.tocify {
     <li>
       <a href="SummaryStats.html">Adding Summary Statistics</a>
     </li>
-    <li class="dropdown-header">Adjusting Non-Color Aesthetics</li>
-    <li class="dropdown-header">Color</li>
+    <li>
+      <a href="NonColorAesthetics.html">Adjusting Non-Color Aesthetics</a>
+    </li>
+    <li>
+      <a href="AdjustingColor.html">Adjusting Color</a>
+    </li>
+    <li>
+      <a href="PickingColor.html">Picking Colors &amp; Palettes</a>
+    </li>
     <li class="dropdown-header">Interactvity</li>
   </ul>
 </li>
@@ -414,46 +421,6 @@ theme</h1>
 <p>Here is a <a
 href="https://ggplot2.tidyverse.org/reference/ggtheme.html">list</a> of
 many themes available and a preview of what they look like.</p>
-<pre class="r"><code>require(gridExtra)
-
-gray = gf_point(mpg~disp, data = mtcars) %&gt;%
-  gf_theme(theme_gray()) %&gt;%
-  gf_labs(title = &quot;theme_gray&quot;)
-
-bw = gf_point(mpg~disp, data = mtcars) %&gt;%
-  gf_theme(theme_bw()) %&gt;%
-  gf_labs(title = &quot;theme_bw&quot;)
-
-linedraw = gf_point(mpg~disp, data = mtcars) %&gt;%
-  gf_theme(theme_linedraw()) %&gt;%
-  gf_labs(title = &quot;theme_linedraw&quot;)
-
-light = gf_point(mpg~disp, data = mtcars) %&gt;%
-  gf_theme(theme_light()) %&gt;%
-  gf_labs(title = &quot;theme_light&quot;)
-
-dark = gf_point(mpg~disp, data = mtcars) %&gt;%
-  gf_theme(theme_dark()) %&gt;%
-  gf_labs(title = &quot;theme_dark&quot;)
-
-minimal = gf_point(mpg~disp, data = mtcars) %&gt;%
-  gf_theme(theme_minimal()) %&gt;%
-  gf_labs(title = &quot;theme_minimal&quot;)
-
-classic = gf_point(mpg~disp, data = mtcars) %&gt;%
-  gf_theme(theme_classic()) %&gt;%
-  gf_labs(title = &quot;theme_classic&quot;)
-
-void = gf_point(mpg~disp, data = mtcars) %&gt;%
-  gf_theme(theme_void()) %&gt;%
-  gf_labs(title = &quot;theme_void&quot;)
-
-test = gf_point(mpg~disp, data = mtcars) %&gt;%
-  gf_theme(theme_test()) %&gt;%
-  gf_labs(title = &quot;theme_test&quot;)
-
-
-grid.arrange(gray, bw, linedraw, light, dark, minimal, classic, void, test, nrow = 3 )</code></pre>
 <p><img src="themes_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>For even MORE themes, check out <a
 href="https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/">ggthemes</a>.</p>
@@ -479,17 +446,17 @@ gf_theme(Theme Element Adjustment)</p>
 
 titleadjust2 = gf_point(mpg~disp, data = mtcars) %&gt;%
   gf_theme(theme_minimal()) %&gt;%
-  gf_labs(title = &quot;theme_minimal&quot;, subtitle = &quot;Title Size Adjusted Second&quot;) %&gt;%
+  gf_labs(title = &quot;theme_minimal&quot;, subtitle = &quot;Title Size Adjusted Second&quot;, caption = &quot;Title changed to RED!&quot;) %&gt;%
   gf_theme(plot.title = element_text(size=12, color = &quot;red&quot;))
 
 titleadjust1 = gf_point(mpg~disp, data = mtcars) %&gt;%
   gf_theme(plot.title = element_text(size=12, color = &quot;red&quot;)) %&gt;%
   gf_theme(theme_minimal()) %&gt;%
-  gf_labs(title = &quot;theme_minimal&quot;, subtitle = &quot;Title Size Adjusted First&quot;) 
+  gf_labs(title = &quot;theme_minimal&quot;, subtitle = &quot;Title Size Adjusted First&quot;, caption = &quot;Title color didn&#39;t change&quot;) 
 
 same.line = gf_point(mpg~disp, data = mtcars) %&gt;%
   gf_theme(plot.title = element_text(size=12, color = &quot;red&quot;), theme_minimal()) %&gt;%
-  gf_labs(title = &quot;theme_minimal&quot;, subtitle = &quot;Title Size Adjusted In Same Code&quot;)
+  gf_labs(title = &quot;theme_minimal&quot;, subtitle = &quot;Title Size Adjusted In Same Code&quot;, caption = &quot;Title color didn&#39;t change&quot;)
 
 grid.arrange(minimal, titleadjust2, titleadjust1, same.line, nrow = 2)</code></pre>
 <p><img src="themes_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
@@ -555,11 +522,6 @@ FALSE))</p>
   gf_theme(theme_minimal()) %&gt;%
   gf_labs(shape = &quot;cylinders&quot;, color = &quot;cylinders&quot;, title = &quot;Color Legend Removed (Only)&quot;) %&gt;%
   gf_theme(guides(color = FALSE))</code></pre>
-<pre><code>## Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use &quot;none&quot; instead as
-## of ggplot2 3.3.4.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.</code></pre>
 <p><img src="themes_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <pre class="r"><code>gf_point(mpg~disp, data = mtcars, shape = ~as.factor(cyl), color = ~as.factor(cyl), size = ~wt) %&gt;%
   gf_theme(theme_minimal()) %&gt;%

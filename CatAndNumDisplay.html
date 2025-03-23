@@ -358,8 +358,15 @@ div.tocify {
     <li>
       <a href="SummaryStats.html">Adding Summary Statistics</a>
     </li>
-    <li class="dropdown-header">Adjusting Non-Color Aesthetics</li>
-    <li class="dropdown-header">Color</li>
+    <li>
+      <a href="NonColorAesthetics.html">Adjusting Non-Color Aesthetics</a>
+    </li>
+    <li>
+      <a href="AdjustingColor.html">Adjusting Color</a>
+    </li>
+    <li>
+      <a href="PickingColor.html">Picking Colors &amp; Palettes</a>
+    </li>
     <li class="dropdown-header">Interactvity</li>
   </ul>
 </li>
@@ -452,7 +459,7 @@ scale_x_discrete(labels = c(“0” = “F”, “1” = “M”)) )</p>
 make Gender a factor with F and M. R Still treats it as a number. Thus,
 we still have to have as.factor(Gender) to get separate boxes.</p>
 <pre class="r"><code>no.factor.gender = gf_boxplot(Salary~Gender, data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%
-  gf_labs(x = &quot;Gender&quot;, title = &quot;Using scale_x_discrete Labels&quot;, subtitle = &quot;But still treat Gender as numeric (not ideal)&quot;) %&gt;%
+  gf_labs(x = &quot;Gender&quot;, title = &quot;Using scale_x_discrete Labels&quot;, subtitle = &quot;But still treat Gender as numeric (not ideal)&quot;, caption = &quot;Labels don&#39;t show up unless Gender is discrete&quot;) %&gt;%
   gf_refine(scale_x_discrete(labels = c(&quot;0&quot; = &quot;F&quot;, &quot;1&quot; = &quot;M&quot;))) 
 
 as.factor.gender = gf_boxplot(Salary~as.factor(Gender), data = SalaryGender, width = 0.4, position= position_dodge(.5)) %&gt;%

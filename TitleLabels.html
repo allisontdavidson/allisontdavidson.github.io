@@ -358,8 +358,15 @@ div.tocify {
     <li>
       <a href="SummaryStats.html">Adding Summary Statistics</a>
     </li>
-    <li class="dropdown-header">Adjusting Non-Color Aesthetics</li>
-    <li class="dropdown-header">Color</li>
+    <li>
+      <a href="NonColorAesthetics.html">Adjusting Non-Color Aesthetics</a>
+    </li>
+    <li>
+      <a href="AdjustingColor.html">Adjusting Color</a>
+    </li>
+    <li>
+      <a href="PickingColor.html">Picking Colors &amp; Palettes</a>
+    </li>
     <li class="dropdown-header">Interactvity</li>
   </ul>
 </li>
@@ -452,10 +459,10 @@ Multiple Lines</h2>
 
 color.two.lines = gf_point(Sepal.Length~Sepal.Width, data = iris, color = ~Species) %&gt;%
   gf_labs(
-    y = &quot;Sepal Length&quot;, 
-    x = &quot;Sepal Width&quot;, 
+    y = &quot;Sepal\nLength&quot;, 
+    x = &quot;Sepal\nWidth&quot;, 
     color = &quot;Species\nName&quot;, 
-    title = &quot;Color Label on Two Lines&quot;)
+    title = &quot;Labels on\nTwo Lines&quot;)
 
 grid.arrange(color.one.line, color.two.lines, nrow = 1)</code></pre>
 <p><img src="TitleLabels_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
@@ -512,7 +519,7 @@ must shrink.</p>
 really.long.title = gf_point(Sepal.Length~Sepal.Width, data = iris, alpha = 0.3) %&gt;%
   gf_labs(title = &quot;Testing out a really long title here to see how the function str_wrap works&quot;)
 
-grid.arrange(wrap.title, really.long.title, nrow = 1)</code></pre>
+grid.arrange(really.long.title, wrap.title, nrow = 1)</code></pre>
 <p><img src="TitleLabels_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="other-items-to-be-labeled" class="section level2" number="1.5">

@@ -114,10 +114,10 @@ color.one.line = gf_point(Sepal.Length~Sepal.Width, data = iris, color = ~Specie
 
 color.two.lines = gf_point(Sepal.Length~Sepal.Width, data = iris, color = ~Species) %>%
   gf_labs(
-    y = "Sepal Length", 
-    x = "Sepal Width", 
+    y = "Sepal\nLength", 
+    x = "Sepal\nWidth", 
     color = "Species\nName", 
-    title = "Color Label on Two Lines")
+    title = "Labels on\nTwo Lines")
 
 grid.arrange(color.one.line, color.two.lines, nrow = 1)
 ```
@@ -166,7 +166,7 @@ wrap.title = gf_point(Sepal.Length~Sepal.Width, data = iris, alpha = 0.3) %>%
 really.long.title = gf_point(Sepal.Length~Sepal.Width, data = iris, alpha = 0.3) %>%
   gf_labs(title = "Testing out a really long title here to see how the function str_wrap works")
 
-grid.arrange(wrap.title, really.long.title, nrow = 1)
+grid.arrange(really.long.title, wrap.title, nrow = 1)
 ```
 
 ## Other Items to be Labeled

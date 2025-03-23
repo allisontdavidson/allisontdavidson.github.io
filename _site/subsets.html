@@ -358,8 +358,15 @@ div.tocify {
     <li>
       <a href="SummaryStats.html">Adding Summary Statistics</a>
     </li>
-    <li class="dropdown-header">Adjusting Non-Color Aesthetics</li>
-    <li class="dropdown-header">Color</li>
+    <li>
+      <a href="NonColorAesthetics.html">Adjusting Non-Color Aesthetics</a>
+    </li>
+    <li>
+      <a href="AdjustingColor.html">Adjusting Color</a>
+    </li>
+    <li>
+      <a href="PickingColor.html">Picking Colors &amp; Palettes</a>
+    </li>
     <li class="dropdown-header">Interactvity</li>
   </ul>
 </li>
@@ -405,13 +412,16 @@ subset(DatasetName, Age &gt; 3 &amp; Age &lt; 10)</p>
 <pre class="r"><code>theme_set(theme_minimal())
 
 gf_point(hwy~displ, data = mpg, alpha = 0.5) %&gt;%
-  gf_labs(title = &quot;All Data&quot;)</code></pre>
+  gf_labs(title = &quot;All Data&quot;) %&gt;%
+  gf_facet_wrap(~year)</code></pre>
 <p><img src="subsets_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, year == 1999), alpha = 0.5) %&gt;%
-  gf_labs(title = &quot;Only Year = 1999&quot;)</code></pre>
+  gf_labs(title = &quot;Only Year = 1999&quot;) %&gt;%
+  gf_facet_wrap(~year)</code></pre>
 <p><img src="subsets_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
 <pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, year &gt; 1999), alpha = 0.5) %&gt;%
-  gf_labs(title = &quot;Only After 1999&quot;)</code></pre>
+  gf_labs(title = &quot;Only After 1999&quot;) %&gt;%
+  gf_facet_wrap(~year)</code></pre>
 <p><img src="subsets_files/figure-html/unnamed-chunk-2-3.png" width="672" /></p>
 <pre class="r"><code>gf_point(hwy~displ, data = subset(mpg, displ &lt;3 | displ &gt;6), alpha = 0.5) %&gt;%
   gf_labs(title = &quot;Displacement on Either End (OR)&quot;)</code></pre>

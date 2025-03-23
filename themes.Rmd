@@ -45,7 +45,7 @@ gf_point(mpg~disp, data = mtcars) %>%
 
 Here is a [list](https://ggplot2.tidyverse.org/reference/ggtheme.html) of many themes available and a preview of what they look like.
 
-```{r, message=FALSE, warning = FALSE}
+```{r, message=FALSE, warning = FALSE, echo = FALSE}
 require(gridExtra)
 
 gray = gf_point(mpg~disp, data = mtcars) %>%
@@ -107,17 +107,17 @@ minimal = gf_point(mpg~disp, data = mtcars) %>%
 
 titleadjust2 = gf_point(mpg~disp, data = mtcars) %>%
   gf_theme(theme_minimal()) %>%
-  gf_labs(title = "theme_minimal", subtitle = "Title Size Adjusted Second") %>%
+  gf_labs(title = "theme_minimal", subtitle = "Title Size Adjusted Second", caption = "Title changed to RED!") %>%
   gf_theme(plot.title = element_text(size=12, color = "red"))
 
 titleadjust1 = gf_point(mpg~disp, data = mtcars) %>%
   gf_theme(plot.title = element_text(size=12, color = "red")) %>%
   gf_theme(theme_minimal()) %>%
-  gf_labs(title = "theme_minimal", subtitle = "Title Size Adjusted First") 
+  gf_labs(title = "theme_minimal", subtitle = "Title Size Adjusted First", caption = "Title color didn't change") 
 
 same.line = gf_point(mpg~disp, data = mtcars) %>%
   gf_theme(plot.title = element_text(size=12, color = "red"), theme_minimal()) %>%
-  gf_labs(title = "theme_minimal", subtitle = "Title Size Adjusted In Same Code")
+  gf_labs(title = "theme_minimal", subtitle = "Title Size Adjusted In Same Code", caption = "Title color didn't change")
 
 grid.arrange(minimal, titleadjust2, titleadjust1, same.line, nrow = 2)
 ```
@@ -192,7 +192,7 @@ All things legend-related are discussed in the Legend section, but because it ut
 
 **Remove ALL legends:** gf_theme(legend.position = "none")
 
-```{r}
+```{r, warning = FALSE}
 gf_point(mpg~disp, data = mtcars, shape = ~as.factor(cyl), color = ~as.factor(cyl), size = ~wt) %>%
   gf_theme(theme_minimal()) %>%
   gf_labs(shape = "cylinders", color = "cylinders", title = "All Legends Included")

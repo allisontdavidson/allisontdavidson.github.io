@@ -1,0 +1,407 @@
+---
+title: "Non-Color Aesthetics"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: TRUE
+    toc_depth: 3
+    number_sections: TRUE
+    theme: lumen
+---
+
+```{r, include = FALSE}
+require(mosaic)
+require(Lock5Data)
+data(SalaryGender)
+data("BaseballSalaries2019")
+require(gridExtra)
+theme_set(theme_minimal())
+require(forcats)
+require(MASS)
+require(viridis)
+require(scales)
+require(tidyr)
+require(ggrepel)
+require(maps)
+data(world.cities)
+data("MarriageAges")
+library(ggpubr)
+require(ggrepel)
+require(ggmosaic)
+require(palmerpenguins)
+require(ggformula)
+require(ggridges)
+require(readr)
+require(socviz)
+
+data(fly)
+fly = na.omit(fly)
+
+data("penguins")
+penguins = na.omit(penguins)
+
+data("gss_sm")
+gss_sm = na.omit(gss_sm)
+require(gapminder)
+require(ggplot2)
+
+require(planets)
+```
+
+This page covers aesthetics about your visual like transparency, size, shape, and linetype.  Color gets its own page - so these are just some common non-color aesthetics you may wish to change about your graph.
+
+All changes can be make for a specific layer, be applied to a variable, and adjusted through a refine statement.  Generally, all aesthetics will be adjusted as follows:
+
+**Explicitly Specified:**  gf_plot(Y~X, data = Dataset, size = 3)
+
+**Specified Using Variable:**  gf_plot(Y~X, data = Dataset, size = ~Var)
+
+**Shape & linetype in Refine Statement:**  gf_refine(scale_\*\_manual(values = c("Value1", "Value2", "Value3:")))
+
+**Size in Refine Statement (continuous):** gf_refine(scale_size_continuous(range = c(1,10)))
+
+**Size in Refine Statement (discrete):** gf_refine(scale_size_discrete(range = c(1,10)))
+
+**Reverse Order of Aesthetics:** gf_refine(scale_\*\_XXX(limits = rev))
+
+
+# Transparency (alpha)
+
+In my experience, transparency is the most commonly used non-color aesthetic that is really helpful to adjust.  In all plots, transparency is adjusted using an alpha option.  Alpha ranges from 1 (most opaque) to 0 (most transparent).
+
+**Example:** gf_plot(Y~X, data = Dataset, alpha = 0.4)
+
+The following figures show different levels of alpha to see the change in transparency.  
+
+```{r}
+alpha1 = gf_density(~body_mass_g, data = penguins, fill = ~island, alpha = 1) %>% gf_refine(scale_fill_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_labs(title = "alpha = 1")
+alpha7 = gf_density(~body_mass_g, data = penguins, fill = ~island, alpha = 0.7) %>% gf_refine(scale_fill_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_labs(title = "alpha = 0.7")
+alpha4 = gf_density(~body_mass_g, data = penguins, fill = ~island, alpha = 0.4) %>% gf_refine(scale_fill_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_labs(title = "alpha = 0.4")
+alpha01 = gf_density(~body_mass_g, data = penguins, fill = ~island, alpha = 0.1) %>% gf_refine(scale_fill_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_labs(title = "alpha = 0.1")
+
+grid.arrange(alpha1, alpha7, alpha4, alpha01, nrow =2)
+```
+
+Alpha is most helpful (I feel) in seeing items that overlap.  In the next subsections I give examples of different graphical elements that may overlap.  In all examples, transparency is adjusted the same way (alpha = 0.3).
+
+## Overalpping Points
+
+In the example below there are many overlapping points.  Jitter certainly helps see many of these overlapping points - but some clumps are still difficult to see just how many points make up that clump.  Adding transparency helps to see some of these overlapping points.
+
+```{r, warning = FALSE}
+gf_jitter(Siblings~BirthOrder, data = StudentSurvey, width = 0.3, height = 0.2) %>% gf_labs(title = "Graph without transparency in points") 
+gf_jitter(Siblings~BirthOrder, data = StudentSurvey, alpha = 0.4, width = 0.3, height = 0.2)%>% gf_labs(title = "Added transparency in points", subtitle = "alpha = 0.4")
+```
+
+## Overalpping Density Ridges
+
+In this next example, there is minor overlapping of the density plots.  Add a bit of transparency to get a feel for the slight overlap.
+
+```{r, warning = FALSE}
+gf_density_ridges(cut~price, data = diamonds, scale = 2, fill=~cut, show.legend = FALSE) %>% gf_labs(title = "No Transparency")
+gf_density_ridges(cut~price, data = diamonds, scale = 2, fill=~cut, alpha = 0.6, show.legend = FALSE)%>% gf_labs(title = "Added Transparency", subtitle = "alpha = 0.6")
+```
+
+
+
+## Overlapping Density Plots
+
+By default the density plots do create slightly transparent densities (which is helpful!).  The following example shows how to omit that transparency, and then also to adjust it to your liking.
+
+```{r, warning = FALSE}
+gf_density(~body_mass_g, data = penguins, fill = ~island, alpha = 1) %>% gf_refine(scale_fill_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_labs(title = "No Transparency", subtitle = "alpha = 1")
+gf_density(~body_mass_g, data = penguins, fill = ~island, alpha = 0.4) %>% gf_refine(scale_fill_manual(values = c("darkorange","purple","cyan4")))%>%
+  gf_labs(title = "Some Transparency", subtitle = "alpha = 0.4")
+```
+
+
+## Overlapping Histograms
+
+Similar to the density plot (above) the histograms below are shown with no transparency (alpha = 1) and some transparency (alpha = 0.4).  
+
+```{r, warning = FALSE}
+gf_histogram(~body_mass_g, data = penguins, fill = ~island, position = position_identity(), alpha = 1) %>% gf_refine(scale_fill_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_labs(title = "No Transparency", subtitle = "alpha = 1")
+
+gf_histogram(~body_mass_g, data = penguins, fill = ~island, position = position_identity(), alpha = 0.4) %>% gf_refine(scale_fill_manual(values = c("darkorange","purple","cyan4")))%>%
+  gf_labs(title = "Some Transparency", subtitle = "alpha = 0.4")
+```
+
+## Variable Assigned to Alpha
+
+Instead of adjusting the alpha for all points, you can vary the alpha (transparency) by a variable.  
+
+```{r}
+gf_point(MPG.highway~Price, data = Cars93, size = ~Weight, alpha = ~Weight, color = "purple") %>%
+  gf_labs(title = "Transparency adjusted by Weight", subtitle = "alpha = ~Weight")
+```
+
+# Shape
+
+The default shape used in most graphs will be dots.  To change from the default, we can specify shape using a number associated with the corresponding shape (see below).
+
+```{r}
+show_point_shapes()
+```
+
+## Changing single shape
+
+To change the shape of all points, you can specify the specific shape within the plot command.
+
+**Example:** gf_plot(Y~X, data = Dataset, shape = 1)
+
+```{r}
+gf_point(MPG.highway~Price, data = Cars93) %>%
+  gf_labs(title = "Default Shape")
+
+gf_point(MPG.highway~Price, data = Cars93, shape = 1, size = 3) %>%
+  gf_labs(title = "Shape = 1", subtitle = "Size adjusted to be larger")
+
+gf_point(MPG.highway~Price, data = Cars93, shape = 25, size = 3, fill = "darkcyan", alpha = 0.3) %>%
+  gf_labs(title = "Shape = 25", subtitle = "Size, fill, and alpha adjusted")
+```
+
+## Changing multiple shapes
+
+To adjust the shape to various levels of a variable, assign a variable to the shape option in your plot.
+
+**Example:** gf_plot(Y~X, data = Dataset, shape = ~Var)
+
+**Reverse Shapes Applied:** gf_refine(scale_shape_discrete(limits = rev))
+
+**Specify shapes used (array):** gf_refine(scale_shape_manual(values = c(10, 5, 8)))
+
+**Link specific shapes to levels of variable:** gf_refine(scale_shape_manual(values = c("Adelie" = 1, "Chinstrap" = 2, "Gentoo" = 5)))
+
+```{r}
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %>% 
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_labs(title = "Assign Different Shapes to Each Species")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %>% 
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4")),
+            scale_shape_discrete(limits = rev)) %>%
+  gf_labs(title = "Reverse Order Shape")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %>% 
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4")),
+            scale_shape_manual(values = c(1, 0, 2)))  %>%
+  gf_labs(title = "Specify List of Shapes Used")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %>% 
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4")),
+            scale_shape_manual(values = c("Adelie" = 1, "Chinstrap" = 2, "Gentoo" = 5))) %>%
+  gf_labs(title = "Assign Each Level of Variable to Specific Shape")
+```
+
+# Size
+
+You can adjust the size of points, lines, and text in your plots.  Below will be examples of each, but generally they all follow the same formula:  size = 4.
+
+## Point Size
+
+Similar to other aesthetics, you can adjust size by specifying a specific size used, assign a variable to size, and manually adjust the range of sizes used.
+
+**Specify Size:**  gf_plot(Y~X, data = Dataset, size = 4)
+
+**Assign Variable to Size:**  gf_plot(Y~X, data = Dataset, size =~Var)
+
+**Adjust Size Scale:** gf_refine(scale_size_continuous(range = c(0.5, 10)))
+
+
+### Specific Size
+
+You can change the size of every point, or, similar to the example below, you can change the size to some points to help them stand out a bit.  
+
+```{r}
+gf_point(MPG.highway~Price, data = Cars93) %>%
+  gf_labs(title = "Default Graph")
+
+gf_point(MPG.highway~Price, data = Cars93) %>%
+  gf_point(MPG.highway~Price, data = subset(Cars93, Manufacturer == "Mazda"), size = 4, color = "orange") %>%
+  gf_labs(title = "Size & Color Adjusted for Mazda Vehicles")
+```
+
+### Size Applied to Discrete Variable
+
+Size can be applied to discrete variables as well as continuous. The following examples show size applied to Origin of vehicles, reversing limits of size used, and changing the range of sizes used.  
+
+```{r, warning = FALSE}
+gf_point(MPG.highway~Price, data = Cars93, size = ~Origin, alpha = 0.2, color = ~Origin) %>%
+  gf_labs(title = "Size assigned to Origin")
+
+gf_point(MPG.highway~Price, data = Cars93, size = ~Origin, alpha = 0.2, color = ~Origin) %>%
+  gf_refine(scale_size_discrete(limits = rev)) %>%
+  gf_labs(title = "Reverse Size Limits")
+
+gf_point(MPG.highway~Price, data = Cars93, size = ~Origin, alpha = 0.2, color = ~Origin) %>%
+  gf_refine(scale_size_discrete(range = c(1, 5)))  %>%
+  gf_labs(title = "Specify Size Range")
+```
+
+### Size Applied to Continuous Variable
+
+Size can be applied to continuous variables, as in the examples below.  Size can be adjusted using the area (size_scale_continuous) or the radius of the circle (scale_radius).  
+
+```{r}
+
+gf_point(mpg~wt, data = mtcars, size = ~cyl, alpha = 0.4) %>%
+  gf_labs(title = "Sized by Cylinder")
+
+gf_point(mpg~wt, data = mtcars, size = ~cyl, alpha = 0.4) %>%
+  gf_refine(scale_size_continuous(range = c(1, 10))) %>%
+  gf_labs(title = "Size Range Adjusted")
+
+gf_point(mpg~wt, data = mtcars, size = ~cyl, alpha = 0.4) %>%
+  gf_refine(scale_radius(range = c(1, 10))) %>%
+  gf_labs(title = "Radius Range Adjusted")
+
+```
+
+
+### Binned Scales
+
+Size that is applied to continuous variables can also be binned.  More information on [binned scales](https://ggplot2-book.org/scales-other.html#sec-guide-bins) can be found in the ggplot2 book.  The following examples show the use of binned scales as well as re-labeling binned scales.  
+
+
+```{r}
+gf_point(lifeExp~gdpPercap, data = subset(gapminder, year == 2007), size = ~pop, alpha = 0.3, color = ~country) %>%
+  gf_facet_wrap(~continent) %>%
+  gf_refine(scale_color_manual(values = country_colors),
+            scale_x_continuous( labels = label_comma(scale_cut = cut_short_scale())),
+            scale_size_continuous(range = c(1,10),labels = label_comma(scale_cut = cut_short_scale()))) %>%
+  gf_theme(guides(color = FALSE)) %>%
+  gf_labs(title = "Size Range Adjusted for Population")
+
+
+gf_point(lifeExp~gdpPercap, data = subset(gapminder, year == 2007), size = ~pop, alpha = 0.3, color = ~country) %>%
+  gf_facet_wrap(~continent) %>%
+  gf_refine(scale_color_manual(values = country_colors),
+            scale_x_continuous( labels = label_comma(scale_cut = cut_short_scale())),
+            scale_size_binned(range = c(1,10),labels = label_comma(scale_cut = cut_short_scale()))) %>%
+  gf_theme(guides(color = FALSE)) %>%
+  gf_labs(title = "Binned Population Size")
+
+gf_point(lifeExp~gdpPercap, data = subset(gapminder, year == 2007), size = ~pop, alpha = 0.3, color = ~country) %>%
+  gf_facet_wrap(~continent) %>%
+  gf_refine(scale_color_manual(values = country_colors),
+            scale_x_continuous(labels = label_comma(scale_cut = cut_short_scale())),
+            scale_size_binned(range = c(1,10),labels = c("Very Small", "Small", "Medium", "Large", "Very Large"))) %>%
+  gf_theme(guides(color = FALSE)) %>%
+  gf_labs(title = "Adjusted Labels of Binned Scales")
+
+```
+
+
+## Line Size
+
+Adjust the size of lines similar to how you adjust size of points.  You can adjust by specifying size, or by applying a variable to size.  As of the time of writing, line size can be adjusted using size = 3 or linewidth = 3 and have similar results.  
+
+```{r}
+default = gf_line(unemploy~date, data = economics) %>%
+  gf_labs(title = "Default Line Size")
+
+line1 = gf_line(unemploy~date, data = economics, size = 1) %>%
+  gf_labs(title = "Line Size = 1")
+
+line2 = gf_line(unemploy~date, data = economics, size = 2) %>%
+  gf_labs(title = "Line Size = 2")
+
+grid.arrange(default, line1, line2, nrow = 3)
+```
+
+Similar to other aesthetics, linewidth can be defined by levels of a variable (both discrete and continuous).  
+
+**Adjust Discrete Linewidth Range:** gf_refine(scale_linewidth_discrete(range = c(0.1, 3)))
+
+**Adjust Continuous Linewidth Range:** gf_refine(scale_linewidth_continuous(range = c(0.1, 3)))
+
+```{r}
+gf_line(lifeExp~year, data = gapminder, stat = "summary", fun = "mean", linewidth = ~continent) %>%
+  gf_labs(title = "Linewidth using Discrete Variable")
+
+gf_line(lifeExp~year, data = gapminder, stat = "summary", fun = "mean", linewidth = ~continent) %>%
+  gf_refine(scale_linewidth_discrete(range = c(0.1, 3))) %>%
+  gf_labs(title = "Linewidth Adjusted on Discrete Variable")
+
+gf_line(Temp~Day, data = airquality, linewidth = ~Month, group = ~Month)  %>%
+  gf_labs(title = "Linewidth using Continuous Variable")
+
+gf_line(Temp~Day, data = airquality, linewidth = ~Month, group = ~Month) %>%
+  gf_refine(scale_linewidth_continuous(range = c(0.1, 3))) %>%
+  gf_labs(title = "Linewidth Adjusted on Continuous Variable")
+```
+
+## Text Size
+
+Similar to points and lines, text size can be adjusted.  Here is a simple example below.  
+
+```{r}
+gf_dist("chisq", df=5) %>%
+gf_dist("chisq", df=10, col="orange") %>%
+gf_dist("chisq", df=20, col="darkcyan", linetype = "dashed") %>%
+  gf_theme(theme_classic()) %>%
+  gf_text(x = 7, y = 0.12, label = "size = 3", hjust = "left", size = 4) %>%
+  gf_text(x = 15, y = 0.08, label = "size = 5", color = "orange", hjust = "left", size = 5) %>%
+  gf_text(x = 26, y = 0.05, label = "size = 7", color = "darkcyan", hjust = "left", size = 7) %>%
+  gf_labs(title = "Changing Size of Text")
+```
+
+# Line type
+
+Line type can be adjusted similar to shape and size.  The following are a list of line types available.
+
+```{r}
+show_line_types()
+```
+
+The following example specifies line types for each layer created.  
+
+```{r}
+gf_dist("chisq", df=5) %>%
+gf_dist("chisq", df=10, col="orange", linetype = "dotted") %>%
+gf_dist("chisq", df=20, col="darkcyan", linetype = "dashed") %>%
+  gf_theme(theme_classic()) %>%
+  gf_labs(title = "Chaning Line Type") %>%
+  gf_text(x = 7, y = 0.12, label = "solid", hjust = "left", size = 3) %>%
+  gf_text(x = 15, y = 0.08, label = "dotted", color = "orange", hjust = "left", size = 3) %>%
+  gf_text(x = 26, y = 0.05, label = "dashed", color = "darkcyan", hjust = "left", size = 3)
+```
+
+The following examples show a few ways you can adjust line type by assigning a variable, and adjusting the specific line types used in a refine statement.
+
+```{r}
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %>% 
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_lm() %>% 
+  gf_labs(title = "Default lines are all solid")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %>% 
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4"))) %>%
+  gf_lm(linetype = ~species, size = 1) %>% 
+  gf_labs(title = "linetype different for each species")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %>%
+  gf_lm(linetype = ~species, size = 1) %>% 
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4")),
+            scale_linetype_manual(values = c("Adelie" = "longdash", "Chinstrap" = "solid", "Gentoo" = "dotted"))) %>%
+  gf_labs(title = "Specify which linetypes used for each species")
+
+gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~species, shape = ~species, size = 3, alpha = 0.4) %>%
+  gf_lm(linetype = ~species, size = 1) %>% 
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4")),
+            scale_linetype_manual(values = c("longdash", "solid", "dotted")))  %>%
+  gf_labs(title = "Specify list of linetypes")
+
+```
+
+
+
+
+

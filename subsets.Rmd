@@ -33,13 +33,16 @@ In order to subset continuous data, create a numerical equation (e.g. X < 5) for
 theme_set(theme_minimal())
 
 gf_point(hwy~displ, data = mpg, alpha = 0.5) %>%
-  gf_labs(title = "All Data")
+  gf_labs(title = "All Data") %>%
+  gf_facet_wrap(~year)
 
 gf_point(hwy~displ, data = subset(mpg, year == 1999), alpha = 0.5) %>%
-  gf_labs(title = "Only Year = 1999")
+  gf_labs(title = "Only Year = 1999") %>%
+  gf_facet_wrap(~year)
 
 gf_point(hwy~displ, data = subset(mpg, year > 1999), alpha = 0.5) %>%
-  gf_labs(title = "Only After 1999")
+  gf_labs(title = "Only After 1999") %>%
+  gf_facet_wrap(~year)
 
 gf_point(hwy~displ, data = subset(mpg, displ <3 | displ >6), alpha = 0.5) %>%
   gf_labs(title = "Displacement on Either End (OR)")

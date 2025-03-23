@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Adjusting Color</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Data Visualization</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Intro</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Refinements
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="TitleLabels.html">Title Labels (Big/Outer/Axis)</a>
+    </li>
+    <li>
+      <a href="CatAndNumDisplay.html">Category &amp; Numeric Display</a>
+    </li>
+    <li>
+      <a href="AxisRange.html">Axis Range, Breaks, and Ordering</a>
+    </li>
+    <li>
+      <a href="subsets.html">Subsets</a>
+    </li>
+    <li>
+      <a href="themes.html">Themes</a>
+    </li>
+    <li>
+      <a href="facets.html">Facets</a>
+    </li>
+    <li>
+      <a href="Legends.html">Legends</a>
+    </li>
+    <li>
+      <a href="Annotations.html">Annotations</a>
+    </li>
+    <li>
+      <a href="Position.html">Position Adjustments</a>
+    </li>
+    <li>
+      <a href="SummaryStats.html">Adding Summary Statistics</a>
+    </li>
+    <li>
+      <a href="NonColorAesthetics.html">Adjusting Non-Color Aesthetics</a>
+    </li>
+    <li>
+      <a href="AdjustingColor.html">Adjusting Color</a>
+    </li>
+    <li>
+      <a href="PickingColor.html">Picking Colors &amp; Palettes</a>
+    </li>
+    <li class="dropdown-header">Interactvity</li>
+  </ul>
+</li>
+<li>
+  <a href="WranglingDataIntro.html">Wranging Data</a>
+</li>
+<li>
+  <a href="markdown.html">Markdown Help</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Adjusting Color</h1>
+
+</div>
+
+
+<p>Within a graph, you may want to alter the color of specific items. To
+do this, we first need to talk about how to change the color of some
+items (as it depends on what you want to alter). For example:</p>
+<ul>
+<li><p><u>Use <strong>color</strong> for things like:</u> points, lines,
+text, and outlines or boxplots</p></li>
+<li><p><u>Use <strong>fill</strong> for things like:</u> bars, densities
+(or areas), polygons, ribbons, and inside boxplots</p></li>
+</ul>
+<p>The general way to change color using color or fill option is:</p>
+<ul>
+<li><p><strong>Color:</strong> gf_plot(Y ~ X, data = Dataset,
+<strong>color</strong> = “ColorName”)</p></li>
+<li><p><strong>Fill:</strong> gf_plot(Y ~ X, data = Dataset,
+<strong>fill</strong> = “ColorName”)</p></li>
+</ul>
+<div id="color-points-lines" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Color Points &amp;
+Lines</h1>
+<p>Alter the color of points, lines, and text using color = “color”. You
+can specify the color of points and/or lines with the color name, hex
+code, or rgb code.</p>
+<p><strong>Example:</strong> gf_plot(Y ~ X, data = Dataset, color =
+“ColorName”)</p>
+<pre class="r"><code>point = gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = &quot;#b715e5&quot;) %&gt;%
+  gf_labs(title = &quot;Points&quot;)
+
+line2 = gf_dens(~bill_length_mm, data = penguins, color = &quot;#b715e5&quot;) %&gt;%
+  gf_labs(title = &quot;Lines&quot;)
+
+peng2 = penguins %&gt;%
+  group_by(species) %&gt;%
+  mutate(mean.length = mean(bill_length_mm),
+         mean.depth = mean(bill_depth_mm))
+
+text2 = gf_text(mean.length~mean.depth, data= peng2, label = ~species, color = &quot;#b715e5&quot;, hjust = &quot;inward&quot;) %&gt;%
+  gf_labs(title = &quot;Text&quot;)
+
+grid.arrange(point, line2, text2, nrow = 1)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="fill-bars-densities" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Fill Bars &amp;
+Densities</h1>
+<p>Bars and densities have color altered using the fill = “ColorName”
+command. The plot below shows the difference between trying to alter the
+color vs. fill of various plots. To alter the fill color, specify the
+color name, hex code, or rbg code.</p>
+<p><strong>Example:</strong> gf_plot(Y ~ X, data = Dataset, fill =
+“ColorName”)</p>
+<pre class="r"><code>bar.color = gf_bar(~species, data = penguins, color = &quot;#b715e5&quot;) %&gt;%
+  gf_labs(title = &quot;color&quot;) %&gt;%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
+bar.fill = gf_bar(~species, data = penguins, fill = &quot;#b715e5&quot;) %&gt;%
+  gf_labs(title = &quot;fill&quot;) %&gt;%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
+
+hist.color = gf_histogram(~bill_length_mm, data = penguins, color = &quot;#b715e5&quot;) %&gt;%
+  gf_labs(title = &quot;color&quot;)
+hist.fill = gf_histogram(~bill_length_mm, data = penguins, fill = &quot;#b715e5&quot;) %&gt;%
+  gf_labs(title = &quot;fill&quot;)
+
+box.color = gf_boxplot(bill_length_mm~species, data = penguins, color = &quot;#b715e5&quot;) %&gt;%
+  gf_labs(title = &quot;color&quot;) %&gt;%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
+box.fill = gf_boxplot(bill_length_mm~species, data = penguins, fill = &quot;#b715e5&quot;) %&gt;%
+  gf_labs(title = &quot;fill&quot;) %&gt;%
+  gf_refine(scale_x_discrete(guide = guide_axis(n.dodge = 2))) 
+
+dens.color = gf_density(~bill_length_mm, data = penguins, color = &quot;#b715e5&quot;) %&gt;%
+  gf_labs(title = &quot;color&quot;)
+dens.fill = gf_density(~bill_length_mm, data = penguins, fill = &quot;#b715e5&quot;) %&gt;%
+  gf_labs(title = &quot;fill&quot;)
+
+grid.arrange(bar.color, bar.fill, hist.color, hist.fill, box.color, box.fill, dens.color, dens.fill, nrow = 2)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="general-ways-to-adjust-color" class="section level1"
+number="3">
+<h1><span class="header-section-number">3</span> General Ways to Adjust
+Color</h1>
+<p>There are 4 main ways we’ll adjust color:</p>
+<p><strong>Color (or Fill) by Specified Color (name, hex or
+code):</strong> color = “Color Name”</p>
+<p><strong>Color (or Fill) and Specify Label:</strong> color = ~“Label
+Name”</p>
+<p><strong>Color (or Fill) by Variable:</strong> color = ~ Variable</p>
+<p><strong>Color (or Fill) by Condition:</strong> color = ~ (Var &lt;
+10) or color = ~ (Var == “Category”)</p>
+</div>
+<div id="specify-color" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Specify Color</h1>
+<p>In the example below, we layer many lines &amp; text onto a plot. It
+is helpful to adjust the color of such elements. For each, we can adjust
+using the color = “ColorName” option. Again, any color can be specified
+using a name, hex code, or rgb code.</p>
+<p><strong>Color Name:</strong> color = “orange”</p>
+<p><strong>Hex Code:</strong> color = “#cda209”</p>
+<p><strong>RGB Proportions:</strong> color = rgb(0.09, 0.2, 0.16)</p>
+<p><strong>RGB Values:</strong> color = rgb(9, 205, 162, maxColorValue =
+255)</p>
+<pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5) %&gt;%
+gf_dist(&quot;chisq&quot;, df=10, color =&quot;orange&quot;) %&gt;%
+gf_dist(&quot;chisq&quot;, df=20, color =&quot;darkcyan&quot;, linetype = &quot;dashed&quot;) %&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_text(x = 7, y = 0.12, label = &quot;df = 5&quot;, hjust = &quot;left&quot;) %&gt;%
+  gf_text(x = 15, y = 0.08, label = &quot;df = 10&quot;, color = &quot;orange&quot;, hjust = &quot;left&quot;) %&gt;%
+  gf_text(x = 26, y = 0.05, label = &quot;df = 20&quot;, color = &quot;darkcyan&quot;, hjust = &quot;left&quot;) %&gt;%
+  gf_labs(title = &quot;Specify Color&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5, color = &quot;purple&quot;) %&gt;%
+gf_dist(&quot;chisq&quot;, df=10, color =&quot;#cda209&quot;) %&gt;%
+gf_dist(&quot;chisq&quot;, df=20, color = rgb(9, 205, 162, maxColorValue = 255), linetype = &quot;dashed&quot;) %&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_text(x = 7, y = 0.12, label = &quot;purple&quot;, hjust = &quot;left&quot;, color = &quot;purple&quot;) %&gt;%
+  gf_text(x = 15, y = 0.08, label = &quot;#cda209&quot;, color = &quot;#cda209&quot;, hjust = &quot;left&quot;) %&gt;%
+  gf_text(x = 26, y = 0.05, label = &quot;rgb(9, 205, 162, maxColorValue = 255)&quot;, color = rgb(9, 205, 162, maxColorValue = 255), hjust = &quot;left&quot;) %&gt;%
+  gf_labs(title = &quot;Specify Color&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="discrete-color" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Discrete Color</h1>
+<p>How to color/fill by variable</p>
+<pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
+  gf_labs(title = &quot;Color by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
+  gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<div id="adjusting-default-colors" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Adjusting Default
+Colors</h2>
+<p>For adjusting any color or fill, you want to use the corresponding
+scale adjustment:</p>
+<p><strong>Adjust Color:</strong> scale_color_manual( )</p>
+<p><strong>Adjust Fill</strong>: scale_fill_manual( )</p>
+<p>Then decide which palette type you want to use (there are many). If
+you want to reverse any palette, you can do so specifying within the
+same command using limits = rev. Key things to think about are if you’re
+categories are nominal (no order to them) or sequential (have some kind
+of order to them). You’ll want your palette or color choices to match
+the variable type you have. More details can be found in <a
+href="https://clauswilke.com/dataviz/color-basics.html">Chapter 4</a>
+and <a href="https://clauswilke.com/dataviz/color-pitfalls.html">Chapter
+19</a> of Wilke’s Fundamentals of Data Visualization.</p>
+<p><strong>Reverse any palette:</strong> scale_fill_manual( … , limits =
+rev )</p>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="81%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Color Type</th>
+<th>Code Format</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Manual</td>
+<td>scale_fill_manual( values = c( “Color 1” , “Color 2” ))</td>
+</tr>
+<tr class="even">
+<td>Hue</td>
+<td>scale_color_hue(h = c(60, 180))</td>
+</tr>
+<tr class="odd">
+<td>Grey</td>
+<td>scale_color_grey()</td>
+</tr>
+<tr class="even">
+<td>Brewer</td>
+<td>scale_fill_brewer( palette = “Greens” )</td>
+</tr>
+<tr class="odd">
+<td>Viridis</td>
+<td>scale_fill_viridis(discrete = TRUE, option = “magma”)</td>
+</tr>
+<tr class="even">
+<td>Paletteer</td>
+<td>scale_color_paletteer_d(“palettetown::charmeleon”)</td>
+</tr>
+<tr class="odd">
+<td>Colorspace</td>
+<td><p>scale_color_discrete_qualitative(palette = “Dark 3”)</p>
+<p>scale_fill_discrete_sequential(palette = “Purples”)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="manual-color" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Manual Color</h2>
+<p>You can certainly pick colors you just like the look of, but it may
+be helpful to think of how you want to use those colors. For example, do
+you want to highlight a certain group or alert the reader to a specific
+portion of the graph? Are there colors that are socially assoiated with
+certain categories (e.g. profit/loss or political party)? Does your
+company want to use brand-specific colors?</p>
+<p>Summary of how to color/fill Reverse Help guides/palette
+references</p>
+<pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
+  gf_labs(title = &quot;Color by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
+  gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;), limits = rev)) %&gt;% 
+  gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+</div>
+<div id="spaced-color-hue" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Spaced Color Hue</h2>
+<p><a
+href="https://ggplot2.tidyverse.org/reference/scale_hue.html">Scale_color_hue</a>
+and scale_fill_hue will pick evenly spaced hue’s between the two bounds
+you provide.</p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
+  gf_refine(scale_color_hue(h = c(60, 180))) %&gt;%
+  gf_labs(title = &quot;Color by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
+  gf_refine(scale_fill_hue(h = c(180, 300), limits = rev)) %&gt;% 
+  gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+</div>
+<div id="grey-scale" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Grey scale</h2>
+<p>scale_*_grey() <a
+href="https://ggplot2.tidyverse.org/reference/scale_grey.html">documentation</a></p>
+<pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
+  gf_refine(scale_color_grey()) %&gt;%
+  gf_labs(title = &quot;Color by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
+  gf_refine(scale_fill_grey(limits = rev)) %&gt;% 
+  gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+</div>
+<div id="brewer-palette" class="section level2" number="5.5">
+<h2><span class="header-section-number">5.5</span> Brewer Palette</h2>
+<pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
+  gf_refine(scale_color_brewer(palette = &quot;Dark2&quot;)) %&gt;%
+  gf_labs(title = &quot;Color by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
+  gf_refine(scale_fill_brewer(palette = &quot;Dark2&quot;, limits = rev)) %&gt;% 
+  gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+</div>
+<div id="viridis-palette" class="section level2" number="5.6">
+<h2><span class="header-section-number">5.6</span> Viridis Palette</h2>
+<pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
+  gf_refine(scale_color_viridis(discrete = TRUE)) %&gt;%
+  gf_labs(title = &quot;Color by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
+  gf_refine(scale_fill_viridis(discrete = TRUE, option = &quot;magma&quot;, limits = rev)) %&gt;% 
+  gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+</div>
+<div id="paletteer-other-palettes" class="section level2" number="5.7">
+<h2><span class="header-section-number">5.7</span> Paletteer (Other
+Palettes)</h2>
+<p>Take advantage of auto-fill! Note, once you start typing within
+scale_color_paletteer_d() you should have a scroll-menu to choose from
+all the types of palettes from all types of packages.</p>
+<pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
+  gf_refine(scale_color_paletteer_d(&quot;palettetown::charmeleon&quot;)) %&gt;%
+  gf_labs(title = &quot;Color by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
+  gf_refine(scale_fill_paletteer_d(&quot;awtools::ppalette&quot;, limits = rev)) %&gt;% 
+  gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+</div>
+<div id="colorspace" class="section level2" number="5.8">
+<h2><span class="header-section-number">5.8</span> Colorspace</h2>
+<p>Below are just a couple ways to use the colorspace package to adjust
+color. The <a
+href="https://colorspace.r-forge.r-project.org/reference/index.html">reference
+page</a> has many other details.</p>
+<pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
+  gf_refine(scale_color_discrete_qualitative(palette = &quot;Dark 3&quot;)) %&gt;%
+  gf_labs(title = &quot;Color by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>gf_density(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity(), color = &quot;black&quot;) %&gt;%
+  gf_refine(scale_fill_discrete_sequential(palette = &quot;Purples&quot;, limits = rev)) %&gt;% 
+  gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+</div>
+<div id="specify-both-color-variable" class="section level2"
+number="5.9">
+<h2><span class="header-section-number">5.9</span> Specify both Color
+&amp; Variable</h2>
+<pre class="r"><code>gf_ribbon(lowest+highest~date, data = HighLow, fill=&quot;gray85&quot;) %&gt;%
+gf_ribbon(low_temp+high_temp~date, data=Weather, fill=~city) %&gt;%
+  gf_theme(theme_classic()) %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_facet_wrap(~city) %&gt;%
+  gf_refine(scale_x_date(date_breaks = &quot;8 months&quot;, date_labels = &quot;%b %y&quot;)) %&gt;%
+  gf_labs(x = &quot;&quot;, y = &quot;Temperature&quot;, title = &quot;Fill by City (Variable)&quot;, subtitle = &quot;Fill = gray85 for background reference&quot;) </code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="gapminder-colors" class="section level2" number="5.10">
+<h2><span class="header-section-number">5.10</span> Gapminder
+colors</h2>
+<p>continent colors country colors</p>
+<p>ADD scatterplot of country colors</p>
+<pre class="r"><code>gf_summary(lifeExp~year, data = gapminder, fun=&quot;mean&quot;, color = ~continent, geom = &quot;line&quot;) %&gt;%
+  gf_lims(x = c(1950, 2015))%&gt;%
+  gf_text(lifeExp~year, data = subset(gapminder, year == 2007), hjust = &quot;outward&quot;, label = ~continent, stat = &quot;summary&quot;, position = position_nudge(x = 1), fun = &quot;mean&quot;)  %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) </code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>gf_summary(lifeExp~year, data = gapminder, fun=&quot;mean&quot;, color = ~continent, geom = &quot;line&quot;) %&gt;%
+  gf_lims(x = c(1950, 2015))%&gt;%
+  gf_text(lifeExp~year, data = subset(gapminder, year == 2007), hjust = &quot;outward&quot;, label = ~continent, stat = &quot;summary&quot;, position = position_nudge(x = 1), fun = &quot;mean&quot;)  %&gt;%
+  gf_theme(legend.position = &quot;none&quot;) %&gt;%
+  gf_refine(scale_color_manual(values = continent_colors))</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+</div>
+</div>
+<div id="continuous-color" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Continuous Color</h1>
+<p>Default adding color to continuous variable:</p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed()) %&gt;%
+  gf_labs(title = &quot;Fill by Continuous Variable&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
+  gf_theme(theme_void) %&gt;%
+  gf_labs(title = &quot;Raster Builds in Fill Option (Z~)&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
+  gf_refine(scale_color_continuous(guide = &quot;legend&quot;)) %&gt;%
+  gf_labs(title = &quot;Color by Continuous Variable&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-19-3.png" width="672" /></p>
+<div id="manual-colors-gradient" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Manual Colors
+(Gradient)</h2>
+<p>More details on how to adjust gradient scales can be found in the <a
+href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">reference
+page</a>.</p>
+<p><strong>scale_fill_gradient():</strong> 2 colors (high &amp; low)</p>
+<p><strong>scale_fill_gradient2():</strong> 3 colors (high, low, &amp;
+mid (can also specify midpoint number))</p>
+<p><strong>scale_fill_gradientn():</strong> n colors (usually
+pre-defined like rainbow(5) or terrain.colors(7))</p>
+<p>Specify missing data using na.value = “white”.</p>
+<p><strong>Example (Missing Data):</strong> scale_fill_gradient(low =
+“black”, high = “purple”, na.value = “white”)</p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_fill_gradient2(low = &quot;darkcyan&quot;, high = &quot;darkred&quot;, mid = &quot;yellow&quot;, 
+                                 midpoint = (min(~mean, data = temps_months) + max(~mean, data = temps_months))/2)) </code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
+  gf_refine(scale_fill_gradient(low = &quot;black&quot;, high = &quot;purple&quot;))  %&gt;%
+  gf_theme(theme_void) </code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
+  gf_refine(scale_color_gradientn(guide = &quot;legend&quot;, colors = c(&quot;black&quot;, &quot;purple4&quot;,&quot;purple1&quot;, &quot;lavender&quot;)))</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-20-3.png" width="672" /></p>
+<div id="adjusting-midpoint" class="section level3" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Adjusting
+midpoint</h3>
+<pre class="r"><code>mid45 = gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(scale_fill_gradient2(low = &quot;navy&quot;, high = &quot;darkorange&quot;, mid = &quot;white&quot;, 
+                                 midpoint = 45)) %&gt;%
+  gf_labs(title = &quot;Midpoint = 45&quot;)
+
+mid60 = gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(scale_fill_gradient2(low = &quot;navy&quot;, high = &quot;darkorange&quot;, mid = &quot;white&quot;, 
+                                 midpoint = 60))%&gt;%
+  gf_labs(title = &quot;Midpoint = 60&quot;)
+
+mid75 = gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(scale_fill_gradient2(low = &quot;navy&quot;, high = &quot;darkorange&quot;, mid = &quot;white&quot;, 
+                                 midpoint = 75))%&gt;%
+  gf_labs(title = &quot;Midpoint = 75&quot;)
+
+grid.arrange(mid45, mid60, mid75)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+</div>
+<div id="muted-colors" class="section level3" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Muted Colors</h3>
+<p>To tone down colors you can use the “muted” function on any color
+values.</p>
+<p><strong>Mute Colors:</strong> scale_fill_gradient2(low = “blue”, high
+= “red”, mid = muted(“purple”))</p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_fill_gradient2(low = &quot;blue&quot;, high = &quot;red&quot;, mid = &quot;purple&quot;, midpoint = 60)) %&gt;%
+  gf_labs(title = &quot;Unmuted: Blue, Red, Purple&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_fill_gradient2(low = &quot;blue&quot;, high = &quot;red&quot;, mid = muted(&quot;purple&quot;), midpoint = 60)) %&gt;%
+  gf_labs(title = &quot;Muted Mid (Purple)&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_fill_gradient2(low = &quot;cyan&quot;, high = &quot;magenta&quot;, mid = &quot;yellow&quot;, midpoint = 60))  %&gt;%
+  gf_labs(title = &quot;Unmuted: Cyan, Magenta, Yellow&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-22-3.png" width="672" /></p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_fill_gradient2(low = muted(&quot;cyan&quot;), high = muted(&quot;magenta&quot;), mid = &quot;yellow&quot;, midpoint = 60))   %&gt;%
+  gf_labs(title = &quot;Muted High &amp; Low: Cyan, Magenta&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-22-4.png" width="672" /></p>
+</div>
+<div id="rainbow-palette" class="section level3" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> Rainbow
+Palette</h3>
+<p>Reverse (trans = “reverse”): trans = “reverse”</p>
+<p>Reverse(rev(rainbow(5))): rev(rainbow(5))</p>
+<pre class="r"><code>#Note this reverse doesn&#39;t work the same way!!!  
+gf_linerange(low_temp+high_temp~date|city~., data=Weather, color = ~(low_temp + high_temp)/2) %&gt;%
+  gf_refine(scale_color_gradientn(colors = rainbow(5))) %&gt;%
+  gf_labs(color = &quot;Mid\nTemp&quot;, title = &quot;Default Rainbow&quot;, y = &quot;Temperature (F)&quot;, subtitle = &quot;Logically the colors don&#39;t match up with heat/cold&quot;) %&gt;%
+  gf_theme(theme_light())</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<pre class="r"><code>gf_linerange(low_temp+high_temp~date|city~., data=Weather, color = ~(low_temp + high_temp)/2) %&gt;%
+  gf_refine(scale_color_gradientn(colors = rainbow(5), trans = &quot;reverse&quot;)) %&gt;%
+  gf_labs(color = &quot;Mid\nTemp&quot;, title = &quot;Default Rainbow&quot;, y = &quot;Temperature (F)&quot;, subtitle = &quot;Logically the colors don&#39;t match up with heat/cold&quot;) %&gt;%
+  gf_theme(theme_light())</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
+<pre class="r"><code>gf_linerange(low_temp+high_temp~date|city~., data=Weather, color = ~(low_temp + high_temp)/2) %&gt;%
+  gf_refine(scale_color_gradientn(colors = rev(rainbow(5)))) %&gt;%
+  gf_labs(color = &quot;Mid\nTemp&quot;, title = &quot;Reverse Rainbow&quot;, y = &quot;Temperature (F)&quot;, subtitle = &quot;More Logical:  Hot temps = Reds and Cool Temps = Blues&quot;) %&gt;%
+  gf_theme(theme_light())</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-23-3.png" width="672" /></p>
+</div>
+<div id="terrain-heat-colors" class="section level3" number="6.1.4">
+<h3><span class="header-section-number">6.1.4</span> Terrain &amp; Heat
+Colors</h3>
+<p>Again, either trans = “reverse” or rev(heat.colors(5))</p>
+<pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
+  gf_refine(scale_fill_gradientn(colors = terrain.colors(10)))  %&gt;%
+  gf_theme(theme_void) %&gt;%
+  gf_labs(title = &quot;Terrain (10) Colors&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
+  gf_refine(scale_fill_gradientn(colors = terrain.colors(10), trans = &quot;reverse&quot;))  %&gt;%
+  gf_theme(theme_void) %&gt;%
+  gf_labs(title = &quot;Terrain (10) Colors&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
+<pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
+  gf_refine(scale_fill_gradientn(colors = rev(heat.colors(8))))  %&gt;%
+  gf_theme(theme_void) %&gt;%
+  gf_labs(title = &quot;Heat (8) Colors Reversed&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-24-3.png" width="672" />
+# Brewer (Distiller) Palettes</p>
+<p>The distiller palettes are the same as Brewer, but this is currently
+the way to distinguish whether you’re looking at discrete color ranges
+or continuous color ranges. This <a
+href="https://jmsallan.netlify.app/blog/the-brewer-palettes/">post</a>
+displays the palettes in an aesthetically pleasing way.</p>
+<p>Note: hue &amp; grey only work for discrete. Brewer works for
+continuous but is called distiller instead.</p>
+<p>Reverse (direction = 1): default direction = -1 so to reverse
+direction = 1 Reverse (trans = “reverse”):</p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_fill_distiller(palette = &quot;Spectral&quot;)) %&gt;%
+  gf_labs(title = &quot;Diverging Palette: Spectral&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
+  gf_refine(scale_fill_distiller(palette = &quot;BrBG&quot;))  %&gt;%
+  gf_theme(theme_void)  %&gt;%
+  gf_labs(title = &quot;Diverging Palette: BrBG&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
+  gf_refine(scale_color_distiller(guide = &quot;legend&quot;, palette = &quot;BuPu&quot;))  %&gt;%
+  gf_labs(title = &quot;Sequential Palette: BuPu&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
+  gf_refine(scale_color_distiller(guide = &quot;legend&quot;, palette = &quot;BuPu&quot;, direction = 1)) %&gt;%
+  gf_labs(title = &quot;Reverse using direction = 1&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-4.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
+  gf_refine(scale_color_distiller(guide = &quot;legend&quot;, palette = &quot;BuPu&quot;, trans = &quot;reverse&quot;)) %&gt;%
+  gf_labs(title = &quot;Reverse using trans = reverse&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-5.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="viridis" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Viridis</h1>
+<p>Reverse: trans = “reverse”</p>
+<p>Reverse: direction = -1 (opposite of how you reverse colors in
+discrete case!)</p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_fill_viridis()) %&gt;%
+  gf_labs(title = &quot;Viridis Default&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
+  gf_theme(theme_void) %&gt;%
+  gf_refine(scale_fill_viridis(option = &quot;magma&quot;)) %&gt;%
+  gf_labs(title = &quot;Viridis: option = magma&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
+  gf_refine(scale_color_viridis(guide = &quot;legend&quot;, option = &quot;mako&quot;)) %&gt;%
+  gf_labs(title = &quot;Original Mako&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-26-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
+  gf_refine(scale_color_viridis(guide = &quot;legend&quot;, option = &quot;mako&quot;, direction = -1)) %&gt;%
+  gf_labs(title = &quot;Reverse Viridis: Mako, direction = -1&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-26-4.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
+  gf_refine(scale_color_viridis(guide = &quot;legend&quot;, option = &quot;mako&quot;, trans = &quot;reverse&quot;)) %&gt;%
+  gf_labs(title = &quot;Reverse Viridis: Mako, trans = reverse&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-26-5.png" width="672" /></p>
+</div>
+<div id="colorspace-1" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Colorspace</h1>
+<p>scale_<fill/color><em><discrete/continuous></em><qual/seq/div>()</p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_fill_continuous_sequential(palette = &quot;YlGnBu&quot;, rev = FALSE)) %&gt;%
+  gf_labs(title = &quot;Sequential: YlGnBu Reverse&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
+  gf_theme(theme_void) %&gt;%
+  gf_refine(scale_fill_continuous_divergingx(palette = &quot;Roma&quot;, mid = 140, rev = TRUE)) %&gt;%
+  gf_labs(title = &quot;Diverging: Mid Specified and Reversed&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-27-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
+  gf_refine(scale_color_continuous_sequential(guide = &quot;legend&quot;, palette = &quot;mako&quot;)) %&gt;%
+  gf_labs(title = &quot;Sequential Mako&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-27-3.png" width="672" /></p>
+</div>
+<div id="adjusting-default-scales" class="section level1" number="9">
+<h1><span class="header-section-number">9</span> Adjusting Default
+Scales</h1>
+<p>Adjust begin &amp; end with viridis and colorspace scales.</p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_fill_viridis(option = &quot;Mako&quot;)) %&gt;%
+  gf_labs(title = &quot;Original Mako Scales&quot;)</code></pre>
+<pre><code>## Warning in viridisLite::viridis(256, alpha, begin, end, direction, option):
+## Option &#39;Mako&#39; does not exist. Defaulting to &#39;viridis&#39;.</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_fill_viridis(option = &quot;Mako&quot;, begin = 0.15, end = 0.8)) %&gt;%
+  gf_labs(title = &quot;Make Scales Adjusted Begin &amp; End&quot;)</code></pre>
+<pre><code>## Warning in viridisLite::viridis(256, alpha, begin, end, direction, option):
+## Option &#39;Mako&#39; does not exist. Defaulting to &#39;viridis&#39;.</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_fill_continuous_sequential(palette = &quot;YlGnBu&quot;, 
+                                             rev = FALSE)) %&gt;%
+  gf_labs(title = &quot;Original YlGnBu Reverse&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-28-3.png" width="672" /></p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_fill_continuous_sequential(palette = &quot;YlGnBu&quot;, 
+                                             rev = FALSE,
+                                             begin = 0.15)) %&gt;%
+  gf_labs(title = &quot;YlGnBu Reverse Adjusted Begin&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-28-4.png" width="672" /></p>
+<pre class="r"><code>BirthdaysSum = Birthdays %&gt;%
+  group_by(month, day) %&gt;%
+  mutate(TotalBirths = sum(births)) %&gt;%
+  dplyr::select(month, day, TotalBirths) %&gt;%
+  unique()</code></pre>
+<pre class="r"><code>gf_tile(month~day, data = subset(BirthdaysSum, TotalBirths &gt; 300), fill=~TotalBirths) %&gt;%
+  gf_refine(scale_fill_viridis(na.value = NA, 
+                               option = &quot;magma&quot;, 
+                               labels = label_number(scale_cut = cut_short_scale())),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12))))</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<pre class="r"><code>max = max(~TotalBirths, data = BirthdaysSum)
+min = min(~TotalBirths, data = subset(BirthdaysSum, TotalBirths &gt; 50000))
+
+gf_tile(month~day, data = subset(BirthdaysSum, TotalBirths &gt; 300), fill=~TotalBirths) %&gt;%
+  gf_refine(scale_fill_viridis(na.value = NA, 
+                               option = &quot;magma&quot;, 
+                               labels = label_number(scale_cut = cut_short_scale()),
+                               limits = c(min,max)),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12)))) %&gt;%
+  gf_tile(2~29, fill=&quot;black&quot;)</code></pre>
+<pre><code>## Warning: All aesthetics have length 1, but the data has 366 rows.
+## ℹ Please consider using `annotate()` or provide this layer with data containing
+##   a single row.</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-30-2.png" width="672" /></p>
+<pre class="r"><code>gf_tile(month~day, data = BirthdaysSum, fill=~TotalBirths) %&gt;%
+  gf_refine(scale_fill_gradientn(na.value = &quot;white&quot;, labels = label_number(scale_cut = cut_short_scale()),
+                               colors = c(&quot;black&quot;, &quot;#721f81&quot;, &quot;#f1605d&quot;, &quot;#fcfdbf&quot;),
+                               values = c(0.1, 0.8, 0.9, 1)),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12)))) </code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-30-3.png" width="672" /></p>
+<pre class="r"><code>gf_tile(month~day, data = BirthdaysSum, fill=~TotalBirths) %&gt;%
+  gf_refine(scale_fill_gradientn(na.value = &quot;white&quot;, labels = label_number(scale_cut = cut_short_scale()),
+                               colors = viridis(4, option = &quot;magma&quot;),
+                               values = c(0.1, 0.8, 0.9, 1)),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12)))) </code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-30-4.png" width="672" /></p>
+<pre class="r"><code>gf_tile(month~day, data = BirthdaysSum, fill=~TotalBirths) %&gt;%
+  gf_refine(scale_fill_gradientn(na.value = &quot;white&quot;, labels = label_number(scale_cut = cut_short_scale()),
+                               colors = viridis(4, option = &quot;magma&quot;),
+                               values = c(0.1, min/max, (min+max)/max, 1)),
+            coord_fixed(expand = FALSE),
+            scale_y_reverse(breaks = c(seq(1:12)))) </code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-30-5.png" width="672" /></p>
+<p>Viridis palette generator <a
+href="https://waldyrious.net/viridis-palette-generator/"
+class="uri">https://waldyrious.net/viridis-palette-generator/</a></p>
+<p><a href="https://towardsdatascience.com/heatmaps-for-time-series/"
+class="uri">https://towardsdatascience.com/heatmaps-for-time-series/</a></p>
+<p><a href="https://graphics.wsj.com/infectious-diseases-and-vaccines/"
+class="uri">https://graphics.wsj.com/infectious-diseases-and-vaccines/</a></p>
+<pre class="r"><code>measles = read.csv(&quot;https://gist.githubusercontent.com/rlvaugh/fd6ce822c98e38849d3ec51e3fd3441d/raw/5d896ec8b962aafb3b3194d63e336847e49749a5/measles_tycho.csv&quot;) %&gt;%
+  mutate_at(1:53, as.numeric) %&gt;%
+  pivot_longer(cols = 3:53, names_to = &quot;State&quot;, values_to = &quot;Cases&quot;) %&gt;%
+  group_by(YEAR, State) %&gt;%
+  summarise(Count = ifelse(all(is.na(Cases)), NA, sum(Cases, na.rm = TRUE)))</code></pre>
+<pre><code>## Warning: There were 51 warnings in `mutate()`.
+## The first warning was:
+## ℹ In argument: `ALABAMA = .Primitive(&quot;as.double&quot;)(ALABAMA)`.
+## Caused by warning:
+## ! NAs introduced by coercion
+## ℹ Run `dplyr::last_dplyr_warnings()` to see the 50 remaining warnings.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;YEAR&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code>colors = c(&#39;#e7f0fa&#39;,  # lightest blue
+          &#39;#c9e2f6&#39;,  # light blue
+          &#39;#95cbee&#39;,  # blue
+          &#39;#0099dc&#39;,  # dark blue
+          &#39;#4ab04a&#39;,  # green
+          &#39;#ffd73e&#39;,  # yellow
+          &#39;#eec73a&#39;,  # yellow brown
+          &#39;#e29421&#39;,  # dark tan
+          &#39;#f05336&#39;,  # orange
+          &#39;#ce472e&#39;)  # red
+
+positions = c(0, 0.02, 0.03, 0.09, 0.1, 0.15, 0.25, 0.4, 0.5, 1)
+
+gf_tile(State~YEAR, data = measles, fill = ~Count) %&gt;%
+  gf_vline(xintercept = 1963, color = &quot;black&quot;, linetype = &quot;dashed&quot;) %&gt;%
+  gf_refine(coord_fixed(expand = FALSE),
+            scale_y_discrete(limits = rev),
+            scale_fill_gradientn(na.value = &quot;white&quot;,
+                                 colors = colors,
+                                 values = positions,
+                                 guide = guide_colorbar(barwidth = 50),
+                                 breaks = seq(from = 0, to= 3000, by=500))) %&gt;%
+  gf_theme(legend.position = &quot;bottom&quot;, legend.title.position = &quot;bottom&quot;,
+           legend.title = element_text(hjust = 0.5)) %&gt;%
+  gf_labs(y = &quot;&quot;, fill=&quot;Cases per 100,000&quot;) +
+  annotate(geom = &quot;text&quot;, y = 48, x = 1964, label = &quot;Vaccine&quot;, hjust = 0, fontface = &quot;bold&quot;, size = 5)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<pre class="r"><code>gf_tile(State~YEAR, data = measles, fill = ~Count) %&gt;%
+  gf_vline(xintercept = 1963, color = &quot;black&quot;, linetype = &quot;dashed&quot;) %&gt;%
+  gf_refine(coord_fixed(expand = FALSE),
+            scale_y_discrete(limits = rev),
+            scale_fill_gradientn(na.value = &quot;white&quot;,
+                                 colors = colors,
+                                 values = positions,
+                                 breaks = seq(from = 0, to= 3000, by=500))) %&gt;%
+  gf_theme(legend.position = &quot;bottom&quot;, legend.title.position = &quot;bottom&quot;,
+           legend.title = element_text(hjust = 0.5), legend.key.width = unit(1, &quot;null&quot;)) %&gt;%
+  gf_labs(y = &quot;&quot;, fill=&quot;Cases per 100,000&quot;) +
+  annotate(geom = &quot;text&quot;, y = 48, x = 1964, label = &quot;Vaccine&quot;, hjust = 0, fontface = &quot;bold&quot;, size = 5)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-31-2.png" width="672" /></p>
+<p><a
+href="https://www.tidyverse.org/blog/2024/02/ggplot2-3-5-0-legends/"
+class="uri">https://www.tidyverse.org/blog/2024/02/ggplot2-3-5-0-legends/</a></p>
+</div>
+<div id="other-neat-ideas" class="section level1" number="10">
+<h1><span class="header-section-number">10</span> Other Neat Ideas</h1>
+<p>This <a
+href="https://albert-rapp.de/posts/ggplot2-tips/07_four_ways_colors_more_efficiently/07_four_ways_colors_more_efficiently.html">blog
+post</a> goes through an example of taking many categories, subsetting
+them, and then coloring similar shades of a color instead of many
+distinct colors.</p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

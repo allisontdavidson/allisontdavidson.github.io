@@ -23,6 +23,9 @@ require(resampledata)
 data("Cuckoos")
 require(forcats)
 require(ggmosaic)
+require(maps)
+require(viridis)
+require(stringr)
 ```
 
 This section looks at ways of adjusting the overall scale of each axis (e.g. instead of going from 0 to 100 going from 40 to 60) as well as reversing the order (e.g. instead of going from 1 to 100 going from 100 to 1).
@@ -51,10 +54,9 @@ grid.arrange(default, clipped, breaksMajor, reverse, ncol = 1)
 
 ## Beyond the Data Range
 
-If you are adjusting the axis range beyond the data - you can use the gf_lims( ) command to adjust.  This is most helpful when you're trying to match axis to compare.
+If you are adjusting the axis range beyond the data - you can use the gf_lims( ) command to adjust. This is most helpful when you're trying to match axis to compare.
 
 **Example:** gf_lims(x=c(0,10), y = c(10,100))
-
 
 ```{r, include = FALSE}
 # Read in data
@@ -98,7 +100,7 @@ meterDefault = gf_dotplot(~GuessedLength, data=subset(lengths, Unit == "Meter"),
 grid.arrange(feetDefault, meterDefault, nrow = 2)
 ```
 
-In the dotplots below, the axis are adjusted so they span the same equivalent space.  It is more clear that the 43 ft = 13.1 meters.
+In the dotplots below, the axis are adjusted so they span the same equivalent space. It is more clear that the 43 ft = 13.1 meters.
 
 ```{r}
 feet = gf_dotplot(~GuessedLength, data = subset(lengths, Unit == "Feet"), binwidth = 2, alpha = 0.3) %>%
@@ -122,11 +124,15 @@ grid.arrange(feet, meter, nrow = 2)
 
 ## Within Data Range
 
-If we are adjusting axis within the range of data, we need to be careful what we do with points that fall outside that range.  For example, do we want to just ignore them and zoom in or do we want to essentially omit them from the dataset/consideration.  
+If we are adjusting axis within the range of data, we need to be careful what we do with points that fall outside that range. For example, do we want to just ignore them and zoom in or do we want to essentially omit them from the dataset/consideration.
 
 There are 2 ways of adjusting axis scales (in terms of how they treat data). One way is called "without clipping" where all data is preserved, but we adjust the axis to essentially zoom in or out while keeping all data preserved. Alternatively, we can adjust "with clipping" where all data not in the area specified is no longer accounted for. This will matter if you're overlaying things like linear model trendlines. The images below come from the ggplot2 cheat-sheet and I think illustrate things well.
 
-![No Clipping](NoClipping.jpg) ![With Clipping](WithClipping.jpg)
++----------------------------------------+--------------------------------------------+
+| Without Clipping                       | With Clipping                              |
++:======================================:+:==========================================:+
+| ![](NoClipping.jpg){alt="No Clipping"} | ![](WithClipping.jpg){alt="With Clipping"} |
++----------------------------------------+--------------------------------------------+
 
 ### Adjust Scales Without Clipping
 
@@ -134,9 +140,9 @@ To adjust scales without removing unseen data points, use a gf_refine( ) stateme
 
 **Example:** gf_plot( ) %\>% gf_refine(coord_cartesian(xlim = c(0, 100), ylim = c(10, 20)))
 
-![No Clipping](NoClipping.jpg)
+![](NoClipping.jpg)
 
-```{r}
+```{r, warning = FALSE}
 original = gf_point(Salary~Age, data = SalaryGender, color = ~as.factor(PhD)) %>%
   gf_labs(color = "PhD", title = "All Data") %>%
   gf_refine(scale_color_discrete(labels = c("0" = "No PhD", "1" = "PhD"))) %>%
@@ -160,7 +166,7 @@ grid.arrange(original, noclipping, nrow = 1)
 
 There are a few ways you can adjust the scales with clipping. For example, you can merely create a subset and only use that data (by default, clipping out the other data). Alternatively you can use a gf_lims( ) command OR a scale_x_continuous( ) command within a refine statement.
 
-![With Clipping](WithClipping.jpg)
+![](WithClipping.jpg)
 
 **Option 1:** gf_lims(x = c(40,80)) or gf_lims(x = c(65, NA), y = c(3, NA))
 
@@ -211,22 +217,25 @@ grid.arrange(noshift, spread, ncol = 1)
 
 ```
 
-If you wanted to add a space for another label, one can be added through the scale_\*_discrete command.
+If you wanted to add a space for another label, one can be added through the scale\_\*\_discrete command.
 
-**EXample:** scale_x_discrete(limits = c("Female", "Male", "Additional Label"))
+**Example:** scale_x_discrete(limits = c("Female", "Male", "Additional Label"))
 
 ```{r}
 gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %>%
-  gf_labs(color = "PhD", x = "Gender", title = "Additional Label Added") %>%
+  gf_labs(color = "PhD", x = "Gender", title = "Additional Label Added (Right)") %>%
   gf_refine(scale_color_discrete(labels = c("0" = "No PhD", "1" = "PhD")),
             scale_x_discrete(limits = c("Female", "Male", "Additional Label"))) 
+
+gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %>%
+  gf_labs(color = "PhD", x = "Gender", title = "Additional Label Added (MIddle)") %>%
+  gf_refine(scale_color_discrete(labels = c("0" = "No PhD", "1" = "PhD")),
+            scale_x_discrete(limits = c("Female", "New Label", "Male"))) 
 ```
-
-
 
 ## Exapanding Visual Range
 
-In addition to all methods of adjusting the axis ranges, we can also adjust the plot field using the exapnd option in scale_\*\_continuous or scale_\*\_discrete.
+In addition to all methods of adjusting the axis ranges, we can also adjust the plot field using the exapnd option in scale\_\*\_continuous or scale\_\*\_discrete.
 
 **Example (discrete):** scale_x_discrete(expand = expansion(add = 2))
 
@@ -246,11 +255,11 @@ For more details, the [ggplot book](https://ggplot2-book.org/scales-position) al
 
 To adjust scale breaks, use the breaks command inside the scale_XXX_continuous command.
 
-Most breaks will likely be what are known as "major breaks" (the numbers on the axis).  One can also adjust the minor breaks (reference lines within the graph).  
+Most breaks will likely be what are known as "major breaks" (the numbers on the axis). One can also adjust the minor breaks (reference lines within the graph).
 
 ## Adjust Major Breaks
 
-A few ways to adjust major breaks include specifying a sequence of values (or other function of values), manually entering values, or specifying the width of the breaks.  Here are a few highlights to each of these methods:
+A few ways to adjust major breaks include specifying a sequence of values (or other function of values), manually entering values, or specifying the width of the breaks. Here are a few highlights to each of these methods:
 
 **Sequence:** gf_refine(scale_x_continuous(breaks = c(seq(1:13))))
 
@@ -321,8 +330,7 @@ gf_histogram(~price, data = diamonds) %>%
 
 ## Binned Scales
 
-If you have numeric scales and want to bin the scales, there are a few ways you can approach this.  You can bin (or "cut") the data itself, manually create categories, or you can just bin the axis.  Examples can be found in the [ggplot](https://ggplot2-book.org/scales-position) book.
-
+If you have numeric scales and want to bin the scales, there are a few ways you can approach this. You can bin (or "cut") the data itself, manually create categories, or you can just bin the axis. Examples can be found in the [ggplot](https://ggplot2-book.org/scales-position) book.
 
 # Reverse Scales
 
@@ -332,43 +340,42 @@ Reversing scales will have different codes based on the type of data you have. T
 
 **Discrete:** gf_refine( scale_y_discrete( limits = rev ) )
 
+## Reverse Continuous Scales
 
-```{r}
-original = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5), show.legend = FALSE) %>%
-  gf_labs(color = "PhD", x = "Gender", title = "Original") %>%
-  gf_refine(
-    scale_color_discrete(labels = c("0" = "No PhD", "1" = "PhD"))) 
+In the following example, I wanted the months to "start" at the top of the graph, so January was the first line and December was the second.  I also wanted to adjust the breaks so I could more easily tell the specific month for each row.  
 
-y.reverse = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5), show.legend = FALSE) %>%
-  gf_labs(color = "PhD", x = "Gender", title = "Reverse Y", subtitle = "scale_y_reverse()", y = "Salary (reversed)") %>%
-  gf_refine(
-    scale_color_discrete(labels = c("0" = "No PhD", "1" = "PhD")),
-    scale_y_reverse()) # Reverse Y axis continuous scale
+**Example (continuous):** gf_refine( scale_y_reverse( ) )
 
-grid.arrange(original, y.reverse, nrow = 1)
+**Example (continuous with breaks):** gf_refine( scale_y_reverse( breaks = c(seq(1:12)) ) )
 
-x.reverse = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5), show.legend = FALSE) %>%
-  gf_labs(color = "PhD", x = "Gender (reversed)", title = "Reverse X", subtitle = "scale_x_discrete(limits = rev)") %>%
-  gf_refine(
-    scale_color_discrete(labels = c("0" = "No PhD", "1" = "PhD")),
-    scale_x_discrete(limits = rev)) # Reverse X axis discrete scale
-
-grid.arrange(original, x.reverse, ncol = 1)
-
-both.reverse = gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5), show.legend = FALSE) %>%
-  gf_labs(color = "PhD", x = "Gender (reversed)", title = "Reverse Y and X", subtitle = "scale_y_reverse() &\nscale_x_discrete(limits = rev) ", y = "Salary (reversed)") %>%
-  gf_refine(
-    scale_color_discrete(labels = c("0" = "No PhD", "1" = "PhD")),
-    scale_y_reverse(), # Reverse Y axis continuous scale
-    scale_x_discrete(limits = rev)) # Reverse X axis discrete scale
-
-grid.arrange(original, both.reverse, nrow = 1)
-
+```{r, include = FALSE}
+BirthdaysSimple = Birthdays %>%
+  group_by(month, wday) %>%
+  summarize(AveBirths = mean(births))
 ```
 
-## Reverse Fill
+```{r}
 
-The following example looks at a bargraph and different ways to reverse the fill categories and colors used to fill.
+gf_tile(month~wday, data = BirthdaysSimple, fill=~AveBirths) %>%
+  gf_refine(scale_fill_viridis(option = "mako")) %>%
+  gf_labs(title = "Default Y Scale")
+
+gf_tile(month~wday, data = BirthdaysSimple, fill=~AveBirths) %>%
+  gf_refine(scale_fill_viridis(option = "mako"),
+            scale_y_reverse())  %>%
+  gf_labs(title = "Reverse Y Scale")
+
+gf_tile(month~wday, data = BirthdaysSimple, fill=~AveBirths) %>%
+  gf_refine(scale_fill_viridis(option = "mako"),
+            scale_y_reverse(breaks = c(seq(1:12))))   %>%
+  gf_labs(title = "Reverse Y Scale", subtitle = "And Adjusted Sequence")
+```
+
+## Reverse Discrete Scales
+
+To reverse a discrete scale, we need to use a slightly different code.
+
+**Example (discrete):** gf_refine( scale_x_discrete( limits = rev ) )
 
 ```{r}
 gf_bar(~cut, data = diamonds) %>%
@@ -376,19 +383,18 @@ gf_bar(~cut, data = diamonds) %>%
 
 gf_bar(~cut, data = diamonds) %>%
   gf_refine(scale_x_discrete(limits = rev)) %>%
-  gf_labs(title = "Reverse X Axis")
+  gf_labs(title = "Reverse Discrete X Axis", subtitle = "scale_x_discrete(limits = rev)")
 ```
 
-**Reverse fill categories only:** fill = ~ fct_rev(Var)
+## Reverse Fill
+
+The following example looks at a bargraph and different ways to reverse the fill categories and colors used to fill.
+
+**Reverse fill (categories only):** fill = \~ fct_rev(Var)
 
 **Reverse fill colors & categories:** scale_fill_viridis(discrete = TRUE, limits = rev)
 
-**Reverse legend to match reversed fill & cateogeis:** gf_theme(guides(fill=guide_legend(reverse=TRUE)))
-
-```{r, include=FALSE}
-require(viridis)
-```
-
+**Reverse legend to match reversed fill & categories:** gf_theme(guides(fill=guide_legend(reverse=TRUE)))
 
 ```{r, warning=FALSE}
 gf_bar(~cut, data = diamonds, fill = ~clarity) %>%
@@ -418,15 +424,15 @@ We can adjust the default order of categories a few ways.
 4.  Order by Count but only display Top N ([fct_lump_n](https://forcats.tidyverse.org/reference/fct_lump.html))
 5.  Reverse order of any factor ([fct_rev](https://forcats.tidyverse.org/reference/fct_rev.html))
 
-A helpful package in ordering categorical variables is [forcats](https://forcats.tidyverse.org/index.html).  All ways of adjusting variable order described below utilize this package.  
+A helpful package in ordering categorical variables is [forcats](https://forcats.tidyverse.org/index.html). All ways of adjusting variable order described below utilize this package.
 
 ## Manually specify order
 
-To manually specify the order of level of a factor, we'll adjust the data to the order we want.  To do this we can use [fct_relevel](https://forcats.tidyverse.org/reference/fct_relevel.html) either within a graph command or to alter the dataset itself.  
+To manually specify the order of level of a factor, we'll adjust the data to the order we want. To do this we can use [fct_relevel](https://forcats.tidyverse.org/reference/fct_relevel.html) either within a graph command or to alter the dataset itself.
 
-**Example (in graph command):** gf_plot( Y ~ fct_relevel(X , "Level 1", "Level 2", "Level 3"))
+**Example (in graph command):** gf_plot( Y \~ fct_relevel(X , "Level 1", "Level 2", "Level 3"))
 
-**Example (mutate dataset):** Dataset %>% mutate( Var = fct_relevel( Var , "Level 1", "Level 2", "Level 3"))
+**Example (mutate dataset):** Dataset %\>% mutate( Var = fct_relevel( Var , "Level 1", "Level 2", "Level 3"))
 
 ```{r}
 gf_bar(~Year, data = StudentSurvey) %>%
@@ -443,14 +449,13 @@ gf_bar(~YearOrdered, data = StudentSurvey2) %>%
 
 ```
 
-
 ## Order by Summary Statistic
 
-In the example below we order the boxplots by the average number of eggs in each bird.  There are a few ways to do this, but one is using the [fct_reorder](https://forcats.tidyverse.org/reference/fct_reorder.html) command in the forcats package.  
+In the example below we order the boxplots by the average number of eggs in each bird. There are a few ways to do this, but one is using the [fct_reorder](https://forcats.tidyverse.org/reference/fct_reorder.html) command in the forcats package.
 
-**Example (default reorder):** gf_plot( Y ~ fct_reorder(X , Var ), data = Dataset)
+**Example (default reorder):** gf_plot( Y \~ fct_reorder(X , Var ), data = Dataset)
 
-**Example (specify median & descending):** gf_plot( Y ~ fct_reorder( X , Var, .fun = median , .desc = TRUE))
+**Example (specify median & descending):** gf_plot( Y \~ fct_reorder( X , Var, .fun = median , .desc = TRUE))
 
 ```{r}
 gf_boxplot(Eggs~Bird, data = Cuckoos, color = ~Bird, show.legend = FALSE) %>%
@@ -463,23 +468,21 @@ gf_boxplot(Eggs~fct_reorder(Bird, Eggs, .fun = median, .desc=TRUE), data = Cucko
   gf_labs(x = "Bird Type", title = "Force Statistic & Descening Order")
 ```
 
-[This](https://r-graph-gallery.com/267-reorder-a-variable-in-ggplot2.html) post also highlights some options for reordering.  
+[This](https://r-graph-gallery.com/267-reorder-a-variable-in-ggplot2.html) post also highlights some options for reordering.
 
 ## Order by Count
 
-Ordering categories by count works slightly differently if there is not an actual variable that counts data in each category.  [This](https://blog.albertkuo.me/post/2022-01-04-reordering-geom-col-and-geom-bar-by-count-or-value/) post was really helpful.  We still use the forcats package, but the function [fct_infreq](https://forcats.tidyverse.org/reference/fct_inorder.html) is what will calculate the frequency for us (so we don't have to create a variable that counts items in a category).
+Ordering categories by count works slightly differently if there is not an actual variable that counts data in each category. [This](https://blog.albertkuo.me/post/2022-01-04-reordering-geom-col-and-geom-bar-by-count-or-value/) post was really helpful. We still use the forcats package, but the function [fct_infreq](https://forcats.tidyverse.org/reference/fct_inorder.html) is what will calculate the frequency for us (so we don't have to create a variable that counts items in a category).
 
-**Example (order by frequency):** gf_plot( ~ fct_infreq(Var), data = Dataset)
+**Example (order by frequency):** gf_plot( \~ fct_infreq(Var), data = Dataset)
 
-**Example (reverse order by freq):** gf_plot( ~ fct_rev(fct_infreq(Var)), data = Dataset)
+**Example (reverse order by freq):** gf_plot( \~ fct_rev(fct_infreq(Var)), data = Dataset)
 
-**Example (only keep n most frequent):** gf_plot( ~ fct_lump_n(fct_infreq(Var), n = 10), data = Dataset)
-
+**Example (only keep n most frequent):** gf_plot( \~ fct_lump_n(fct_infreq(Var), n = 10), data = Dataset)
 
 ```{r, include = FALSE}
 ufo <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-06-25/ufo_sightings.csv")
 ```
-
 
 ```{r, fig.height = 7}
 
@@ -502,10 +505,114 @@ gf_bar(~TopState , data=subset(ufo, country == "us"), fill = ~(TopState != "Othe
   gf_labs(title = "Adjust Dataset for Top 10 States + Other", subtitle = "Change Colors to Highlight Other Category", y = "state", x = "State") 
 ```
 
+# Fixed Coordinates
+
+You may notice that graphs you create may stretch to use the space allotted. To avoid this, you can adjust the coordinates in a few ways. One is to "fix" the coordinates in a refine statement.
+
+**Example:** gf_refine(coord_fixed())
+
+```{r, include = FALSE}
+require(withr)
+
+pin = read.csv("https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Passwords/Common-Credentials/four-digit-pin-codes-sorted-by-frequency-withcount.csv", header = FALSE) %>%
+  rename(Pin = V1, Count = V2) 
+  
+pin$Pin = 
+  with_options(
+    c(scipen = 999), 
+    str_pad(pin$Pin, 4, pad = "0")
+    )
+
+pin = pin %>%
+  mutate(First = str_sub(Pin, 1, 2),
+         Second = str_sub(Pin, 3, 4))
+```
+
+The following is a graph I recreated inspired by [this](https://www.abc.net.au/news/2025-01-28/almost-one-in-ten-people-use-the-same-four-digit-pin/103946842) post on pin numbers. Since the X and Y axis should have a 1-1 relationship, it makes sense to have "fixed" coordinates here.
+
+```{r}
+gf_tile(as.numeric(First)~as.numeric(Second), data = pin, fill=~Count) %>%
+  gf_refine(scale_x_continuous(expand = expansion(add=0)),
+            scale_y_continuous(expand = expansion(add = 0)),
+            scale_fill_viridis(option = "G")) %>%
+  gf_labs(y = "First 2 Digits", x = "Second 2 Digits", title = "Default Coordinates") 
+
+gf_tile(as.numeric(First)~as.numeric(Second), data = pin, fill=~Count) %>%
+  gf_refine(coord_fixed(),
+            scale_x_continuous(expand = expansion(add=0)),
+            scale_y_continuous(expand = expansion(add = 0)),
+            scale_fill_viridis(option = "G")) %>%
+  gf_labs(y = "First 2 Digits", x = "Second 2 Digits", title = "Fixed Coordinates") 
+```
+
+# Conic Coordinates
+
+Another aspect for which you may want space preserved is with maps. You can still use "fixed" coordinates here, but there are also other coordinate fixes to account for curvature of the earth in your 2D plot. This [reference guide](https://ggplot2.tidyverse.org/reference/coord_map.html) goes over many options.
+
+```{r, include = FALSE}
+japan = map_data("world", "japan") # World Geographic Data
+india = map_data("world", "india") # World Geographic Data
+kansas = map_data("county", "kansas")
+county = map_data("county") # State County Geographic Data
+states = map_data("state")
+```
+
+**Example (map specifying projection):** gf_refine(coord_map("orthographic"))
+
+**Example (helpful for US maps):** gf_refine(coord_map("conic", lat0=30))
+
+**Example (faster map drawing):** gf_refine(coord_quickmap())
+
+```{r}
+japan1 = gf_polygon(lat~long, data=japan, group=~group, fill="white", color="black", size = 0.5) %>%
+  gf_theme(theme_map()) %>%
+  gf_labs(title = "Default Stretch")
+
+india1 = gf_polygon(lat~long, data=india, group=~group, fill="white", color="black", size = 0.5) %>%
+  gf_theme(theme_map()) 
+
+japan.fixed = gf_polygon(lat~long, data=japan, group=~group, fill="white", color="black", size = 0.5) %>%
+  gf_theme(theme_map()) %>%
+  gf_refine(coord_quickmap()) %>%
+  gf_labs(title = "Quickmap Coordinates")
+
+india.fixed = gf_polygon(lat~long, data=india, group=~group, fill="white", color="black", size = 0.5) %>%
+  gf_theme(theme_map()) %>%
+  gf_refine(coord_quickmap())
+
+grid.arrange(japan1, india1, japan.fixed, india.fixed, nrow = 2, ncol = 2)
+
+grid.arrange(japan1,  india1, japan.fixed, india.fixed, nrow = 1)
+```
+
+The following examples use specific map projections. Using ?mapproject you can read about many other projections, but below you'll also see a few examples.
+
+```{r}
+defaultUSA = gf_polygon(lat~long, data=states, group = ~group, fill="white", color = "black", size=0.05) %>%
+  gf_theme(theme_map()) %>%
+  gf_labs(title = "Default Stretch")
+
+gilbertUSA = gf_polygon(lat~long, data=states, group = ~group, fill="white", color = "black", size=0.05) %>%
+  gf_theme(theme_map()) %>%
+  gf_refine(coord_map("gilbert"))%>%
+  gf_labs(title = "Gilbert")
+
+orthoUSA = gf_polygon(lat~long, data=states, group = ~group, fill="white", color = "black", size=0.05) %>%
+  gf_theme(theme_map()) %>%
+  gf_refine(coord_map("orthographic"))%>%
+  gf_labs(title = "Orthographic")
+
+conicUSA = gf_polygon(lat~long, data=states, group = ~group, fill="white", color = "black", size=0.05) %>%
+  gf_theme(theme_map()) %>%
+  gf_refine(coord_map("conic", lat0=30)) %>%
+  gf_labs(title = "Conic")
+
+grid.arrange(defaultUSA, gilbertUSA, orthoUSA, conicUSA, nrow = 1)
+```
 
 # Polar Coordinates
 
-There may be times where you wish to convert rectangular elements to polar coordinates (to make circles/angles).  One example is the use of polar coordinates to create pie charts.  Below shows a few examples of altnerate ways to adjust a bargraph.
+There may be times where you wish to convert rectangular elements to polar coordinates (to make circles/angles). One example is the use of polar coordinates to create pie charts. Below shows a few examples of alternate ways to adjust a bargraph.
 
 **Convert to Polar:** gf_refine(coord_polar("y", stat = 0))
 
@@ -535,6 +642,3 @@ gf_bar(~flight_freq, data = na.omit(fly), fill = ~rude_to_recline, position = "f
   gf_labs(fill = "Is It Rude\nTo Recline?", title = "Polar Coordinates")
 
 ```
-
-
-
