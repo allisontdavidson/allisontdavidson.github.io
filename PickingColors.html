@@ -394,18 +394,24 @@ div.tocify {
 
 
 <p>In this section I’ve separated out how to choose individual colors
-&amp; palettes. This is a repository of all things about how to choose
-color that I found helpful and does not go into details on how
-specifically to adjust color within a graph.</p>
+&amp; palettes. This is a repository of things about how to choose color
+that I found helpful but does not go into details on how specifically to
+adjust color within a graph.</p>
 <div id="picking-individual-colors" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Picking Individual
 Colors</h1>
+<p>R understands many different colors that can be specified with a
+color name (you just have to know the color name!). The colors() command
+will list ALL colors, but it doesn’t show you those colors.</p>
 <pre class="r"><code>colors()[1:10]</code></pre>
 <pre><code>##  [1] &quot;white&quot;         &quot;aliceblue&quot;     &quot;antiquewhite&quot;  &quot;antiquewhite1&quot;
 ##  [5] &quot;antiquewhite2&quot; &quot;antiquewhite3&quot; &quot;antiquewhite4&quot; &quot;aquamarine&quot;   
 ##  [9] &quot;aquamarine1&quot;   &quot;aquamarine2&quot;</code></pre>
+<p>Here is a sample table of colors with their color name (hard to read,
+but just for illustrative purposes the variety of colors - and this just
+scratches the surface)!</p>
 <p><img src="PickingColors_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>This table is not bad, but I love how this <a
+<p>The above table is hard to read, so I love how this <a
 href="https://r-charts.com/colors/">website</a> groups &amp; orders all
 colors, providing not only the name of the color but also the hex
 code.</p>
@@ -415,8 +421,9 @@ code.</p>
 Website</h2>
 <p>This <a href="https://htmlcolorcodes.com/color-picker/">color
 picker</a> allows you to pick any color, gives the hex code and the rgb
-codes.</p>
-<p><img src="ColorPicker.png" width="200" /></p>
+codes. If you don’t know a color name - not to worry! R understands hex
+codes and rgb codes.</p>
+<p><img src="ColorPicker.png" width="400" /></p>
 <p>Some things I really like about this website:</p>
 <ul>
 <li><p>It goes through some color theory,</p></li>
@@ -445,48 +452,51 @@ time of writing this is a collection of several, but I currently tend
 toward manual, brewer, and viridis palettes.</p>
 <div id="brewer" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Brewer</h2>
+<p>The Brewer palettes have some commands where you can see all the
+palettes (examples below). I like how Jose M Sallan put things together
+in <a
+href="https://jmsallan.netlify.app/blog/the-brewer-palettes/">this</a>
+post. The palettes look great, are organized well, and nicely labeled so
+you know how to use a specific palette in your code.</p>
+<p>Here are a few examples of the display functions that show some of
+the colorblind friendly palettes.</p>
 <pre class="r"><code>display.brewer.all(type=&quot;seq&quot;, colorblindFriendly = TRUE)</code></pre>
 <p><img src="PickingColors_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<pre class="r"><code>display.brewer.all(type=&quot;qual&quot;, colorblindFriendly = TRUE)</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
 <pre class="r"><code>display.brewer.all(type=&quot;div&quot;, colorblindFriendly = TRUE)</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
-<pre class="r"><code>display.brewer.all(type=&quot;div&quot;, colorblindFriendly = TRUE, n = 5)</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-5-4.png" width="672" /></p>
+<p><img src="PickingColors_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code>display.brewer.pal(n = 8, name = &#39;Dark2&#39;)</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-5-5.png" width="672" /></p>
-<pre class="r"><code>brewer.pal(n = 8, name = &#39;Dark2&#39;)</code></pre>
-<pre><code>## [1] &quot;#1B9E77&quot; &quot;#D95F02&quot; &quot;#7570B3&quot; &quot;#E7298A&quot; &quot;#66A61E&quot; &quot;#E6AB02&quot; &quot;#A6761D&quot;
-## [8] &quot;#666666&quot;</code></pre>
+<p><img src="PickingColors_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<p>A site that Sallan mentions is <a
+href="https://colorbrewer2.org/#type=sequential&amp;scheme=BuGn&amp;n=3">this</a>
+one where you can see the Brewer palettes in action.</p>
 </div>
 <div id="viridis" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Viridis</h2>
+<p><a
+href="https://jmsallan.netlify.app/blog/the-viridis-palettes/">Jose M
+Sallan</a> does it again with an awesome display of the viridis
+palettes.</p>
+<div id="continuous-scale" class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Continuous
+Scale</h3>
+<p><img src="PickingColors_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="discrete-scale" class="section level3" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Discrete Scale</h3>
+<p><img src="PickingColors_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>This <a
 href="https://waldyrious.net/viridis-palette-generator/">site</a> allows
 you to pick the number of categories and viridis palette &amp; gives rgb
 and hex codes for the colors used.</p>
+<p>This <a
+href="https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html">post</a>
+goes over some documentation and images that compare the viridis scale
+to other commonly used color scales with different color
+deficiencies.</p>
 <p>Here is the <a
 href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">ggplot2</a>
 page of viridis palette uses.</p>
-<p>This <a href="https://rpubs.com/mjvoss/psc_viridis">post</a> goes
-over some documentation and images that compare the viridis scale to
-other commonly used color scales with different color dificiencies.</p>
-<pre class="r"><code>show_col(viridis(6))</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<pre class="r"><code>show_col(viridis(6, option = &quot;inferno&quot;))</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
-<pre class="r"><code>show_col(viridis(6, option = &quot;magma&quot;))</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
-<pre class="r"><code>show_col(viridis(6, option = &quot;plasma&quot;))</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-6-4.png" width="672" /></p>
-<pre class="r"><code>show_col(viridis(6, option = &quot;cividis&quot;))</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-6-5.png" width="672" /></p>
-<pre class="r"><code>show_col(viridis(6, option = &quot;rocket&quot;))</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-6-6.png" width="672" /></p>
-<pre class="r"><code>show_col(viridis(6, option = &quot;mako&quot;))</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-6-7.png" width="672" /></p>
-<pre class="r"><code>show_col(viridis(6, option = &quot;turbo&quot;))</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-6-8.png" width="672" /></p>
+</div>
 </div>
 <div id="colorspace" class="section level2" number="2.3">
 <h2><span class="header-section-number">2.3</span> Colorspace</h2>
@@ -495,37 +505,15 @@ href="https://colorspace.r-forge.r-project.org/reference/hcl_palettes.html">colo
 palettes. They have several commands that allow for interactive
 color-choosing experiences within your Shiny app and occasionally your
 html viewer.</p>
-<pre class="r"><code>require(colorspace)</code></pre>
-<pre><code>## Loading required package: colorspace</code></pre>
-<pre class="r"><code>hcl_palettes(&quot;qualitative&quot;, plot = TRUE)</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>hcl_palettes(&quot;sequential (single-hue)&quot;, n = 7, plot = TRUE)</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
-<pre class="r"><code>hcl_palettes(&quot;sequential (multi-hue)&quot;, n = 7, plot = TRUE)</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
-<pre class="r"><code>hcl_palettes(&quot;diverging&quot;, n = 7, plot = TRUE)</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-7-4.png" width="672" /></p>
-<pre class="r"><code># Pop up selector
+<pre class="r"><code>#hcl_palettes(&quot;qualitative&quot;, plot = TRUE)
+#hcl_palettes(&quot;sequential (single-hue)&quot;, n = 7, plot = TRUE)
+hcl_palettes(&quot;sequential (multi-hue)&quot;, n = 7, plot = TRUE)</code></pre>
+<p><img src="PickingColors_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>#hcl_palettes(&quot;diverging&quot;, n = 7, plot = TRUE)
+
+# Pop up selector
 #choose_palette()
-demo(&quot;viridis&quot;, package = &quot;colorspace&quot;)</code></pre>
-<pre><code>## 
-## 
-##  demo(viridis)
-##  ---- ~~~~~~~
-## 
-## &gt; if(requireNamespace(&quot;viridis&quot;)) {
-## + 
-## + library(&quot;colorspace&quot;)
-## + 
-## + specplot(viridis::viridis(9), sequential_hcl(9, &quot;Viridis&quot;), main = &quot;Viridis&quot;)
-## + specplot(viridis::cividis(9), divergingx_hcl(9, &quot;Cividis&quot;), main = &quot;Cividis&quot;)
-## + specplot(viridis::plasma(9),  sequential_hcl(9, &quot;Plasma&quot;),  main = &quot;Plasma&quot;)
-## + specplot(viridis::inferno(9), sequential_hcl(9, &quot;Inferno&quot;), main = &quot;Inferno&quot;)
-## + specplot(viridis::rocket(9),  sequential_hcl(9, &quot;Rocket&quot;),  main = &quot;Rocket&quot;)
-## + specplot(viridis::mako(9),    sequential_hcl(9, &quot;Mako&quot;),    main = &quot;Mako&quot;)
-## + 
-## + }</code></pre>
-<p><img src="PickingColors_files/figure-html/unnamed-chunk-7-5.png" width="672" /><img src="PickingColors_files/figure-html/unnamed-chunk-7-6.png" width="672" /><img src="PickingColors_files/figure-html/unnamed-chunk-7-7.png" width="672" /><img src="PickingColors_files/figure-html/unnamed-chunk-7-8.png" width="672" /><img src="PickingColors_files/figure-html/unnamed-chunk-7-9.png" width="672" /><img src="PickingColors_files/figure-html/unnamed-chunk-7-10.png" width="672" /></p>
+#demo(&quot;viridis&quot;, package = &quot;colorspace&quot;)</code></pre>
 </div>
 <div id="paletteer" class="section level2" number="2.4">
 <h2><span class="header-section-number">2.4</span> Paletteer</h2>
@@ -535,12 +523,8 @@ way:</p>
 <pre class="r"><code>paletteer_d(&quot;awtools::mpalette&quot;)</code></pre>
 <pre><code>## &lt;colors&gt;
 ## #017A4AFF #FFCE4EFF #3D98D3FF #FF363CFF #7559A2FF #794924FF #8CDB5EFF #D6D6D6FF #FB8C00FF</code></pre>
-<pre class="r"><code>paletteer_d(&quot;awtools::ppalette&quot;)</code></pre>
-<pre><code>## &lt;colors&gt;
-## #F7DC05FF #3D98D3FF #EC0B88FF #5E35B1FF #F9791EFF #3DD378FF #C6C6C6FF #444444FF</code></pre>
-<pre class="r"><code>paletteer_d(&quot;nord::frost&quot;)</code></pre>
-<pre><code>## &lt;colors&gt;
-## #8FBCBBFF #88C0D0FF #81A1C1FF #5E81ACFF</code></pre>
+<pre class="r"><code>#paletteer_d(&quot;awtools::ppalette&quot;)
+#paletteer_d(&quot;nord::frost&quot;)</code></pre>
 <p>The <a href="https://r-graph-gallery.com/color-palette-finder">color
 palette finder</a> is another way to not only see a snippet of the
 palette (in the drop down menu) but also see the palette applied to
@@ -551,7 +535,11 @@ shows snippets of 497 palettes.</p>
 </div>
 </div>
 <div id="accessibility" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Accessibility!</h1>
+<h1><span class="header-section-number">3</span> Accessibility</h1>
+<p>An additional resource that I’ve found helpful is <a
+href="https://www.color-blindness.com/coblis-color-blindness-simulator/">this</a>
+website that allows you to upload your image and see how it looks with
+different color deficiencies.</p>
 </div>
 
 

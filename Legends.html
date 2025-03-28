@@ -395,8 +395,10 @@ div.tocify {
 
 <p>There are many things you can do with legends. This chapter of the <a
 href="https://ggplot2-book.org/scales-colour">ggplot2</a> book covers
-many more ideas than just what is listed below. Additionally, this post
-from <a
+many more ideas than just what is listed below as well as this <a
+href="https://viz-ggplot2.rsquaredacademy.com/ggplot2-modify-legend">chapter</a>
+from Data Visualization with ggplot2 by Aravind Hebbali. Additionally,
+this post from <a
 href="https://www.tidyverse.org/blog/2024/02/ggplot2-3-5-0-legends/">Tidyverse</a>
 covers many more adjustments to legends.</p>
 <div id="adjusting-legend-position" class="section level1" number="1">
@@ -655,9 +657,30 @@ the scale_*_ within a gf_refine layer. You do need to be careful that
 the number of breaks and number of labels match. At times you’ll need to
 specify the breaks so that you can be certain of the number of labels
 needed.</p>
-<div id="adjust-categorical-labels-on-numeric-data"
-class="section level3" number="4.2.1">
+<div id="adjust-categorical-labels" class="section level3"
+number="4.2.1">
 <h3><span class="header-section-number">4.2.1</span> Adjust Categorical
+Labels</h3>
+<p>Adjust labels in a scale_*_discrete( ) statement (where * is the
+aesthetic changed, color, fill, size, shape, etc.).</p>
+<p><strong>Example:</strong> scale_color_discrete(labels = c(“Label 1”,
+“Label 2”, “Label 3”))</p>
+<pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
+  gf_labs(title = &quot;Default Species Labels&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
+  gf_refine(scale_color_discrete(labels = c(&quot;Small Bill&quot;, &quot;Long Bill&quot;, &quot;Long Flippers&quot;))) %&gt;%
+  gf_labs(title = &quot;Adjusted Species Labels&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
+  gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;),
+                               labels = c(&quot;Small Bill&quot;, &quot;Long Bill&quot;, &quot;Long Flippers&quot;))) %&gt;%
+  gf_labs(title = &quot;Adjust Labels &amp; Color&quot;)</code></pre>
+<p><img src="Legends_files/figure-html/unnamed-chunk-14-3.png" width="672" /></p>
+</div>
+<div id="adjust-categorical-labels-on-numeric-data"
+class="section level3" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> Adjust Categorical
 Labels (on Numeric Data)</h3>
 <p>Here is an example adding categorical labels to a numeric value.</p>
 <p><strong>Example (breaks &amp; labels):</strong></p>
@@ -668,7 +691,7 @@ c(“Few”, “Some”, “Lots”))</p>
                        breaks = c(10,20,30),
                        labels = c(&quot;Few&quot;, &quot;Some&quot;, &quot;Lots&quot;))) %&gt;%
   gf_labs(title = &quot;Adjust Legend Lables&quot;, color = &quot;Car\nClass&quot;, size = &quot;How Many&quot;) </code></pre>
-<p><img src="Legends_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="Legends_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>Here is another example using calculated breaks from the data
 (e.g. max, min, mean).</p>
 <pre class="r"><code>above.avg.color = &quot;darkblue&quot;
@@ -683,10 +706,10 @@ gf_point(depth~carat, data=diamonds, color = ~price, alpha = 0.4) %&gt;%
                                            mean(~price, data = diamonds),
                                            max(~price, data = diamonds)-buffer),
                                   labels = c(&quot;Below Average&quot;, &quot;Average&quot;,  &quot;Above Average&quot;)))</code></pre>
-<p><img src="Legends_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="Legends_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
-<div id="adjust-numeric-labels" class="section level3" number="4.2.2">
-<h3><span class="header-section-number">4.2.2</span> Adjust Numeric
+<div id="adjust-numeric-labels" class="section level3" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Adjust Numeric
 Labels</h3>
 <p>The following is an example adjusting the limits of the legend,
 missing data color, number of breaks, and label adjustment (using scales
@@ -699,13 +722,13 @@ package). Here are some notes on the adjustments:</p>
 label_number(scale_cut = cut_short_scale())</p>
 <pre class="r"><code>gf_point(depth~carat, data=diamonds, color = ~price) %&gt;%
   gf_refine(scale_color_viridis())</code></pre>
-<p><img src="Legends_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="Legends_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre class="r"><code>gf_point(depth~carat, data=diamonds, color = ~price) %&gt;%
   gf_refine(scale_color_viridis(limits = c(0,20000), 
                                 na.value = &quot;white&quot;, 
                                 n.breaks = 5, 
                                 labels = label_number(scale_cut = cut_short_scale())))</code></pre>
-<p><img src="Legends_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+<p><img src="Legends_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -725,7 +748,7 @@ gf_dist(&quot;chisq&quot;, df=20, color=~&quot;df = 20&quot;) %&gt;%
   gf_theme(theme_classic()) %&gt;%
   gf_refine(scale_color_brewer(palette = &quot;Paired&quot;)) %&gt;%
   gf_labs(color = &quot;DF&quot;)</code></pre>
-<p><img src="Legends_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="Legends_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 <div id="other-adjustments-to-legends" class="section level1"
 number="6">
@@ -746,7 +769,7 @@ guide_colorbar(barheight = 10) )</p>
                                 labels = label_number(scale_cut = cut_short_scale()),
                                 guide = guide_colorbar(barheight = 10, 
                                                        nbin = 4)))</code></pre>
-<p><img src="Legends_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="Legends_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>Alternatively, you can have the colorbar span the entire space of
 your graph using legend.key.width.</p>
 <p><strong>Example (span colorbar):</strong> gf_theme(legend.key.width =
@@ -761,7 +784,7 @@ unit(1, “null”))</p>
            legend.title = element_text(hjust = 0.5), 
            legend.key.width = unit(1, &quot;null&quot;)) %&gt;%
   gf_labs(color = &quot;New Longer Title Can Be Read with More Space&quot;, title = &quot;Adjust colorbar &amp; legend title&quot;) </code></pre>
-<p><img src="Legends_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="Legends_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
 <div id="adjust-the-glyph-icon-used" class="section level2"
 number="6.2">
@@ -772,7 +795,7 @@ href="https://emilhvitfeldt.com/post/changing-glyph-in-ggplot2/">bloc</a>
 post goes over several ways to adjust the small icon used within the
 legend.</p>
 <pre class="r"><code>gf_line(psavert~date, data = economics, color = ~&quot;savings&quot;, key_glyph = &quot;timeseries&quot;) </code></pre>
-<p><img src="Legends_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="Legends_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 </div>
 <div id="combining-legends" class="section level2" number="6.3">
 <h2><span class="header-section-number">6.3</span> Combining
@@ -786,15 +809,15 @@ color has a colorbar as a legend. What we essentially want to do is
 force color to have the same type of legend as size.</p>
 <pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
   gf_labs(title = &quot;Two Separate Legends&quot;, subtitle = &quot;One for Size One for Color&quot;)</code></pre>
-<p><img src="Legends_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="Legends_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
   gf_refine(scale_color_continuous(guide = &quot;legend&quot;)) %&gt;%
   gf_labs(title = &quot;Combined Legend&quot;)</code></pre>
-<p><img src="Legends_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
+<p><img src="Legends_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
 <pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
   gf_refine(scale_color_viridis(guide = &quot;legend&quot;)) %&gt;%
   gf_labs(title = &quot;Combined Legend with Different Color Scheme&quot;)</code></pre>
-<p><img src="Legends_files/figure-html/unnamed-chunk-21-3.png" width="672" /></p>
+<p><img src="Legends_files/figure-html/unnamed-chunk-22-3.png" width="672" /></p>
 </div>
 </div>
 

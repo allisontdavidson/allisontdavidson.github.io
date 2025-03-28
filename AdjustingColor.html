@@ -412,9 +412,9 @@ text, and outlines or boxplots</p></li>
 <div id="color-points-lines" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Color Points &amp;
 Lines</h1>
-<p>Alter the color of points, lines, and text using color = “color”. You
-can specify the color of points and/or lines with the color name, hex
-code, or rgb code.</p>
+<p>Alter the color of points, lines, and text using color = “ColorName”.
+You can specify the color of points and/or lines with the color name,
+hex code, or rgb code.</p>
 <p><strong>Example:</strong> gf_plot(Y ~ X, data = Dataset, color =
 “ColorName”)</p>
 <pre class="r"><code>point = gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = &quot;#b715e5&quot;) %&gt;%
@@ -423,16 +423,11 @@ code, or rgb code.</p>
 line2 = gf_dens(~bill_length_mm, data = penguins, color = &quot;#b715e5&quot;) %&gt;%
   gf_labs(title = &quot;Lines&quot;)
 
-peng2 = penguins %&gt;%
-  group_by(species) %&gt;%
-  mutate(mean.length = mean(bill_length_mm),
-         mean.depth = mean(bill_depth_mm))
-
 text2 = gf_text(mean.length~mean.depth, data= peng2, label = ~species, color = &quot;#b715e5&quot;, hjust = &quot;inward&quot;) %&gt;%
   gf_labs(title = &quot;Text&quot;)
 
 grid.arrange(point, line2, text2, nrow = 1)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
 <div id="fill-bars-densities" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Fill Bars &amp;
@@ -468,7 +463,7 @@ dens.fill = gf_density(~bill_length_mm, data = penguins, fill = &quot;#b715e5&qu
   gf_labs(title = &quot;fill&quot;)
 
 grid.arrange(bar.color, bar.fill, hist.color, hist.fill, box.color, box.fill, dens.color, dens.fill, nrow = 2)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 <div id="general-ways-to-adjust-color" class="section level1"
 number="3">
@@ -491,9 +486,9 @@ using the color = “ColorName” option. Again, any color can be specified
 using a name, hex code, or rgb code.</p>
 <p><strong>Color Name:</strong> color = “orange”</p>
 <p><strong>Hex Code:</strong> color = “#cda209”</p>
-<p><strong>RGB Proportions:</strong> color = rgb(0.09, 0.2, 0.16)</p>
-<p><strong>RGB Values:</strong> color = rgb(9, 205, 162, maxColorValue =
-255)</p>
+<p><strong>RGB (Proportions):</strong> color = rgb(0.09, 0.2, 0.16)</p>
+<p><strong>RGB (Values):</strong> color = rgb(9, 205, 162, maxColorValue
+= 255)</p>
 <pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5) %&gt;%
 gf_dist(&quot;chisq&quot;, df=10, color =&quot;orange&quot;) %&gt;%
 gf_dist(&quot;chisq&quot;, df=20, color =&quot;darkcyan&quot;, linetype = &quot;dashed&quot;) %&gt;%
@@ -502,7 +497,7 @@ gf_dist(&quot;chisq&quot;, df=20, color =&quot;darkcyan&quot;, linetype = &quot;
   gf_text(x = 15, y = 0.08, label = &quot;df = 10&quot;, color = &quot;orange&quot;, hjust = &quot;left&quot;) %&gt;%
   gf_text(x = 26, y = 0.05, label = &quot;df = 20&quot;, color = &quot;darkcyan&quot;, hjust = &quot;left&quot;) %&gt;%
   gf_labs(title = &quot;Specify Color&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5, color = &quot;purple&quot;) %&gt;%
 gf_dist(&quot;chisq&quot;, df=10, color =&quot;#cda209&quot;) %&gt;%
 gf_dist(&quot;chisq&quot;, df=20, color = rgb(9, 205, 162, maxColorValue = 255), linetype = &quot;dashed&quot;) %&gt;%
@@ -511,39 +506,92 @@ gf_dist(&quot;chisq&quot;, df=20, color = rgb(9, 205, 162, maxColorValue = 255),
   gf_text(x = 15, y = 0.08, label = &quot;#cda209&quot;, color = &quot;#cda209&quot;, hjust = &quot;left&quot;) %&gt;%
   gf_text(x = 26, y = 0.05, label = &quot;rgb(9, 205, 162, maxColorValue = 255)&quot;, color = rgb(9, 205, 162, maxColorValue = 255), hjust = &quot;left&quot;) %&gt;%
   gf_labs(title = &quot;Specify Color&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<div id="specify-label" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Specify Label</h2>
+<p>You can also specify the color label using color = ~“Label” option.
+Without specifying color more, R will use default colors, but will have
+the labels you want. You can certainly then use the discrete methods
+(below) to adjust specific colors further.</p>
+<p><strong>Example (color):</strong> gf_plot(Y~X, data = DatasetName,
+color = ~“Label Here”)</p>
+<p><strong>Example (fill):</strong> gf_plot(Y~X, data = DatasetName,
+fill = ~“Label Here”)</p>
+<pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5, color = ~&quot;df = 5&quot;) %&gt;%
+gf_dist(&quot;chisq&quot;, df=10, color =~ &quot;df = 10&quot;) %&gt;%
+gf_dist(&quot;chisq&quot;, df=20, color = ~&quot;df = 20&quot;, linetype = &quot;dashed&quot;) </code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
 </div>
 <div id="discrete-color" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> Discrete Color</h1>
-<p>How to color/fill by variable</p>
+<p>To color or fill by a discrete variable, use color = ~Var or fill =
+~Var. R will default to assign a different color to each category. Most
+of the time, you’ll want to think about how you want to color (e.g. are
+items sequential, are there colors associated with each category, do we
+really need to color each category or just highlight some, etc.). The
+sections below will provide several options for adjusting default
+colors.</p>
+<p><strong>Color by Discrete Variable:</strong> gf_plot(Y ~ X, data =
+Dataset, color = ~Var)</p>
+<p><strong>Fill by Discrete Variable:</strong> gf_plot(Y ~ X, data =
+Dataset, fill = ~Var)</p>
 <pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
   gf_labs(title = &quot;Color by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
   gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
-<div id="adjusting-default-colors" class="section level2" number="5.1">
-<h2><span class="header-section-number">5.1</span> Adjusting Default
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<div id="conditional-discrete-coloring" class="section level2"
+number="5.1">
+<h2><span class="header-section-number">5.1</span> Conditional Discrete
+Coloring</h2>
+<p>Perhaps you want to highlight certain categories. The following
+examples show ways of conditional coloring. The default labels are not
+ideal, so I’d recommend adjusting the labels to be more clear (or better
+yet - label directly!).</p>
+<p><strong>Condition Color:</strong> gf_plot(Y ~ X, data = Dataset,
+color = ~(Var == “Category”))</p>
+<p><strong>Adjust Labels for Color Legend:</strong>
+gf_refine(scale_color_discrete(labels = c(“Label 1”, “Label 2”)))</p>
+<p><strong>Condition Fill:</strong> gf_plot(Y ~ X, data = Dataset, fill
+= ~(Var != “Category”))</p>
+<p><strong>Adjust Labels for Fill Legend:</strong>
+gf_refine(scale_fill_discrete(labels = c(“Label 1”, “Label 2”)))</p>
+<p>Recall you can alter the legend title using gf_labs( ) or within the
+scale_*_discrete( name = “Title” ) command.</p>
+<p><strong>Adjust Color/Fill Title:</strong> scale_*_discrete( name =
+“Title” )</p>
+<pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~(species == &quot;Adelie&quot;))%&gt;%
+  gf_labs(title = &quot;Color by Species&quot;, color = &quot;Species&quot;) %&gt;%
+  gf_refine(scale_color_discrete(labels = c(&quot;Other Species&quot;, &quot;Adelie&quot;)))</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~(species != &quot;Gentoo&quot;), alpha = 0.5, position = position_identity()) %&gt;%
+  gf_labs(title = &quot;Fill by Species&quot;) %&gt;%
+  gf_refine(scale_fill_discrete(labels = c(&quot;Gentoo&quot;, &quot;Not Gentoo&quot;), name = &quot;Species&quot;))</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+</div>
+<div id="adjusting-default-colors" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Adjusting Default
 Colors</h2>
 <p>For adjusting any color or fill, you want to use the corresponding
 scale adjustment:</p>
-<p><strong>Adjust Color:</strong> scale_color_manual( )</p>
-<p><strong>Adjust Fill</strong>: scale_fill_manual( )</p>
-<p>Then decide which palette type you want to use (there are many). If
-you want to reverse any palette, you can do so specifying within the
-same command using limits = rev. Key things to think about are if you’re
-categories are nominal (no order to them) or sequential (have some kind
-of order to them). You’ll want your palette or color choices to match
-the variable type you have. More details can be found in <a
+<p><strong>Adjust Color:</strong> scale_color_XXX( ) (see table below
+for subbing in XXX options)</p>
+<p><strong>Adjust Fill</strong>: scale_fill_XXX( )</p>
+<p>If you want to reverse any palette, you can do so specifying within
+the same command using limits = rev.</p>
+<p><strong>Reverse any palette:</strong> scale_fill_XXX( … , limits =
+rev )</p>
+<p>Below is a table summarizing several ways to adjust color of discrete
+variables. More details can be found in <a
 href="https://clauswilke.com/dataviz/color-basics.html">Chapter 4</a>
 and <a href="https://clauswilke.com/dataviz/color-pitfalls.html">Chapter
 19</a> of Wilke’s Fundamentals of Data Visualization.</p>
-<p><strong>Reverse any palette:</strong> scale_fill_manual( … , limits =
-rev )</p>
 <table>
 <colgroup>
-<col width="18%" />
-<col width="81%" />
+<col width="21%" />
+<col width="78%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -584,110 +632,194 @@ rev )</p>
 </tbody>
 </table>
 </div>
-<div id="manual-color" class="section level2" number="5.2">
-<h2><span class="header-section-number">5.2</span> Manual Color</h2>
+<div id="manual-color" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Manual Color</h2>
 <p>You can certainly pick colors you just like the look of, but it may
 be helpful to think of how you want to use those colors. For example, do
 you want to highlight a certain group or alert the reader to a specific
-portion of the graph? Are there colors that are socially assoiated with
+portion of the graph? Are there colors that are socially associated with
 certain categories (e.g. profit/loss or political party)? Does your
-company want to use brand-specific colors?</p>
-<p>Summary of how to color/fill Reverse Help guides/palette
-references</p>
+company want to use brand-specific colors? Point being, you want to
+think about what colors you’re using and have a purpose for them.</p>
+<p><strong>Manual Color:</strong> gf_refine(scale_color_manual(values =
+c(“Color1”,“Color2”,“Color3”)))</p>
+<p><strong>Manual Fill:</strong> gf_refine(scale_fill_manual(values =
+c(“Color1”,“Color2”,“Color3”)))</p>
+<p><strong>Reverse Color/Fill:</strong> scale_*_manual(values =
+c(“Color1”,“Color2”,“Color3”), limits = rev)</p>
+<p>See Picking Colors &amp; Palettes page for details on specific color
+choices.</p>
 <pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
   gf_refine(scale_color_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;))) %&gt;%
   gf_labs(title = &quot;Color by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
-  gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;), limits = rev)) %&gt;% 
-  gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+  gf_refine(scale_fill_manual(values = c(&quot;darkorange&quot;,&quot;purple&quot;,&quot;cyan4&quot;), limits = rev)) %&gt;%   gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<p>If you want to assign specific colors to specific categories, you can
+specify both the category and the color (as seen in the example
+below).</p>
+<pre class="r"><code>gf_bar(~Type, data  = Cars93, fill = ~Type) %&gt;%
+  gf_refine(scale_fill_manual(values = c(&quot;Small&quot; = &quot;gray85&quot;,
+                                         &quot;Compact&quot; = &quot;gray85&quot;,
+                                         &quot;Midsize&quot; = &quot;gray85&quot;,
+                                         &quot;Sporty&quot; = &quot;gray85&quot;,
+                                         &quot;Large&quot; = &quot;black&quot;,
+                                         &quot;Van&quot; = &quot;black&quot;))) %&gt;%
+  gf_labs(title = &quot;Assign colors to specific categories&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
-<div id="spaced-color-hue" class="section level2" number="5.3">
-<h2><span class="header-section-number">5.3</span> Spaced Color Hue</h2>
-<p><a
-href="https://ggplot2.tidyverse.org/reference/scale_hue.html">Scale_color_hue</a>
-and scale_fill_hue will pick evenly spaced hue’s between the two bounds
-you provide.</p>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div id="spaced-color-hue" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Spaced Color Hue</h2>
+<p>Coloring by a discrete variable has a couple options that are not
+available (currently) for continuous variables. Color by hue and using
+grey scale (next section) are two of those options only available for
+discrete variables.</p>
+<p>To use scale_color_hue, you pick 2 hue values (from a range of 0 to
+360) and R will choose n options evenly spaced between those hues (where
+n is the number of categories to be colored). Here is a link to more
+information on <a
+href="https://ggplot2.tidyverse.org/reference/scale_hue.html">scale_color_hue</a>.</p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><strong>Color hue:</strong> gf_refine(scale_color_hue(h = c(60,
+180)))</p>
+<p><strong>Fill hue (reverse):</strong> gf_refine(scale_fill_hue(h =
+c(180, 300), limits = rev))</p>
 <pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
   gf_refine(scale_color_hue(h = c(60, 180))) %&gt;%
   gf_labs(title = &quot;Color by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
   gf_refine(scale_fill_hue(h = c(180, 300), limits = rev)) %&gt;% 
   gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
 </div>
-<div id="grey-scale" class="section level2" number="5.4">
-<h2><span class="header-section-number">5.4</span> Grey scale</h2>
-<p>scale_*_grey() <a
-href="https://ggplot2.tidyverse.org/reference/scale_grey.html">documentation</a></p>
+<div id="grey-scale" class="section level2" number="5.5">
+<h2><span class="header-section-number">5.5</span> Grey scale</h2>
+<p>Sometimes you don’t really need a color, but rather may want to just
+distinguish categories using grey scale. Several authors I’ve enjoyed
+sing praise for the use of grey for reemphasizing things we don’t need
+to focus on, but also easing the strain of our mental capacities in
+trying to figure out what the colors mean/just deciphering colors.</p>
+<p><strong>Color/fill grey scale:</strong> gf_refine(scale_*_grey())</p>
+<p><strong>Color/Fill grey reverse:</strong>
+gf_refine(scale_*_grey(limits = rev))</p>
+<p>More information on grey scale can be found <a
+href="https://ggplot2.tidyverse.org/reference/scale_grey.html">here</a>.</p>
 <pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
   gf_refine(scale_color_grey()) %&gt;%
   gf_labs(title = &quot;Color by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
   gf_refine(scale_fill_grey(limits = rev)) %&gt;% 
   gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
 </div>
-<div id="brewer-palette" class="section level2" number="5.5">
-<h2><span class="header-section-number">5.5</span> Brewer Palette</h2>
+<div id="brewer-palette" class="section level2" number="5.6">
+<h2><span class="header-section-number">5.6</span> Brewer Palette</h2>
+<p>Brewer seems to be a commonly used pallet selector. There are many
+palette options including categorical options, sequential options,
+diverging options, and even paired options. There are also many
+colorblind friendly palettes available. See the Picking Colors &amp;
+Palettes page for more details on specific palettes. You may need to
+install the RColorBrewer package to take advantage of these
+palettes.</p>
+<p><strong>Color/Fill by Brewer Palette:</strong>
+gf_refine(scale_color_brewer(palette = “Dark2”))</p>
+<p><strong>Color/Fill Brewer reverse:</strong>
+gf_refine(scale_fill_brewer(palette = “Dark2”, limits = rev))</p>
 <pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
   gf_refine(scale_color_brewer(palette = &quot;Dark2&quot;)) %&gt;%
   gf_labs(title = &quot;Color by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
   gf_refine(scale_fill_brewer(palette = &quot;Dark2&quot;, limits = rev)) %&gt;% 
   gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
 </div>
-<div id="viridis-palette" class="section level2" number="5.6">
-<h2><span class="header-section-number">5.6</span> Viridis Palette</h2>
+<div id="viridis-palette" class="section level2" number="5.7">
+<h2><span class="header-section-number">5.7</span> Viridis Palette</h2>
+<p>The Viridis palette package is another package I’ve seen widely used.
+I was first introduced to these palettes as colorblind friendly
+alternatives to the rainbow palette. I also find them aesthetically
+pleasing palettes to use.</p>
+<p>The default viridis color/fill is for continuous variables, however,
+you can still use these palettes for discrete variables. We just need to
+specify discrete = TRUE. Additionally, the way you alter the palette
+choice is using option = “magma” rather than the brewer specifications
+using palette = “Blues”. It is a bit cumbersome to keep all these
+nuances straight - so I find the summary table (above) helpful for
+quickly determining the options needed based on the type of palette
+package I want to use.</p>
+<p><strong>Default Discrete Viridis Palette:</strong>
+gf_refine(scale_color_viridis(discrete = TRUE))</p>
+<p><strong>Specify Option &amp; Reverse Viridis:</strong>
+gf_refine(scale_fill_viridis(discrete = TRUE, option = “magma”, limits =
+rev))</p>
+<p><strong>Adjust begin &amp; end points Viridis:</strong>
+gf_refine(scale_color_viridis(discrete = TRUE, begin = 0.2, end =
+0.7))</p>
 <pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
   gf_refine(scale_color_viridis(discrete = TRUE)) %&gt;%
   gf_labs(title = &quot;Color by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
+  gf_refine(scale_color_viridis(discrete = TRUE, begin = 0.2, end = 0.7)) %&gt;%
+  gf_labs(title = &quot;Color by Species&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
 <pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
   gf_refine(scale_fill_viridis(discrete = TRUE, option = &quot;magma&quot;, limits = rev)) %&gt;% 
   gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-16-3.png" width="672" /></p>
 </div>
-<div id="paletteer-other-palettes" class="section level2" number="5.7">
-<h2><span class="header-section-number">5.7</span> Paletteer (Other
+<div id="paletteer-other-palettes" class="section level2" number="5.8">
+<h2><span class="header-section-number">5.8</span> Paletteer (Other
 Palettes)</h2>
-<p>Take advantage of auto-fill! Note, once you start typing within
+<p>My understanding of the Paletteer package is to provide a way to
+access any and all palettes in one command. Because there are SO many,
+take advantage of auto-fill! Note, once you start typing within
 scale_color_paletteer_d() you should have a scroll-menu to choose from
 all the types of palettes from all types of packages.</p>
+<p><strong>Discrete Paletteer Color:</strong>
+gf_refine(scale_color_paletteer_d(“palettetown::charmeleon”))</p>
+<p><strong>Discrete Paletteer Fill (reverse):</strong>
+gf_refine(scale_fill_paletteer_d(“awtools::ppalette”, limits = rev))</p>
 <pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
   gf_refine(scale_color_paletteer_d(&quot;palettetown::charmeleon&quot;)) %&gt;%
   gf_labs(title = &quot;Color by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <pre class="r"><code>gf_histogram(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity()) %&gt;%
   gf_refine(scale_fill_paletteer_d(&quot;awtools::ppalette&quot;, limits = rev)) %&gt;% 
   gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
 </div>
-<div id="colorspace" class="section level2" number="5.8">
-<h2><span class="header-section-number">5.8</span> Colorspace</h2>
+<div id="colorspace" class="section level2" number="5.9">
+<h2><span class="header-section-number">5.9</span> Colorspace</h2>
 <p>Below are just a couple ways to use the colorspace package to adjust
 color. The <a
 href="https://colorspace.r-forge.r-project.org/reference/index.html">reference
 page</a> has many other details.</p>
+<p><strong>Color discrete qualitative:</strong>
+gf_refine(scale_color_discrete_qualitative(palette = “Dark 3”))</p>
+<p><strong>Fill discrete sequential (reverse):</strong>
+gf_refine(scale_fill_discrete_sequential(palette = “Purples”, limits =
+rev))</p>
 <pre class="r"><code>gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%&gt;%
   gf_refine(scale_color_discrete_qualitative(palette = &quot;Dark 3&quot;)) %&gt;%
   gf_labs(title = &quot;Color by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <pre class="r"><code>gf_density(~flipper_length_mm, data = penguins, fill=~species, alpha = 0.5, position = position_identity(), color = &quot;black&quot;) %&gt;%
   gf_refine(scale_fill_discrete_sequential(palette = &quot;Purples&quot;, limits = rev)) %&gt;% 
   gf_labs(title = &quot;Fill by Species&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
 </div>
 <div id="specify-both-color-variable" class="section level2"
-number="5.9">
-<h2><span class="header-section-number">5.9</span> Specify both Color
+number="5.10">
+<h2><span class="header-section-number">5.10</span> Specify both Color
 &amp; Variable</h2>
+<p>The following example illustrates the different use of color in
+different layers of your visual. The background layer fills by a single
+color (gray85) while the top layer fills by a variable.</p>
 <pre class="r"><code>gf_ribbon(lowest+highest~date, data = HighLow, fill=&quot;gray85&quot;) %&gt;%
 gf_ribbon(low_temp+high_temp~date, data=Weather, fill=~city) %&gt;%
   gf_theme(theme_classic()) %&gt;%
@@ -695,70 +827,162 @@ gf_ribbon(low_temp+high_temp~date, data=Weather, fill=~city) %&gt;%
   gf_facet_wrap(~city) %&gt;%
   gf_refine(scale_x_date(date_breaks = &quot;8 months&quot;, date_labels = &quot;%b %y&quot;)) %&gt;%
   gf_labs(x = &quot;&quot;, y = &quot;Temperature&quot;, title = &quot;Fill by City (Variable)&quot;, subtitle = &quot;Fill = gray85 for background reference&quot;) </code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
-<div id="gapminder-colors" class="section level2" number="5.10">
-<h2><span class="header-section-number">5.10</span> Gapminder
+<div id="gapminder-colors" class="section level2" number="5.11">
+<h2><span class="header-section-number">5.11</span> Gapminder
 colors</h2>
-<p>continent colors country colors</p>
-<p>ADD scatterplot of country colors</p>
+<p>The Gapminder package has built in country &amp; continent colors.
+The examples below utilize each of the different types of color.</p>
+<p><strong>Continent Color:</strong> gf_refine(scale_color_manual(values
+= continent_colors))</p>
+<p><strong>Country Color:</strong> gf_refine(scale_color_manual(values =
+country_colors))</p>
 <pre class="r"><code>gf_summary(lifeExp~year, data = gapminder, fun=&quot;mean&quot;, color = ~continent, geom = &quot;line&quot;) %&gt;%
   gf_lims(x = c(1950, 2015))%&gt;%
   gf_text(lifeExp~year, data = subset(gapminder, year == 2007), hjust = &quot;outward&quot;, label = ~continent, stat = &quot;summary&quot;, position = position_nudge(x = 1), fun = &quot;mean&quot;)  %&gt;%
-  gf_theme(legend.position = &quot;none&quot;) </code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+  gf_theme(legend.position = &quot;none&quot;)  %&gt;%
+  gf_labs(title = &quot;Default Colors&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <pre class="r"><code>gf_summary(lifeExp~year, data = gapminder, fun=&quot;mean&quot;, color = ~continent, geom = &quot;line&quot;) %&gt;%
   gf_lims(x = c(1950, 2015))%&gt;%
   gf_text(lifeExp~year, data = subset(gapminder, year == 2007), hjust = &quot;outward&quot;, label = ~continent, stat = &quot;summary&quot;, position = position_nudge(x = 1), fun = &quot;mean&quot;)  %&gt;%
   gf_theme(legend.position = &quot;none&quot;) %&gt;%
-  gf_refine(scale_color_manual(values = continent_colors))</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+  gf_refine(scale_color_manual(values = continent_colors))  %&gt;%
+  gf_labs(title = &quot;Continent Colors&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(lifeExp~log(gdpPercap), data = subset(gapminder, year == 1997), color = ~country, size = ~pop, alpha = 0.3, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~continent) %&gt;%
+  gf_refine(scale_size_continuous(range = c(1,12)))  %&gt;%
+  gf_labs(title = &quot;Default Colors&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-21-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(lifeExp~log(gdpPercap), data = subset(gapminder, year == 1997), color = ~country, size = ~pop, alpha = 0.3, show.legend = FALSE) %&gt;%
+  gf_facet_wrap(~continent) %&gt;%
+  gf_refine(scale_color_manual(values = country_colors),
+            scale_size_continuous(range = c(1,12)))  %&gt;%
+  gf_labs(title = &quot;Country Colors&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-21-4.png" width="672" /></p>
 </div>
 </div>
 <div id="continuous-color" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Continuous Color</h1>
-<p>Default adding color to continuous variable:</p>
+<p>To assign color to a continuous variable, we do so in the same way we
+did for a discrete: color = ~Var or fill = ~Var.</p>
+<p><strong>Color by Variable:</strong> gf_plot(Y~X, data = Dataset,
+color = ~Var)</p>
+<p><strong>Fill by Variable:</strong> gf_plot(Y~X, data = Dataset, fill
+= ~Var)</p>
+<p>The examples below show both color and fill, and also a raster plot
+which “fills” by a variable built into the function (so you don’t
+specify fill, but rather the first variable in the command will be the
+“fill” variable).</p>
+<p><strong>Raster (note slightly atyipcal ordering of
+variables):</strong> gf_raster(FillVar ~ X + Y , data = Dataset)</p>
 <pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(coord_fixed()) %&gt;%
   gf_labs(title = &quot;Fill by Continuous Variable&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
   gf_theme(theme_void) %&gt;%
   gf_labs(title = &quot;Raster Builds in Fill Option (Z~)&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
 <pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
   gf_refine(scale_color_continuous(guide = &quot;legend&quot;)) %&gt;%
   gf_labs(title = &quot;Color by Continuous Variable&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-19-3.png" width="672" /></p>
-<div id="manual-colors-gradient" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> Manual Colors
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-23-3.png" width="672" /></p>
+<div id="conditional-color" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Conditional
+Color</h2>
+<p>If you want to conditionally color or fill a continuous variable, R
+will essentially make a discrete variable: yes/no out of your continuous
+variable.</p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean&gt;80) %&gt;%
+  gf_refine(coord_fixed()) %&gt;%
+  gf_labs(title = &quot;Fill if mean &gt; 80&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>If on the other hand you just want to color a certain range of
+values, you can specify the limits of those values within a
+scale_fill/color_continuous( ) command.</p>
+<p><strong>Adjust limits color/filled:</strong>
+gf_refine(scale_fill_continuous(limits = c(a,b)))</p>
+<p><strong>Omit missing data:</strong> scale_fill_continuous(limits =
+c(a,b), na.value = NA)</p>
+<p><strong>Color missing data:</strong> scale_fill_continuous(limits =
+c(a,b), na.value = “Color Name”)</p>
+<pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
+  gf_refine(coord_fixed(),
+            scale_fill_continuous(limits = c(60,100))) %&gt;%
+  gf_labs(title = &quot;Fill only from 60 to 100&quot;, subtitle = &quot;Data outside this range: gray default&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
+  gf_theme(theme_void) %&gt;%
+  gf_labs(title = &quot;Fill only 110 to 200&quot;, subtitle = &quot;Omit all missing data&quot;) %&gt;%
+  gf_refine(scale_fill_continuous(limits = c(110, 200), na.value = NA))</code></pre>
+<pre><code>## Warning: Removed 1447 rows containing missing values or values outside the scale range
+## (`geom_raster()`).</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
+  gf_refine(scale_color_continuous(guide = &quot;legend&quot;,
+                                   limits = c(4000,6000),
+                                   na.value = &quot;yellow&quot;)) %&gt;%
+  gf_labs(title = &quot;Only color from 4K to 6K&quot;, subtitle = &quot;All missing data yellow&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-3.png" width="672" /></p>
+<pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
+  gf_refine(scale_size_continuous(limits = c(4000,6000)),
+            scale_color_continuous(guide = &quot;legend&quot;,
+                                   limits = c(4000,6000),
+                                   na.value = &quot;yellow&quot;)) %&gt;%
+  gf_labs(title = &quot;Adjust scale and color to combine legends&quot;, subtitle = &quot;Missing data no longer plotted, even if you try to specify&quot;)</code></pre>
+<pre><code>## Warning: Removed 163 rows containing missing values or values outside the scale range
+## (`geom_point()`).</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-4.png" width="672" /></p>
+</div>
+<div id="manual-colors-gradient" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Manual Colors
 (Gradient)</h2>
+<p>To adjust colors used in your visual for continuous data, you can
+specify exactly which colors you want using the scale_fill_gradient()
+command. There are a few variations of this command, so I’ve summarized
+them below. That said, they all go in a gf_refine( ) statement as
+follows:</p>
+<p><strong>Example:</strong> gf_refine(scale_fill_gradient(low = “Low
+Color”, high = “High Color”))</p>
 <p>More details on how to adjust gradient scales can be found in the <a
 href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">reference
 page</a>.</p>
 <p><strong>scale_fill_gradient():</strong> 2 colors (high &amp; low)</p>
 <p><strong>scale_fill_gradient2():</strong> 3 colors (high, low, &amp;
 mid (can also specify midpoint number))</p>
-<p><strong>scale_fill_gradientn():</strong> n colors (usually
-pre-defined like rainbow(5) or terrain.colors(7))</p>
+<p><strong>scale_fill_gradientn():</strong> n colors (can be pre-defined
+like rainbow(5) or terrain.colors(7))</p>
 <p>Specify missing data using na.value = “white”.</p>
 <p><strong>Example (Missing Data):</strong> scale_fill_gradient(low =
 “black”, high = “purple”, na.value = “white”)</p>
 <pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(coord_fixed(),
             scale_fill_gradient2(low = &quot;darkcyan&quot;, high = &quot;darkred&quot;, mid = &quot;yellow&quot;, 
-                                 midpoint = (min(~mean, data = temps_months) + max(~mean, data = temps_months))/2)) </code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+                                 midpoint = (min(~mean, data = temps_months) + max(~mean, data = temps_months))/2)) %&gt;%
+  gf_labs(title = &quot;gradient2: mid color and midpoint specified&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
   gf_refine(scale_fill_gradient(low = &quot;black&quot;, high = &quot;purple&quot;))  %&gt;%
-  gf_theme(theme_void) </code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-20-2.png" width="672" /></p>
+  gf_theme(theme_void) %&gt;%
+  gf_labs(title = &quot;gradient: just high &amp; low values specified&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
 <pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
-  gf_refine(scale_color_gradientn(guide = &quot;legend&quot;, colors = c(&quot;black&quot;, &quot;purple4&quot;,&quot;purple1&quot;, &quot;lavender&quot;)))</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-20-3.png" width="672" /></p>
-<div id="adjusting-midpoint" class="section level3" number="6.1.1">
-<h3><span class="header-section-number">6.1.1</span> Adjusting
+  gf_refine(scale_color_gradientn(guide = &quot;legend&quot;, colors = c(&quot;black&quot;, &quot;purple4&quot;,&quot;purple1&quot;, &quot;lavender&quot;))) %&gt;%
+  gf_labs(title = &quot;gradientn: 4 colors specified&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-26-3.png" width="672" /></p>
+<div id="adjusting-midpoint" class="section level3" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> Adjusting
 midpoint</h3>
+<p>In particular if you are using diverging scales, you may not want to
+use the default midpoint value. Luckily - we have the abiltiy to choose
+our own midpoint (or divergent point) value.</p>
+<p>The examples below show a variety of midpoint values and how the
+color scale adjusts based on the midpoint.</p>
+<p><strong>Example:</strong> scale_fill_gradient2(low = “LowColor”, high
+= “HighColor”, mid = “MidCOlor”, midpoint = 45)</p>
 <pre class="r"><code>mid45 = gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(scale_fill_gradient2(low = &quot;navy&quot;, high = &quot;darkorange&quot;, mid = &quot;white&quot;, 
                                  midpoint = 45)) %&gt;%
@@ -775,10 +999,10 @@ mid75 = gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_labs(title = &quot;Midpoint = 75&quot;)
 
 grid.arrange(mid45, mid60, mid75)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 </div>
-<div id="muted-colors" class="section level3" number="6.1.2">
-<h3><span class="header-section-number">6.1.2</span> Muted Colors</h3>
+<div id="muted-colors" class="section level3" number="6.2.2">
+<h3><span class="header-section-number">6.2.2</span> Muted Colors</h3>
 <p>To tone down colors you can use the “muted” function on any color
 values.</p>
 <p><strong>Mute Colors:</strong> scale_fill_gradient2(low = “blue”, high
@@ -787,65 +1011,89 @@ values.</p>
   gf_refine(coord_fixed(),
             scale_fill_gradient2(low = &quot;blue&quot;, high = &quot;red&quot;, mid = &quot;purple&quot;, midpoint = 60)) %&gt;%
   gf_labs(title = &quot;Unmuted: Blue, Red, Purple&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(coord_fixed(),
             scale_fill_gradient2(low = &quot;blue&quot;, high = &quot;red&quot;, mid = muted(&quot;purple&quot;), midpoint = 60)) %&gt;%
   gf_labs(title = &quot;Muted Mid (Purple)&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
 <pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(coord_fixed(),
             scale_fill_gradient2(low = &quot;cyan&quot;, high = &quot;magenta&quot;, mid = &quot;yellow&quot;, midpoint = 60))  %&gt;%
   gf_labs(title = &quot;Unmuted: Cyan, Magenta, Yellow&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-22-3.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-28-3.png" width="672" /></p>
 <pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(coord_fixed(),
             scale_fill_gradient2(low = muted(&quot;cyan&quot;), high = muted(&quot;magenta&quot;), mid = &quot;yellow&quot;, midpoint = 60))   %&gt;%
   gf_labs(title = &quot;Muted High &amp; Low: Cyan, Magenta&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-22-4.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-28-4.png" width="672" /></p>
 </div>
-<div id="rainbow-palette" class="section level3" number="6.1.3">
-<h3><span class="header-section-number">6.1.3</span> Rainbow
+<div id="rainbow-palette" class="section level3" number="6.2.3">
+<h3><span class="header-section-number">6.2.3</span> Rainbow
 Palette</h3>
-<p>Reverse (trans = “reverse”): trans = “reverse”</p>
-<p>Reverse(rev(rainbow(5))): rev(rainbow(5))</p>
-<pre class="r"><code>#Note this reverse doesn&#39;t work the same way!!!  
-gf_linerange(low_temp+high_temp~date|city~., data=Weather, color = ~(low_temp + high_temp)/2) %&gt;%
+<p>Although the rainbow palette is not always advised (there are
+palettes in the viridis package that may be suitable alternatives), you
+may still desire to use such a palette.</p>
+<p>To use the rainbow palette, you’ll need to specify how many
+colors:</p>
+<p><strong>Example (5 colors):</strong> rainbow(5)</p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-29-1.png" width="672" /><img src="AdjustingColor_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
+<p><strong>Rainbow Palette:</strong>
+gf_refine(scale_color_gradientn(colors = rainbow(5)))</p>
+<p><strong>Reverse (trans):</strong>
+gf_refine(scale_color_gradientn(colors = rainbow(5), trans =
+“reverse”))</p>
+<p><strong>Reverse (rev(rainbow)):</strong>
+gf_refine(scale_color_gradientn(colors = rev(rainbow(5))))</p>
+<pre class="r"><code>gf_linerange(low_temp+high_temp~date|city~., data=Weather, color = ~(low_temp + high_temp)/2) %&gt;%
   gf_refine(scale_color_gradientn(colors = rainbow(5))) %&gt;%
   gf_labs(color = &quot;Mid\nTemp&quot;, title = &quot;Default Rainbow&quot;, y = &quot;Temperature (F)&quot;, subtitle = &quot;Logically the colors don&#39;t match up with heat/cold&quot;) %&gt;%
   gf_theme(theme_light())</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <pre class="r"><code>gf_linerange(low_temp+high_temp~date|city~., data=Weather, color = ~(low_temp + high_temp)/2) %&gt;%
   gf_refine(scale_color_gradientn(colors = rainbow(5), trans = &quot;reverse&quot;)) %&gt;%
-  gf_labs(color = &quot;Mid\nTemp&quot;, title = &quot;Default Rainbow&quot;, y = &quot;Temperature (F)&quot;, subtitle = &quot;Logically the colors don&#39;t match up with heat/cold&quot;) %&gt;%
+  gf_labs(color = &quot;Mid\nTemp&quot;, title = &quot;Reverse Rainbow&quot;, y = &quot;Temperature (F)&quot;, subtitle = &quot;trans = reverse&quot;) %&gt;%
   gf_theme(theme_light())</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-23-2.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-30-2.png" width="672" /></p>
 <pre class="r"><code>gf_linerange(low_temp+high_temp~date|city~., data=Weather, color = ~(low_temp + high_temp)/2) %&gt;%
   gf_refine(scale_color_gradientn(colors = rev(rainbow(5)))) %&gt;%
-  gf_labs(color = &quot;Mid\nTemp&quot;, title = &quot;Reverse Rainbow&quot;, y = &quot;Temperature (F)&quot;, subtitle = &quot;More Logical:  Hot temps = Reds and Cool Temps = Blues&quot;) %&gt;%
+  gf_labs(color = &quot;Mid\nTemp&quot;, title = &quot;Reverse Rainbow&quot;, y = &quot;Temperature (F)&quot;, subtitle = &quot;rev(rainbow(5))&quot;) %&gt;%
   gf_theme(theme_light())</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-23-3.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-30-3.png" width="672" /></p>
 </div>
-<div id="terrain-heat-colors" class="section level3" number="6.1.4">
-<h3><span class="header-section-number">6.1.4</span> Terrain &amp; Heat
+<div id="terrain-heat-colors" class="section level3" number="6.2.4">
+<h3><span class="header-section-number">6.2.4</span> Terrain &amp; Heat
 Colors</h3>
-<p>Again, either trans = “reverse” or rev(heat.colors(5))</p>
+<p>Terrain and heat colors act similar to rainbow.</p>
+<p><strong>Terrain:</strong> gf_refine(scale_fill_gradientn(colors =
+terrain.colors(10)))</p>
+<p><strong>Terrain (reverse tans option):</strong>
+gf_refine(scale_fill_gradientn(colors = terrain.colors(10), trans =
+“reverse”))</p>
+<p><strong>Heat:</strong> gf_refine(scale_fill_gradientn(colors =
+heat.colors(8)))</p>
+<p><strong>Heat (reverse rev option):</strong>
+gf_refine(scale_fill_gradientn(colors = rev(heat.colors(8))))</p>
 <pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
   gf_refine(scale_fill_gradientn(colors = terrain.colors(10)))  %&gt;%
   gf_theme(theme_void) %&gt;%
   gf_labs(title = &quot;Terrain (10) Colors&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
   gf_refine(scale_fill_gradientn(colors = terrain.colors(10), trans = &quot;reverse&quot;))  %&gt;%
   gf_theme(theme_void) %&gt;%
   gf_labs(title = &quot;Terrain (10) Colors&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-31-2.png" width="672" /></p>
 <pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
   gf_refine(scale_fill_gradientn(colors = rev(heat.colors(8))))  %&gt;%
   gf_theme(theme_void) %&gt;%
   gf_labs(title = &quot;Heat (8) Colors Reversed&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-24-3.png" width="672" />
-# Brewer (Distiller) Palettes</p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-31-3.png" width="672" /></p>
+</div>
+</div>
+<div id="brewer-distiller-palettes" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Brewer (Distiller)
+Palettes</h2>
 <p>The distiller palettes are the same as Brewer, but this is currently
 the way to distinguish whether you’re looking at discrete color ranges
 or continuous color ranges. This <a
@@ -853,178 +1101,246 @@ href="https://jmsallan.netlify.app/blog/the-brewer-palettes/">post</a>
 displays the palettes in an aesthetically pleasing way.</p>
 <p>Note: hue &amp; grey only work for discrete. Brewer works for
 continuous but is called distiller instead.</p>
-<p>Reverse (direction = 1): default direction = -1 so to reverse
-direction = 1 Reverse (trans = “reverse”):</p>
+<p>To reverse a palette, note that the default direciton is -1, so to
+reverse use direction = 1. Alternatively, you can just use trans =
+“reverse”.</p>
+<p><strong>Example:</strong> scale_fill_distiller(palette =
+“Spectral”)</p>
+<p><strong>Reverse (using direction):</strong>
+scale_fill_distiller(palette = “Spectral”, direction = 1)</p>
+<p><strong>Reverse (trans = reverse):</strong>
+scale_fill_distiller(palette = “Spectral”, trans = “reverse”)</p>
 <pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(coord_fixed(),
             scale_fill_distiller(palette = &quot;Spectral&quot;)) %&gt;%
   gf_labs(title = &quot;Diverging Palette: Spectral&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 <pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
   gf_refine(scale_fill_distiller(palette = &quot;BrBG&quot;))  %&gt;%
   gf_theme(theme_void)  %&gt;%
   gf_labs(title = &quot;Diverging Palette: BrBG&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-32-2.png" width="672" /></p>
 <pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
   gf_refine(scale_color_distiller(guide = &quot;legend&quot;, palette = &quot;BuPu&quot;))  %&gt;%
   gf_labs(title = &quot;Sequential Palette: BuPu&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-3.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-32-3.png" width="672" /></p>
 <pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
   gf_refine(scale_color_distiller(guide = &quot;legend&quot;, palette = &quot;BuPu&quot;, direction = 1)) %&gt;%
   gf_labs(title = &quot;Reverse using direction = 1&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-4.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-32-4.png" width="672" /></p>
 <pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
   gf_refine(scale_color_distiller(guide = &quot;legend&quot;, palette = &quot;BuPu&quot;, trans = &quot;reverse&quot;)) %&gt;%
   gf_labs(title = &quot;Reverse using trans = reverse&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-25-5.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-32-5.png" width="672" /></p>
 </div>
-</div>
-</div>
-<div id="viridis" class="section level1" number="7">
-<h1><span class="header-section-number">7</span> Viridis</h1>
-<p>Reverse: trans = “reverse”</p>
-<p>Reverse: direction = -1 (opposite of how you reverse colors in
-discrete case!)</p>
+<div id="viridis" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Viridis</h2>
+<p>The viridis package can be used for continuous variables. Similar to
+discrete variables, you can specify the palette with option = “magma”.
+To reverse a palette, you can still use trans = “reverse” but you can
+also specify the direction. Note that the default direction is 1 (as
+opposed to the distiller package where the default direciton = -1). So
+to reverse a palette using viridis, use direction = -1.</p>
+<p><strong>Example (no further specificaitons needed):</strong>
+gf_refine(scale_fill_viridis())</p>
+<p><strong>Example specifying option:</strong> scale_fill_viridis(option
+= “magma”)</p>
+<p><strong>Reverse viridis (direction):</strong>
+scale_fill_viridis(option = “magma”, direction = -1)</p>
+<p><strong>Reverse viridis (trans = reverse):</strong>
+scale_fill_viridis(option = “magma”, trans = “reverse”)</p>
 <pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(coord_fixed(),
             scale_fill_viridis()) %&gt;%
   gf_labs(title = &quot;Viridis Default&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 <pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
   gf_theme(theme_void) %&gt;%
   gf_refine(scale_fill_viridis(option = &quot;magma&quot;)) %&gt;%
   gf_labs(title = &quot;Viridis: option = magma&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-33-2.png" width="672" /></p>
 <pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
   gf_refine(scale_color_viridis(guide = &quot;legend&quot;, option = &quot;mako&quot;)) %&gt;%
   gf_labs(title = &quot;Original Mako&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-26-3.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-33-3.png" width="672" /></p>
 <pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
   gf_refine(scale_color_viridis(guide = &quot;legend&quot;, option = &quot;mako&quot;, direction = -1)) %&gt;%
   gf_labs(title = &quot;Reverse Viridis: Mako, direction = -1&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-26-4.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-33-4.png" width="672" /></p>
 <pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
   gf_refine(scale_color_viridis(guide = &quot;legend&quot;, option = &quot;mako&quot;, trans = &quot;reverse&quot;)) %&gt;%
   gf_labs(title = &quot;Reverse Viridis: Mako, trans = reverse&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-26-5.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-33-5.png" width="672" /></p>
 </div>
-<div id="colorspace-1" class="section level1" number="8">
-<h1><span class="header-section-number">8</span> Colorspace</h1>
-<p>scale_<fill/color><em><discrete/continuous></em><qual/seq/div>()</p>
+<div id="colorspace-1" class="section level2" number="6.5">
+<h2><span class="header-section-number">6.5</span> Colorspace</h2>
+<p>Colorspace can be used to specify color or fill (like most other
+palettes), can be applied to discrete or continuous variables (again,
+you just need to specify, similar to other palettes), and has for
+continuous palettes either sequential or diverging color schemes. The
+general formula is:</p>
+<p><strong>General formula:</strong>
+scale_<fill/color><discrete/continuous><qual/seq/div>()</p>
+<p><strong>Example sequential:</strong>
+scale_fill_continuous_sequential(palette = “YlGnBu”)</p>
+<p><strong>Example diverging:</strong>
+scale_fill_continuous_divergingx(palette = “Roma”, mid = 140)</p>
+<p>A few minor differences occur in specifying midpoint values for
+diverging palettes and reverse palettes. The blessing and curse of
+having open-source-software is that we have many awesome functions, but
+that comes with myriad ways to adjust color.</p>
+<p><strong>Reverse palette:</strong>
+scale_fill_continuous_sequential(palette = “YlGnBu”, rev = TRUE)</p>
 <pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(coord_fixed(),
             scale_fill_continuous_sequential(palette = &quot;YlGnBu&quot;, rev = FALSE)) %&gt;%
-  gf_labs(title = &quot;Sequential: YlGnBu Reverse&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+  gf_labs(title = &quot;Sequential: YlGnBu Reverse = FALSE&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <pre class="r"><code>gf_raster(Z~X+Y, data = df.volcano) %&gt;%
   gf_theme(theme_void) %&gt;%
   gf_refine(scale_fill_continuous_divergingx(palette = &quot;Roma&quot;, mid = 140, rev = TRUE)) %&gt;%
-  gf_labs(title = &quot;Diverging: Mid Specified and Reversed&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-27-2.png" width="672" /></p>
+  gf_labs(title = &quot;Diverging: Mid Specified and Reverse = TRUE&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-34-2.png" width="672" /></p>
 <pre class="r"><code>gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, size = ~body_mass_g, alpha = 0.4) %&gt;%
   gf_refine(scale_color_continuous_sequential(guide = &quot;legend&quot;, palette = &quot;mako&quot;)) %&gt;%
   gf_labs(title = &quot;Sequential Mako&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-27-3.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-34-3.png" width="672" /></p>
 </div>
-<div id="adjusting-default-scales" class="section level1" number="9">
-<h1><span class="header-section-number">9</span> Adjusting Default
+</div>
+<div id="adjusting-default-scales" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Adjusting Default
 Scales</h1>
-<p>Adjust begin &amp; end with viridis and colorspace scales.</p>
+<p>In previous sections it was shown how to adjust limits of the scales
+(color or fill) to determine which values are color-coded and which are
+not (and treated as “missing data”). In this section we look at examples
+where we use pre-made palettes, but just adjust the range of colors used
+(not what data is colored or not).</p>
+<div id="adjust-start-end-color-values" class="section level2"
+number="7.1">
+<h2><span class="header-section-number">7.1</span> Adjust start &amp;
+end color values</h2>
+<p>In the following example, we use pre-made palettes, but we condense
+the range of values we use by adjusting the start and end color values
+using percentiles.</p>
+<p><strong>Adjust range of colors in palette:</strong>
+scale_fill_viridis(option = “Mako”, begin = 0.15, end = 0.8)</p>
+<p>The 0.15 and 0.8 are percentiles of the palette to begin &amp; end.
+Using begin = 0 would start at the default start, and an end = 1 would
+end at the default end color.</p>
 <pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(coord_fixed(),
             scale_fill_viridis(option = &quot;Mako&quot;)) %&gt;%
   gf_labs(title = &quot;Original Mako Scales&quot;)</code></pre>
 <pre><code>## Warning in viridisLite::viridis(256, alpha, begin, end, direction, option):
 ## Option &#39;Mako&#39; does not exist. Defaulting to &#39;viridis&#39;.</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(coord_fixed(),
             scale_fill_viridis(option = &quot;Mako&quot;, begin = 0.15, end = 0.8)) %&gt;%
   gf_labs(title = &quot;Make Scales Adjusted Begin &amp; End&quot;)</code></pre>
 <pre><code>## Warning in viridisLite::viridis(256, alpha, begin, end, direction, option):
 ## Option &#39;Mako&#39; does not exist. Defaulting to &#39;viridis&#39;.</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-35-2.png" width="672" /></p>
 <pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(coord_fixed(),
             scale_fill_continuous_sequential(palette = &quot;YlGnBu&quot;, 
                                              rev = FALSE)) %&gt;%
-  gf_labs(title = &quot;Original YlGnBu Reverse&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-28-3.png" width="672" /></p>
+  gf_labs(title = &quot;Original YlGnBu Reverse = FALSE&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-35-3.png" width="672" /></p>
 <pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(coord_fixed(),
             scale_fill_continuous_sequential(palette = &quot;YlGnBu&quot;, 
                                              rev = FALSE,
                                              begin = 0.15)) %&gt;%
-  gf_labs(title = &quot;YlGnBu Reverse Adjusted Begin&quot;)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-28-4.png" width="672" /></p>
-<pre class="r"><code>BirthdaysSum = Birthdays %&gt;%
-  group_by(month, day) %&gt;%
-  mutate(TotalBirths = sum(births)) %&gt;%
-  dplyr::select(month, day, TotalBirths) %&gt;%
-  unique()</code></pre>
-<pre class="r"><code>gf_tile(month~day, data = subset(BirthdaysSum, TotalBirths &gt; 300), fill=~TotalBirths) %&gt;%
-  gf_refine(scale_fill_viridis(na.value = NA, 
-                               option = &quot;magma&quot;, 
+  gf_labs(title = &quot;YlGnBu Reverse = FALSE and Begin = 0.15&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-35-4.png" width="672" /></p>
+</div>
+<div id="weighted-color-scales" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Weighted Color
+Scales</h2>
+<p>Suppose you have a color palette you want to apply to your graph.</p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p>If the variable you have is heavily skewed - the resulting graph may
+not show the range of color values the way you want (e.g. it may be
+heavily weighted on one end of your palette - too dark or too
+light).</p>
+<div id="birthday-example" class="section level3" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> Birthday
+Example</h3>
+<p>The following example is inspired by a post by Matt Stiles of the
+Daily Viz showing how many people were born on each day of the year and
+loved the graphic. The original site is no longer working (where I found
+this graph) - but at the time of writing this I found an image of the
+original post <a
+href="https://www.ocregister.com/2019/09/13/how-many-babies-are-born-in-september-might-surprise-you/">here</a>.</p>
+<p><img src="BirthdaysDailyViz.png" /></p>
+<p>Using the Birthdays dataset from the mosaicData package I calculated
+the average births per day. The histogram shows several days with very
+low birth rates, and then a neat bimodal distribution for the rest of
+the year.</p>
+<pre class="r"><code>gf_histogram(~AveBirths, data = BirthdaysSum)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p>Creating a tile graph (similar to the original post) - the graph (to
+me) seems to show 3 main groups:</p>
+<ol style="list-style-type: decimal">
+<li><p>Days with VERY few births (Feb 29, Dec 25, and Jan1)</p></li>
+<li><p>Several days between 170-190 (magenta color)</p></li>
+<li><p>A band of days with 200+ (dark purple around July, Aug,
+Sept).</p></li>
+</ol>
+<p>This is not necessarily bad, but I liked the variation of color in
+the original graph, and wanted to see about replicating that to
+determine a bit more nuance between days.</p>
+<pre class="r"><code>gf_tile(factor(month.abb[month], levels = month.abb)~day, data = BirthdaysSum, fill=~AveBirths, color = &quot;gray95&quot;, size = 0.05) %&gt;%
+  gf_refine(scale_fill_gradientn(na.value = NA,
+                                colors = colors,
+                                labels = label_number(scale_cut = cut_short_scale())),
+            coord_fixed(expand = FALSE),
+            scale_y_discrete(limits = rev),
+            scale_x_continuous(breaks = seq(from = 1, to = 31, by = 1))) %&gt;%
+  gf_theme(legend.position = &quot;top&quot;,
+           panel.grid.major.x = element_blank(),
+           panel.grid.major.y = element_blank(),
+           panel.grid.minor.x = element_blank(),
+           panel.grid.minor.y = element_blank()) %&gt;%
+  gf_theme(guides(fill = guide_colorsteps(even.steps = FALSE, barwidth = 20)))  %&gt;%
+  gf_labs(fill = &quot;Average Daily Births&quot;, y = &quot;&quot;, x = &quot;&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p>To do this, I adjusted the “values” of the color palette. The number
+of values you specify does NOT need to correspond to the number of
+colors you may have specified in your color palette. I’m sure there is a
+much better &amp; more scientific way of approaching what values I could
+have used (percentiles corresponding to the color palette) - but I just
+picked a relatively even range that weighted the larger values in my
+variable. It’s not perfect - but it is closer to what I was trying to
+achieve. I also left off the opportunity to annotate and adjust the
+colorbar to more closely match the original.</p>
+<p><strong>Example:</strong> scale_fill_gradientn(colors = colors,
+values = c(0, 0.45, 0.55, 0.65, 0.77, 0.82, 0.95, 1))</p>
+<pre class="r"><code>gf_tile(factor(month.abb[month], levels = month.abb)~day, data = subset(BirthdaysSum, TotalBirths &gt; 300), fill=~AveBirths, color = &quot;gray95&quot;, size = 0.05) %&gt;%
+  gf_refine(scale_fill_gradientn(na.value = NA,
+                                colors = colors,
+                                values = c(0, 0.45, 0.55, 0.65, 0.77, 0.82, 0.95, 1),
                                labels = label_number(scale_cut = cut_short_scale())),
             coord_fixed(expand = FALSE),
-            scale_y_reverse(breaks = c(seq(1:12))))</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
-<pre class="r"><code>max = max(~TotalBirths, data = BirthdaysSum)
-min = min(~TotalBirths, data = subset(BirthdaysSum, TotalBirths &gt; 50000))
-
-gf_tile(month~day, data = subset(BirthdaysSum, TotalBirths &gt; 300), fill=~TotalBirths) %&gt;%
-  gf_refine(scale_fill_viridis(na.value = NA, 
-                               option = &quot;magma&quot;, 
-                               labels = label_number(scale_cut = cut_short_scale()),
-                               limits = c(min,max)),
-            coord_fixed(expand = FALSE),
-            scale_y_reverse(breaks = c(seq(1:12)))) %&gt;%
-  gf_tile(2~29, fill=&quot;black&quot;)</code></pre>
-<pre><code>## Warning: All aesthetics have length 1, but the data has 366 rows.
-## ℹ Please consider using `annotate()` or provide this layer with data containing
-##   a single row.</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-30-2.png" width="672" /></p>
-<pre class="r"><code>gf_tile(month~day, data = BirthdaysSum, fill=~TotalBirths) %&gt;%
-  gf_refine(scale_fill_gradientn(na.value = &quot;white&quot;, labels = label_number(scale_cut = cut_short_scale()),
-                               colors = c(&quot;black&quot;, &quot;#721f81&quot;, &quot;#f1605d&quot;, &quot;#fcfdbf&quot;),
-                               values = c(0.1, 0.8, 0.9, 1)),
-            coord_fixed(expand = FALSE),
-            scale_y_reverse(breaks = c(seq(1:12)))) </code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-30-3.png" width="672" /></p>
-<pre class="r"><code>gf_tile(month~day, data = BirthdaysSum, fill=~TotalBirths) %&gt;%
-  gf_refine(scale_fill_gradientn(na.value = &quot;white&quot;, labels = label_number(scale_cut = cut_short_scale()),
-                               colors = viridis(4, option = &quot;magma&quot;),
-                               values = c(0.1, 0.8, 0.9, 1)),
-            coord_fixed(expand = FALSE),
-            scale_y_reverse(breaks = c(seq(1:12)))) </code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-30-4.png" width="672" /></p>
-<pre class="r"><code>gf_tile(month~day, data = BirthdaysSum, fill=~TotalBirths) %&gt;%
-  gf_refine(scale_fill_gradientn(na.value = &quot;white&quot;, labels = label_number(scale_cut = cut_short_scale()),
-                               colors = viridis(4, option = &quot;magma&quot;),
-                               values = c(0.1, min/max, (min+max)/max, 1)),
-            coord_fixed(expand = FALSE),
-            scale_y_reverse(breaks = c(seq(1:12)))) </code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-30-5.png" width="672" /></p>
-<p>Viridis palette generator <a
-href="https://waldyrious.net/viridis-palette-generator/"
-class="uri">https://waldyrious.net/viridis-palette-generator/</a></p>
-<p><a href="https://towardsdatascience.com/heatmaps-for-time-series/"
-class="uri">https://towardsdatascience.com/heatmaps-for-time-series/</a></p>
-<p><a href="https://graphics.wsj.com/infectious-diseases-and-vaccines/"
-class="uri">https://graphics.wsj.com/infectious-diseases-and-vaccines/</a></p>
-<pre class="r"><code>measles = read.csv(&quot;https://gist.githubusercontent.com/rlvaugh/fd6ce822c98e38849d3ec51e3fd3441d/raw/5d896ec8b962aafb3b3194d63e336847e49749a5/measles_tycho.csv&quot;) %&gt;%
-  mutate_at(1:53, as.numeric) %&gt;%
-  pivot_longer(cols = 3:53, names_to = &quot;State&quot;, values_to = &quot;Cases&quot;) %&gt;%
-  group_by(YEAR, State) %&gt;%
-  summarise(Count = ifelse(all(is.na(Cases)), NA, sum(Cases, na.rm = TRUE)))</code></pre>
-<pre><code>## Warning: There were 51 warnings in `mutate()`.
-## The first warning was:
-## ℹ In argument: `ALABAMA = .Primitive(&quot;as.double&quot;)(ALABAMA)`.
-## Caused by warning:
-## ! NAs introduced by coercion
-## ℹ Run `dplyr::last_dplyr_warnings()` to see the 50 remaining warnings.</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;YEAR&#39;. You can override using the
-## `.groups` argument.</code></pre>
+            scale_y_discrete(limits = rev),
+            scale_x_continuous(breaks = seq(from = 1, to = 31, by = 1))) %&gt;%
+  gf_theme(legend.position = &quot;top&quot;,
+           panel.grid.major.x = element_blank(),
+           panel.grid.major.y = element_blank(),
+           panel.grid.minor.x = element_blank(),
+           panel.grid.minor.y = element_blank()) %&gt;%
+  gf_theme(guides(fill = guide_colorsteps(even.steps = FALSE, barwidth = 20)))  %&gt;%
+  gf_labs(fill = &quot;Average Daily Births&quot;, y = &quot;&quot;, x = &quot;&quot;)</code></pre>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+</div>
+<div id="measles-example" class="section level3" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> Measles
+Example</h3>
+<p>The next example is mimicking the work of <a
+href="https://towardsdatascience.com/heatmaps-for-time-series/">Lee
+Vaughan</a> to replicate the Wall Street Journal <a
+href="https://graphics.wsj.com/infectious-diseases-and-vaccines/">visuals</a>.</p>
 <pre class="r"><code>colors = c(&#39;#e7f0fa&#39;,  # lightest blue
           &#39;#c9e2f6&#39;,  # light blue
           &#39;#95cbee&#39;,  # blue
@@ -1045,38 +1361,24 @@ gf_tile(State~YEAR, data = measles, fill = ~Count) %&gt;%
             scale_fill_gradientn(na.value = &quot;white&quot;,
                                  colors = colors,
                                  values = positions,
-                                 guide = guide_colorbar(barwidth = 50),
-                                 breaks = seq(from = 0, to= 3000, by=500))) %&gt;%
-  gf_theme(legend.position = &quot;bottom&quot;, legend.title.position = &quot;bottom&quot;,
-           legend.title = element_text(hjust = 0.5)) %&gt;%
-  gf_labs(y = &quot;&quot;, fill=&quot;Cases per 100,000&quot;) +
-  annotate(geom = &quot;text&quot;, y = 48, x = 1964, label = &quot;Vaccine&quot;, hjust = 0, fontface = &quot;bold&quot;, size = 5)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
-<pre class="r"><code>gf_tile(State~YEAR, data = measles, fill = ~Count) %&gt;%
-  gf_vline(xintercept = 1963, color = &quot;black&quot;, linetype = &quot;dashed&quot;) %&gt;%
-  gf_refine(coord_fixed(expand = FALSE),
-            scale_y_discrete(limits = rev),
-            scale_fill_gradientn(na.value = &quot;white&quot;,
-                                 colors = colors,
-                                 values = positions,
                                  breaks = seq(from = 0, to= 3000, by=500))) %&gt;%
   gf_theme(legend.position = &quot;bottom&quot;, legend.title.position = &quot;bottom&quot;,
            legend.title = element_text(hjust = 0.5), legend.key.width = unit(1, &quot;null&quot;)) %&gt;%
   gf_labs(y = &quot;&quot;, fill=&quot;Cases per 100,000&quot;) +
   annotate(geom = &quot;text&quot;, y = 48, x = 1964, label = &quot;Vaccine&quot;, hjust = 0, fontface = &quot;bold&quot;, size = 5)</code></pre>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-31-2.png" width="672" /></p>
-<p><a
-href="https://www.tidyverse.org/blog/2024/02/ggplot2-3-5-0-legends/"
-class="uri">https://www.tidyverse.org/blog/2024/02/ggplot2-3-5-0-legends/</a></p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 </div>
-<div id="other-neat-ideas" class="section level1" number="10">
-<h1><span class="header-section-number">10</span> Other Neat Ideas</h1>
+</div>
+</div>
+<div id="other-neat-ideas" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Other Neat Ideas</h1>
 <p>This <a
 href="https://albert-rapp.de/posts/ggplot2-tips/07_four_ways_colors_more_efficiently/07_four_ways_colors_more_efficiently.html">blog
 post</a> goes through an example of taking many categories, subsetting
 them, and then coloring similar shades of a color instead of many
-distinct colors.</p>
-<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+distinct colors. In the post they go through adjusting the legend to
+match - but this is at least a starter to inspire more ideas.</p>
+<p><img src="AdjustingColor_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
 </div>
 
 

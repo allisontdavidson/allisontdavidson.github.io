@@ -49,13 +49,14 @@ Specific Plots
 -   ggridges (ridge plots)
 -   ggmosaic (creating mosaic plots)
 -   maps (creating maps)
+-   plotly (interactive plots)
+-   flexdashboard (dashboards)
 
 The following packages are mostly used for the variety of datasets they offer.  
 
 -   Lock5Data 
 -   socviz
 -   palmerpenguins
--   socviz 
 -   MASS
 -   gapminder
 

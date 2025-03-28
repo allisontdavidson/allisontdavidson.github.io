@@ -54,7 +54,7 @@ data("Birthdays")
 
 
 
-There are many things you can do with legends.  This chapter of the [ggplot2](https://ggplot2-book.org/scales-colour) book covers many more ideas than just what is listed below.  Additionally, this post from [Tidyverse](https://www.tidyverse.org/blog/2024/02/ggplot2-3-5-0-legends/) covers many more adjustments to legends.
+There are many things you can do with legends.  This chapter of the [ggplot2](https://ggplot2-book.org/scales-colour) book covers many more ideas than just what is listed below as well as this [chapter](https://viz-ggplot2.rsquaredacademy.com/ggplot2-modify-legend) from Data Visualization with ggplot2 by Aravind Hebbali.  Additionally, this post from [Tidyverse](https://www.tidyverse.org/blog/2024/02/ggplot2-3-5-0-legends/) covers many more adjustments to legends.
 
 # Adjusting Legend Position
 
@@ -315,6 +315,27 @@ gf_count(cyl~class, data = mpg, color = ~class) %>%
 ## Adjust Labels Within Legend
 
 To adjust labels and/or scales within a legend - you actually adjust the scale_*_ within a gf_refine layer.  You do need to be careful that the number of breaks and number of labels match.  At times you'll need to specify the breaks so that you can be certain of the number of labels needed.
+
+### Adjust Categorical Labels
+
+Adjust labels in a scale_\*\_discrete( ) statement (where \* is the aesthetic changed, color, fill, size, shape, etc.).  
+
+**Example:** scale_color_discrete(labels = c("Label 1", "Label 2", "Label 3"))
+
+```{r}
+gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%>%
+  gf_labs(title = "Default Species Labels")
+
+gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%>%
+  gf_refine(scale_color_discrete(labels = c("Small Bill", "Long Bill", "Long Flippers"))) %>%
+  gf_labs(title = "Adjusted Species Labels")
+
+gf_point(flipper_length_mm~bill_length_mm, data = penguins, color = ~species)%>%
+  gf_refine(scale_color_manual(values = c("darkorange","purple","cyan4"),
+                               labels = c("Small Bill", "Long Bill", "Long Flippers"))) %>%
+  gf_labs(title = "Adjust Labels & Color")
+```
+
 
 ### Adjust Categorical Labels (on Numeric Data)
 

@@ -1,0 +1,113 @@
+---
+title: "Interactivity"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: TRUE
+    toc_depth: 3
+    number_sections: TRUE
+    theme: lumen
+---
+
+```{r, include = FALSE}
+require(mosaic)
+require(mosaicData)
+require(Lock5Data)
+data(SalaryGender)
+data("BaseballSalaries2019")
+require(gridExtra)
+theme_set(theme_minimal())
+require(forcats)
+require(MASS)
+require(viridis)
+require(scales)
+require(tidyr)
+require(ggrepel)
+require(maps)
+data(world.cities)
+data("MarriageAges")
+library(ggpubr)
+require(ggrepel)
+require(ggmosaic)
+require(palmerpenguins)
+require(ggformula)
+require(ggridges)
+require(readr)
+require(socviz)
+require(stringr)
+
+data(fly)
+fly = na.omit(fly)
+
+data("penguins")
+penguins = na.omit(penguins)
+
+data("gss_sm")
+gss_sm = na.omit(gss_sm)
+require(gapminder)
+require(ggplot2)
+data("Birthdays")
+require(plotly)
+library(withr)
+```
+
+
+```{r}
+pin = read.csv("https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Passwords/Common-Credentials/four-digit-pin-codes-sorted-by-frequency-withcount.csv", header = FALSE) %>%
+  rename(Pin = V1, Count = V2) 
+  
+pin$Pin = 
+  with_options(
+    c(scipen = 999), 
+    str_pad(pin$Pin, 4, pad = "0")
+    )
+
+pin = pin %>%
+  mutate(First = str_sub(Pin, 1, 2),
+         Second = str_sub(Pin, 3, 4))
+
+gf_tile(as.numeric(First)~as.numeric(Second), data = pin, fill=~Count) %>%
+  gf_refine(coord_fixed(),
+            scale_x_continuous(expand = expansion(add=0)),
+            scale_y_continuous(expand = expansion(add = 0)),
+            scale_fill_viridis(option = "G")) %>%
+  gf_labs(y = "First 2 Digits", x = "Second 2 Digits")
+
+
+
+tile = gf_tile(as.numeric(First)~as.numeric(Second), data = pin, fill=~Count) %>%
+  gf_refine(coord_fixed(),
+            scale_x_continuous(expand = expansion(add=0)),
+            scale_y_continuous(expand = expansion(add = 0)),
+            scale_fill_viridis(option = "G")) %>%
+  gf_labs(y = "First 2 Digits", x = "Second 2 Digits")
+
+ggplotly(tile)
+```
+
+
+```{r, include = FALSE}
+Quarterbacks = read.csv("C:\\Users\\Allison\\OneDrive\\Desktop\\RefiningDataViz\\allisontdavidson.github.io\\Quarterbacks.csv")
+```
+
+```{r, warning = FALSE}
+gf_point(HOFScore~GamesStarted, data = Quarterbacks) %>%
+  gf_labs(y = "Hall of Fame Score", x = "Number of Games Started", title = "Label Points WITH GGrepel") +
+  geom_text_repel(data = subset(Quarterbacks, GamesStarted > 185 | HOFScore > 100), aes(y = HOFScore, x = GamesStarted, label = Player), min.segment.length = 0.5, box.padding = 0.5, size = 3)
+```
+
+```{r, warning = FALSE}
+QBplotly = gf_point(HOFScore~GamesStarted, data = Quarterbacks, alpha = 0.5, label = ~Player) %>%
+  gf_labs(y = "Hall of Fame Score", x = "Number of Games Started", title = "Plotly Hover")
+
+ggplotly(QBplotly, tooltip = "label")
+
+ggplotly(QBplotly, tooltip = c("label", "y", "x"))
+
+QBText = gf_point(HOFScore~GamesStarted, data = Quarterbacks, alpha = 0.5, label = ~Player, text = ~(paste("Player:", Player, "<br>HOF Score:", HOFScore, "<br>Games Started:", GamesStarted))) %>%
+  gf_labs(y = "Hall of Fame Score", x = "Number of Games Started", title = "Plotly Hover")
+
+ggplotly(QBText, tooltip = "text")
+```
+
