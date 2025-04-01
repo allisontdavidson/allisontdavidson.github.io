@@ -52,6 +52,23 @@ require(plotly)
 library(withr)
 ```
 
+Adding interactivity to your graphic can get really complicated really fast. There are a variety of ways to add interactivity to your graph. Some include:
+
+-   [plotly](https://plotly.com/ggplot2/)
+
+-   [highcharter](https://jkunst.com/highcharter/)
+
+-   [ggiraph](https://davidgohel.github.io/ggiraph/index.html)
+
+-   [gganimate](https://gganimate.com/index.html)
+
+-   [shiny](https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/)
+
+This page shows a few introductory things you can add to your visual using plotly functionality.
+
+# Labeling Points
+
+One of the basic ways to add interactivity to a graph is to show additional information when you hover over a specific point.  In the graph below, there are 10,000 squares and it may be difficult to determine what specific values are associated with each square.  
 
 ```{r}
 pin = read.csv("https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Passwords/Common-Credentials/four-digit-pin-codes-sorted-by-frequency-withcount.csv", header = FALSE) %>%
@@ -74,8 +91,15 @@ gf_tile(as.numeric(First)~as.numeric(Second), data = pin, fill=~Count) %>%
             scale_fill_viridis(option = "G")) %>%
   gf_labs(y = "First 2 Digits", x = "Second 2 Digits")
 
+```
 
+A basic way of adding additional information via hover is to store your graph and then use ggplotly( ) to display your graph.  
 
+**Store Graph** graph = gf_plot(Y~X, data = Dataset)
+
+**Display interactive graph:** ggplotly(graph)
+
+```{r}
 tile = gf_tile(as.numeric(First)~as.numeric(Second), data = pin, fill=~Count) %>%
   gf_refine(coord_fixed(),
             scale_x_continuous(expand = expansion(add=0)),
@@ -86,6 +110,31 @@ tile = gf_tile(as.numeric(First)~as.numeric(Second), data = pin, fill=~Count) %>
 ggplotly(tile)
 ```
 
+## Adjusting Text on Hover
+
+To adjust what is displayed in the text when you hover over an item in your graph you can specify the tooltip in the ggplotly() function.  In the example below, we create a "text" variable that pastes a label, variables, and line breaks to display the pin and count.  
+
+**Adjust Tooltip (display only label variable):** ggplotly(graph, tooltip = "label")
+
+**Tooltip, display multiple variables:** ggplotly(graph, tooltip = c("var1", "var2", "var3"))
+
+**Create text variable & display:** gf_plot(Y~X, data = Dataset, text = ~paste("Text: ", Var1, "<br>Text:", Var2))
+
+
+```{r}
+tile2 = gf_tile(as.numeric(First)~as.numeric(Second), data = pin, fill=~Count, text = ~paste("Pin: ", First,Second,"<br>Count", Count)) %>%
+  gf_refine(coord_fixed(),
+            scale_x_continuous(expand = expansion(add=0)),
+            scale_y_continuous(expand = expansion(add = 0)),
+            scale_fill_viridis(option = "G")) %>%
+  gf_labs(y = "First 2 Digits", x = "Second 2 Digits")
+
+ggplotly(tile2, tooltip = "text")
+```
+
+## Quarterback Example
+
+The following scatterplot displays some player names on the graph itself.  
 
 ```{r, include = FALSE}
 Quarterbacks = read.csv("C:\\Users\\Allison\\OneDrive\\Desktop\\RefiningDataViz\\allisontdavidson.github.io\\Quarterbacks.csv")
@@ -96,6 +145,8 @@ gf_point(HOFScore~GamesStarted, data = Quarterbacks) %>%
   gf_labs(y = "Hall of Fame Score", x = "Number of Games Started", title = "Label Points WITH GGrepel") +
   geom_text_repel(data = subset(Quarterbacks, GamesStarted > 185 | HOFScore > 100), aes(y = HOFScore, x = GamesStarted, label = Player), min.segment.length = 0.5, box.padding = 0.5, size = 3)
 ```
+
+The following examples show how you can use ggplotly to hover and also alter the text displayed.
 
 ```{r, warning = FALSE}
 QBplotly = gf_point(HOFScore~GamesStarted, data = Quarterbacks, alpha = 0.5, label = ~Player) %>%
@@ -111,3 +162,134 @@ QBText = gf_point(HOFScore~GamesStarted, data = Quarterbacks, alpha = 0.5, label
 ggplotly(QBText, tooltip = "text")
 ```
 
+# Frames
+
+Frames will act similarly to facets.  Instead of seeing all facets at once, frames will allow you to either play-animate through each facet OR allow the user to use a slide bar to select a certain facet (category).  
+
+**Add frame to a plot:** gf_plot(Y~X, data = Dataset, frame = ~Var)
+
+By default, the frames, when animated, will transition from one to the next sort of morphing the points together.  If you're looking at frames over time this may make sense.  In the example below, the frames are separate car classes - so having a smooth transition doesn't really make sense.  In that case, you can specify the transition = 0 so the frames appear more discrete.
+
+**Adjust transition:** ggplotly(graph) %>% animation_opts(transition = 0)
+
+
+```{r}
+cars.test = gf_point(hwy~cty, data = mpg, color = ~class, frame = ~class, text = ~(paste("Manufacturer: ", manufacturer, "<br>Model: ", model))) %>%
+  gf_theme(theme_minimal()) %>%
+  gf_theme(legend.position = "none") 
+
+ggplotly(cars.test, tooltip = c("hwy", "cty", "text"))
+
+# Remove transition if not really related
+
+ggplotly(cars.test, tooltip = c("hwy", "cty", "text")) %>%
+  animation_opts(transition = 0)
+```
+
+
+# Highlight Groups
+
+Instead of adding frames, you may want to highlight certain groups when you hover.  To do this, specify a highlight_key and use a highlight(ggplotly()) command.
+
+**Step 1:  Create dataset with highlighted variable** h.cars <- highlight_key(mpg, ~class)
+
+**Step 2:  Create & store graph** graph = gf_plot(Y~X, data = Dataset)
+
+**Step 3:  Create highlight animation:** highlight(ggplotly(graph), on = "plotly_hover", off = "plotly_deselect")
+
+```{r}
+h.cars <- highlight_key(mpg, ~class)
+
+simple.graph = gf_point(hwy~cty, data = h.cars, color = ~class, text = ~(paste("Manufacturer: ", manufacturer, "<br>Model: ", model))) %>%
+  gf_theme(theme_minimal()) %>%
+  gf_theme(legend.position = "none") %>%
+  gf_labs(y = "Highway Gas Mileage", x = "City Gas Mileage", color = "Car Type")
+
+highlight(ggplotly(simple.graph), on = "plotly_hover", off = "plotly_deselect")
+
+h.cars.test = gf_point(hwy~displ, data = h.cars, color = ~class, text = ~(paste("Manufacturer: ", manufacturer, "<br>Model: ", model)), alpha = 0.5) %>%
+  gf_theme(theme_minimal()) %>%
+  gf_theme(legend.position = "none") 
+
+highlight.test = ggplotly(h.cars.test, tooltip = c("text", "color"))
+
+highlight(highlight.test, on = "plotly_hover", off = "plotly_deselect")
+
+```
+
+## Diamond Example Highlight
+
+The following example does the same highlight function as seen above, just with the diamonds dataset.  Note that using ALL of the diamonds dataset takes a VERY long time to run.  Therefore, only a random sample of 1000 datapoints were used below.  
+
+```{r}
+data("diamonds")
+
+set.seed(2020)
+d1 <- diamonds[sample(nrow(diamonds), 1000),]
+
+new.diamonds <- highlight_key(d1, ~clarity)
+
+diamonds.test = gf_point(price~carat, data = new.diamonds, group = ~clarity, color=~clarity, alpha = 0.5) %>%
+  gf_theme(theme_classic())
+
+highlight(ggplotly(diamonds.test), on = "plotly_hover", off = "plotly_deselect")
+
+```
+
+
+# Animation Over Time
+
+Animations over time uses the same frame functionality as seen previously.  These examples were adapted from the examples I found for gganimate using the gapminder dataset.  
+
+```{r}
+scatter.gapminder = gf_point(lifeExp~gdpPercap, data = gapminder, color = ~country, alpha = 0.7, size = ~pop, frame = ~year, show.legend = FALSE) %>%
+  gf_refine(scale_color_manual(values = country_colors), scale_x_log10(), scale_size(range = c(2, 12))) %>%
+  gf_facet_wrap(~continent) %>%
+  gf_theme(theme_classic) %>%
+  gf_labs(x = "GDP per capita", y = "Life Expectancy") %>%
+  gf_theme(legend.position = "none")
+
+ggplotly(scatter.gapminder)
+
+box.test = gf_boxplot(lifeExp~continent, data = gapminder, fill = ~continent, frame = ~year, position = "identity", alpha = 0.3) %>%
+  gf_refine(scale_fill_manual(values = continent_colors)) %>%
+  gf_theme(legend.position = "none")
+
+ggplotly(box.test)
+```
+
+# Cummulative Functions
+
+This [post](https://plotly.com/r/cumulative-animations/) created code to allow for cumulative plots in plotly.  I used their functions to apply to the gapminder datasets to create a couple of examples.  
+
+```{r}
+# Function used to create cumulative dataset
+
+accumulate_by <- function(dat, var) {
+  var <- lazyeval::f_eval(var, dat)
+  lvls <- plotly:::getLevels(var)
+  dats <- lapply(seq_along(lvls), function(x) {
+    cbind(dat[var %in% lvls[seq(1, x)], ], frame = lvls[[x]])
+  })
+  dplyr::bind_rows(dats)
+}
+
+# Create new dataset
+
+new.data <- gapminder %>% accumulate_by(~year)
+
+area.test = gf_area(pop~year, data = subset(new.data, continent == "Oceania"), frame = ~frame, fill = ~country) %>%
+  gf_facet_wrap(~country) %>%
+  gf_refine(scale_fill_manual(values = country_colors)) %>%
+  gf_theme(legend.position = "none")
+
+ggplotly(area.test) %>%
+  animation_opts(transition = 0, frame = 200)
+
+line.test = gf_line(pop~year, data = subset(new.data, continent == "Americas"), frame = ~frame, color = ~country)%>%
+  gf_refine(scale_color_manual(values = country_colors)) %>%
+  gf_theme(legend.position = "none")
+
+ggplotly(line.test) %>%
+  animation_opts(transition = 0, frame = 200)
+```

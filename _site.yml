@@ -31,9 +31,9 @@ navbar:
         - text: "Adjusting Color"
           href: AdjustingColor.html
         - text: "Picking Colors & Palettes"
-          href: PickingColor.html
+          href: PickingColors.html
         - text: "Interactvity"
-          #href: Interactivity.html 
+          href: Interactivity.html 
     - text: "Wranging Data"
       href: WranglingDataIntro.html
     - text: "Markdown Help"
