@@ -24,4 +24,4 @@ data(SalaryGender)
 theme_set(theme_minimal())
 ```
 
-
+Coming Soon... Other Cool Graphs!

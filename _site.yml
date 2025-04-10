@@ -39,7 +39,7 @@ navbar:
     - text: "Markdown Help"
       href: markdown.html
   right:
-    - icon: fa-star fa-lg
+    - icon: "fa-solid fa-star"
       menu: 
         - text: "Other Graphs"
         - href: OtherGraphs.html

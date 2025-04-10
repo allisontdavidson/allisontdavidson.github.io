@@ -16,7 +16,7 @@ This compilation of resources will miss many ways of wrangling data; however, wr
 
 - [R for Data Science (2e)](https://r4ds.hadley.nz/): a comprehensive book about wrangling data in a variety of ways
 - [Data Wrangling Cheat Sheet](https://www.rstudio.com/wp-content%2Fuploads%2F2015%2F02%2Fdata-wrangling-cheatsheet.pdf%2F): a short visual guide to ways of wrangling data
-- [tidyr Reference Guide](https://tidyr.tidyverse.org/index.html): lists all commmands in the tidyr package
+- [tidyr Reference Guide](https://tidyr.tidyverse.org/index.html): lists all commands in the tidyr package
 - [GIFs of tidyr commands](https://github.com/gadenbuie/tidyexplain?tab=readme-ov-file): to see how commands alter the dataset
 - [stingr Reference Guide](https://stringr.tidyverse.org/reference/index.html): for cleaning strings
 - [regex cheat sheet](https://hypebright.nl/en/r-en/ultimate-cheatsheet-for-regex-in-r-2/): language to adjust strings
