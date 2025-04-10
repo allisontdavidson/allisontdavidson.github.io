@@ -1,0 +1,27 @@
+---
+title: "Other Cool Websites"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: TRUE
+    toc_depth: 3
+    number_sections: TRUE
+    theme: lumen
+---
+
+```{r, include = FALSE}
+require(mosaic)
+require(Lock5Data)
+require(gridExtra)
+require(forcats)
+require(tidyverse)
+
+# Datasets needed
+data(SalaryGender)
+
+# Theme adjustments
+theme_set(theme_minimal())
+```
+
+
