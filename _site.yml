@@ -34,6 +34,8 @@ navbar:
           href: PickingColors.html
         - text: "Interactvity"
           href: Interactivity.html 
+        - text: "Time"
+          href: Time.html
     - text: "Wranging Data"
       href: WranglingDataIntro.html
     - text: "Markdown Help"
@@ -42,6 +44,6 @@ navbar:
     - icon: "fa-solid fa-star"
       menu: 
         - text: "Other Graphs"
-        - href: OtherGraphs.html
+          href: OtherGraphs.html
         - text: "Other Cool Websites"
-        - href: OtherCoolThings.html
+          href: OtherCoolThings.html
