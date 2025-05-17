@@ -40,10 +40,10 @@ navbar:
       href: WranglingDataIntro.html
     - text: "Markdown Help"
       href: markdown.html
-  right:
-    - icon: "fa-solid fa-star"
-      menu: 
-        - text: "Other Graphs"
-          href: OtherGraphs.html
-        - text: "Other Cool Websites"
-          href: OtherCoolThings.html
+#  right:
+#    - icon: "fa-solid fa-star"
+#      menu: 
+#        - text: "Other Graphs"
+#          href: OtherCoolGraphs.html
+#        - text: "Other Cool Websites"
+#          href: OtherCoolThings.html

@@ -51,7 +51,7 @@ To adjust these labels, use the [gf_labs( )](https://www.mosaic-web.org/ggformul
 
 **For example:** gf_plot( Y \~ X ) %\>% gf_labs( title = "Title of Chart" )
 
-The following items can be adjusted in the gf_labs command. The words in parentheses are the specific command optoin to adjust each item.
+The following items can be adjusted in the gf_labs command. The words in parentheses are the specific command option to adjust each item.
 
 -   Title of graph (title)
 
@@ -178,7 +178,6 @@ Other items that can be labeled are:
 -   size = "size legend label"
 
 -   alt = "add alt text to the plot"
-
 
 
 

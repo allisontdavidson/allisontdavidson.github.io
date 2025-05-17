@@ -4,6 +4,16 @@
 
 <head>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RD69HW2Y5X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RD69HW2Y5X');
+</script>
+
 <meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
@@ -35,8 +45,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -385,22 +393,7 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fa fa-solid fa-star"></span>
-     
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="OtherGraphs.html">Other Graphs</a>
-    </li>
-    <li>
-      <a href="OtherCoolThings.html">Other Cool Websites</a>
-    </li>
-  </ul>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -510,9 +503,9 @@ grid.arrange(default, left, right, inward)</code></pre>
 number="1.1">
 <h2><span class="header-section-number">1.1</span> Adding Text using
 Annotate</h2>
-<p>You may notice that gf_text looks a bit fuzzy/pixilated/bold. To make
-a more crisp text annotation, you can also borrow from the ggplot
-annotate using + to add layers (instead of %&gt;%).</p>
+<p>You may notice that gf_text looks a bit fuzzy. To make a more crisp
+text annotation, you can also borrow from the ggplot annotate using + to
+add layers (instead of %&gt;%).</p>
 <p><strong>Example:</strong> gf_plot() + annotate(“text”, x = 5, y = 1,
 label = “Text Label”)</p>
 <pre class="r"><code>gf_dist(&quot;chisq&quot;, df=5) %&gt;%
@@ -538,7 +531,7 @@ class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Both X &amp; Y
 Defined by Variables in Dataset</h2>
 <p>In the following example, both X and Y locations of the labels we’ll
-use are defined by variables in the dataset. The general formul we’ll
+use are defined by variables in the dataset. The general formula we’ll
 use is defined by:</p>
 <p><strong>Example:</strong> gf_text( Y ~ X , data = Dataset , label = ~
 Var )</p>
@@ -568,11 +561,11 @@ provide R with a specified height of 0.1.</p>
 <pre class="r"><code>gf_dotplot(~Salary, data = BaseballSalaries2019, binwidth = 0.3) %&gt;%
   gf_text(0.1~Salary, data = subset(BaseballSalaries2019, Salary &gt;= 40), label = ~Name, hjust = &quot;inward&quot;)</code></pre>
 <p><img src="Annotations_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>Alternatively, in the example below we have the y-variable (birhts)
+<p>Alternatively, in the example below we have the y-variable (births)
 but we only want to label he end of the lines. In this case we can
 specify where exactly the x-location is by using
 as.Date(“1978-12-31”).</p>
-<p>Note the text labels are borrowing the same color aestheic from the
+<p>Note the text labels are borrowing the same color aesthetic from the
 line graph layer previously. Additionally, it may help to adjust the
 graph so the labels can be seen. We can do this by either expanding the
 visual range or adjusting the x-axis range.</p>
@@ -632,7 +625,7 @@ sepal length &amp; width are calculated. Those values are stored in a
 separate dataset than the original data (although they don’t have to
 be!) and used as an additional layer on the plot below.</p>
 <p>Note the gf_text( ) command will display a text label while the
-gf_label( ) command will display a text with an opaque rectagle around
+gf_label( ) command will display a text with an opaque rectangle around
 it. This is helpful if you have overlapping items and you want to
 highlight the label specifically.</p>
 <pre class="r"><code>data(iris)
@@ -683,7 +676,7 @@ gf_text command:</p>
 <h1><span class="header-section-number">3</span> Overlapping Text
 Labels</h1>
 <p>Within the gf_text command, we do have the option to check for
-overlapping points. We are a bit limitted in how those labels are then
+overlapping points. We are a bit limited in how those labels are then
 displayed if we adjust for overlapping points.</p>
 <p><strong>Example:</strong> gf_text( , check_overlap = TRUE)</p>
 <pre class="r"><code>gf_dotplot(~Salary, data = BaseballSalaries2019, binwidth = 0.3) %&gt;%
@@ -788,7 +781,7 @@ opacity). Many of those are included in the <a
 href="https://www.mosaic-web.org/ggformula/reference/gf_lines.html">ggformula</a>
 reference guide.</p>
 <p>For linetype specifically, the following shows the names of several
-differnt linetypes that can be specified.</p>
+different line types that can be specified.</p>
 <pre class="r"><code>show_line_types()</code></pre>
 <p><img src="Annotations_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <div id="vertical-lines" class="section level2" number="6.1">
@@ -911,7 +904,7 @@ number="6.5.2">
 Transformations</h3>
 <p>To plot other models, one option is to create a model, create a
 function, and plot the function. The following examples explore
-differnet log models and polynomial models.</p>
+different log models and polynomial models.</p>
 <pre class="r"><code>log.model = lm(log(HOFScore)~GamesStarted, data = Quarterbacks)
 log.F = makeFun(log.model)
 
@@ -1081,7 +1074,7 @@ transform(Dataset, PanelVar = NULL), color = “gray85”, alpha = 0.4)</p>
   gf_labs(title = &quot;Gray Reference Dots Added&quot;)</code></pre>
 <p><img src="Annotations_files/figure-html/unnamed-chunk-41-2.png" width="672" /></p>
 <p>We use similar code as the example above if we want to add bars,
-lines, area etc to the background. Below is an example of a histgram
+lines, area etc to the background. Below is an example of a histogram
 instead of a scatterplot.</p>
 <pre class="r"><code>gf_histogram(~price, data = diamonds, fill=~cut, show.legend = FALSE) %&gt;%
   gf_facet_wrap(~cut) %&gt;%
@@ -1127,7 +1120,7 @@ href="https://ggplot2-book.org/facet">ggplot2</a>. In order to add the
 reference points for the means of each of the groups, you first create a
 new dataset, calculate the averages, and then rename your color/facet
 variable. When you create a plot, you’ll use the original data to create
-the facetted plot, then add a layer of just the average points from the
+the faceted plot, then add a layer of just the average points from the
 newly created dataset.</p>
 <pre class="r"><code>irisLabels = iris %&gt;%
 group_by(Species) %&gt;%

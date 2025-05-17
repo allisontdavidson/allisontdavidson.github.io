@@ -2,11 +2,11 @@
 title: "Wrangling Data Intro"
 output: 
   html_document:
-    toc: TRUE
-    toc_float: TRUE
-    toc_collapsed: TRUE
-    toc_depth: 3
-    number_sections: TRUE
+    #toc: TRUE
+    #toc_float: TRUE
+    #toc_collapsed: TRUE
+    #toc_depth: 3
+    #number_sections: TRUE
     theme: lumen
 ---
 

@@ -456,7 +456,7 @@ gf_point(Petal.Length~Petal.Width, data=transform(iris, Species = NULL), color =
   gf_labs(title = "Gray Reference Dots Added")
 ```
 
-We use similar code as the example above if we want to add bars, lines, area etc to the background.  Below is an example of a histgram instead of a scatterplot.  
+We use similar code as the example above if we want to add bars, lines, area etc to the background.  Below is an example of a histogram instead of a scatterplot.  
 
 ```{r}
 gf_histogram(~price, data = diamonds, fill=~cut, show.legend = FALSE) %>%
@@ -499,7 +499,7 @@ gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %>
 
 ## Average Points
 
-The following example is taken from the book [ggplot2](https://ggplot2-book.org/facet).  In order to add the reference points for the means of each of the groups, you first create a new dataset, calculate the averages, and then rename your color/facet variable.  When you create a plot, you'll use the original data to create the facetted plot, then add a layer of just the average points from the newly created dataset.
+The following example is taken from the book [ggplot2](https://ggplot2-book.org/facet).  In order to add the reference points for the means of each of the groups, you first create a new dataset, calculate the averages, and then rename your color/facet variable.  When you create a plot, you'll use the original data to create the faceted plot, then add a layer of just the average points from the newly created dataset.
 
 ```{r}
 irisLabels = iris %>%

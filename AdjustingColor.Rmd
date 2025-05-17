@@ -93,7 +93,7 @@ grid.arrange(point, line2, text2, nrow = 1)
 
 # Fill Bars & Densities
 
-Bars and densities have color altered using the fill = "ColorName" command. The plot below shows the difference between trying to alter the color vs. fill of various plots. To alter the fill color, specify the color name, hex code, or rbg code.
+Bars and densities have color altered using the fill = "ColorName" command. The plot below shows the difference between trying to alter the color vs. fill of various plots. To alter the fill color, specify the color name, hex code, or rgb code.
 
 **Example:** gf_plot(Y \~ X, data = Dataset, fill = "ColorName")
 
@@ -513,7 +513,7 @@ To assign color to a continuous variable, we do so in the same way we did for a 
 
 The examples below show both color and fill, and also a raster plot which "fills" by a variable built into the function (so you don't specify fill, but rather the first variable in the command will be the "fill" variable).
 
-**Raster (note slightly atyipcal ordering of variables):** gf_raster(FillVar \~ X + Y , data = Dataset)
+**Raster (note slightly atypical ordering of variables):** gf_raster(FillVar \~ X + Y , data = Dataset)
 
 ```{r}
 gf_tile(location~month, data = temps_months, fill=~mean) %>%
@@ -610,7 +610,7 @@ gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, si
 
 ### Adjusting midpoint
 
-In particular if you are using diverging scales, you may not want to use the default midpoint value. Luckily - we have the abiltiy to choose our own midpoint (or divergent point) value.
+In particular if you are using diverging scales, you may not want to use the default midpoint value. Luckily - we have the ability to choose our own midpoint (or divergent point) value.
 
 The examples below show a variety of midpoint values and how the color scale adjusts based on the midpoint.
 
@@ -757,7 +757,7 @@ The distiller palettes are the same as Brewer, but this is currently the way to 
 
 Note: hue & grey only work for discrete. Brewer works for continuous but is called distiller instead.
 
-To reverse a palette, note that the default direciton is -1, so to reverse use direction = 1. Alternatively, you can just use trans = "reverse".
+To reverse a palette, note that the default direction is -1, so to reverse use direction = 1. Alternatively, you can just use trans = "reverse".
 
 **Example:** scale_fill_distiller(palette = "Spectral")
 
@@ -791,9 +791,9 @@ gf_point(bill_length_mm~bill_depth_mm, data = penguins, color = ~body_mass_g, si
 
 ## Viridis
 
-The viridis package can be used for continuous variables. Similar to discrete variables, you can specify the palette with option = "magma". To reverse a palette, you can still use trans = "reverse" but you can also specify the direction. Note that the default direction is 1 (as opposed to the distiller package where the default direciton = -1). So to reverse a palette using viridis, use direction = -1.
+The viridis package can be used for continuous variables. Similar to discrete variables, you can specify the palette with option = "magma". To reverse a palette, you can still use trans = "reverse" but you can also specify the direction. Note that the default direction is 1 (as opposed to the distiller package where the default direction = -1). So to reverse a palette using viridis, use direction = -1.
 
-**Example (no further specificaitons needed):** gf_refine(scale_fill_viridis())
+**Example (no further specifications needed):** gf_refine(scale_fill_viridis())
 
 **Example specifying option:** scale_fill_viridis(option = "magma")
 
@@ -1023,9 +1023,10 @@ gf_tile(State~YEAR, data = measles, fill = ~Count) %>%
                                  values = positions,
                                  breaks = seq(from = 0, to= 3000, by=500))) %>%
   gf_theme(legend.position = "bottom", legend.title.position = "bottom",
-           legend.title = element_text(hjust = 0.5), legend.key.width = unit(1, "null")) %>%
+           legend.title = element_text(hjust = 0.5), legend.key.width = unit(1, "null"),
+           axis.text.y = element_text(size = 6)) %>%
   gf_labs(y = "", fill="Cases per 100,000") +
-  annotate(geom = "text", y = 48, x = 1964, label = "Vaccine", hjust = 0, fontface = "bold", size = 5)
+  annotate(geom = "text", y = 48, x = 1964, label = "Vaccine", hjust = 0, fontface = "bold", size = 5) 
 
 ```
 

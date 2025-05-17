@@ -241,6 +241,24 @@ gf_raster(Z~X+Y, data = df.volcano) %>%
 ```
 
 
+## Specify Category Order
+
+To specify category order, use the breaks option within your scale/refine statement.  
+
+**Example (color):** scale_color_manual(breaks = c("Cat 1", "Cat 2", "Cat 3"))
+
+```{r, warning = FALSE}
+gf_dist("t", df = 3, col = ~"df = 3") %>%
+  gf_dist("t", df = 7, col = ~"df = 7", linetype = "dotdash") %>%
+  gf_dist("t", df = 25, col = ~"df = 25", linetype = "dashed") %>%
+  gf_refine(scale_x_continuous(limits = c(-3, 3)),
+            scale_color_manual(values = c("darkorange","purple","cyan4"),
+                               breaks = c("df = 25", "df = 7", "df = 3"))) %>%
+  gf_theme(legend.position = c(0.8,0.7)) %>%
+  gf_labs(color = " ")
+```
+
+
 ## Horizontal or Vertical Legends
 
 To specify a legend to display either horizontal or vertical, specify the legend.direction within the theme command.
@@ -416,7 +434,7 @@ This is a space for miscellaneous other ways to adjust the legend.
 
 ## Adjust barheight
 
-To adjust the barheight to a specific size, specify the guide_colorbar within the guide option in the scale_*_ you're using.
+To adjust the bar height to a specific size, specify the guide_colorbar within the guide option in the scale_*_ you're using.
 
 **Example:** scale_color_manual( guide = guide_colorbar(barheight = 10) )
 

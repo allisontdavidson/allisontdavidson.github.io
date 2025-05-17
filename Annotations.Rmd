@@ -134,7 +134,7 @@ grid.arrange(default, left, right, inward)
 
 ## Adding Text using Annotate
 
-You may notice that gf_text looks a bit fuzzy/pixilated/bold.  To make a more crisp text annotation, you can also borrow from the ggplot annotate using + to add layers (instead of %>%).
+You may notice that gf_text looks a bit fuzzy.  To make a more crisp text annotation, you can also borrow from the ggplot annotate using + to add layers (instead of %>%).
 
 **Example:** gf_plot() + annotate("text", x = 5, y = 1, label = "Text Label")
 
@@ -160,7 +160,7 @@ To add text to a specific location based on data, you use the same gf_text( ) co
 Quarterbacks = read.csv("C:\\Users\\Allison\\OneDrive\\Desktop\\RefiningDataViz\\allisontdavidson.github.io\\Quarterbacks.csv")
 ```
 
-In the following example, both X and Y locations of the labels we'll use are defined by variables in the dataset. The general formul we'll use is defined by:
+In the following example, both X and Y locations of the labels we'll use are defined by variables in the dataset. The general formula we'll use is defined by:
 
 **Example:** gf_text( Y \~ X , data = Dataset , label = \~ Var )
 
@@ -188,9 +188,9 @@ gf_dotplot(~Salary, data = BaseballSalaries2019, binwidth = 0.3) %>%
 
 ```
 
-Alternatively, in the example below we have the y-variable (birhts) but we only want to label he end of the lines. In this case we can specify where exactly the x-location is by using as.Date("1978-12-31").
+Alternatively, in the example below we have the y-variable (births) but we only want to label he end of the lines. In this case we can specify where exactly the x-location is by using as.Date("1978-12-31").
 
-Note the text labels are borrowing the same color aestheic from the line graph layer previously. Additionally, it may help to adjust the graph so the labels can be seen. We can do this by either expanding the visual range or adjusting the x-axis range.
+Note the text labels are borrowing the same color aesthetic from the line graph layer previously. Additionally, it may help to adjust the graph so the labels can be seen. We can do this by either expanding the visual range or adjusting the x-axis range.
 
 ```{r}
 gf_line(births~date, data = Births78, col = ~wday) %>%
@@ -268,7 +268,7 @@ gf_jitter(WeightGain~Amount, data=rats.tidy, color=~Source, alpha = 0.4, shape =
 
 In the following example, a new dataset is created where the average sepal length & width are calculated.  Those values are stored in a separate dataset than the original data (although they don't have to be!) and used as an additional layer on the plot below.
 
-Note the gf_text( ) command will display a text label while the gf_label( ) command will display a text with an opaque rectagle around it.  This is helpful if you have overlapping items and you want to highlight the label specifically.
+Note the gf_text( ) command will display a text label while the gf_label( ) command will display a text with an opaque rectangle around it.  This is helpful if you have overlapping items and you want to highlight the label specifically.
 
 ```{r}
 data(iris)
@@ -335,7 +335,7 @@ gf_col(Treatment~PercentPatients, data=clinical, fill=~Response) %>%
 
 # Overlapping Text Labels
 
-Within the gf_text command, we do have the option to check for overlapping points.  We are a bit limitted in how those labels are then displayed if we adjust for overlapping points.
+Within the gf_text command, we do have the option to check for overlapping points.  We are a bit limited in how those labels are then displayed if we adjust for overlapping points.
 
 **Example:** gf_text( , check_overlap = TRUE)
 
@@ -454,7 +454,7 @@ To add reference lines, we'll start with simple vertical lines, horizontal lines
 
 Lines can have a variety of adjustments (e.g. color, linetype, width, opacity).  Many of those are included in the [ggformula](https://www.mosaic-web.org/ggformula/reference/gf_lines.html) reference guide.  
 
-For linetype specifically, the following shows the names of several differnt linetypes that can be specified.
+For linetype specifically, the following shows the names of several different line types that can be specified.
 
 ```{r}
 show_line_types()
@@ -560,7 +560,7 @@ gf_point(HOFScore~GamesStarted, data = Quarterbacks) %>%
 
 ### Plotting Transformations
 
-To plot other models, one option is to create a model, create a function, and plot the function.  The following examples explore differnet log models and polynomial models.
+To plot other models, one option is to create a model, create a function, and plot the function.  The following examples explore different log models and polynomial models.
 
 ```{r, warning = FALSE}
 log.model = lm(log(HOFScore)~GamesStarted, data = Quarterbacks)
@@ -741,7 +741,7 @@ gf_point(Petal.Length~Petal.Width, data=transform(iris, Species = NULL), color =
   gf_labs(title = "Gray Reference Dots Added")
 ```
 
-We use similar code as the example above if we want to add bars, lines, area etc to the background.  Below is an example of a histgram instead of a scatterplot.  
+We use similar code as the example above if we want to add bars, lines, area etc to the background.  Below is an example of a histogram instead of a scatterplot.  
 
 ```{r}
 gf_histogram(~price, data = diamonds, fill=~cut, show.legend = FALSE) %>%
@@ -784,7 +784,7 @@ gf_point(Price~Horsepower, data = Cars93, color = ~Type, show.legend = FALSE) %>
 
 ## Average Points
 
-The following example is taken from the book [ggplot2](https://ggplot2-book.org/facet).  In order to add the reference points for the means of each of the groups, you first create a new dataset, calculate the averages, and then rename your color/facet variable.  When you create a plot, you'll use the original data to create the facetted plot, then add a layer of just the average points from the newly created dataset.
+The following example is taken from the book [ggplot2](https://ggplot2-book.org/facet).  In order to add the reference points for the means of each of the groups, you first create a new dataset, calculate the averages, and then rename your color/facet variable.  When you create a plot, you'll use the original data to create the faceted plot, then add a layer of just the average points from the newly created dataset.
 
 ```{r}
 irisLabels = iris %>%

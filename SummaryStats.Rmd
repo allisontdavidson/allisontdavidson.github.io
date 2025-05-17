@@ -107,7 +107,7 @@ gf_point(body_mass_g~sex, data = penguins, color = ~species, position = position
 
 # Text Summary
 
-There are additional examples of adding text to visuals below (useful for labeling lines directly and being able to remove the legent); however, here is a quick example of using the summary function inside a gf_text command.
+There are additional examples of adding text to visuals below (useful for labeling lines directly and being able to remove the legend); however, here is a quick example of using the summary function inside a gf_text command.
 
 **Example:** gf_text(Y~X, data= Dataset, stat = "summary", fun = "mean")
 
@@ -199,7 +199,7 @@ These next examples explore interval ranges for each category, such as a confide
 
 **Confidence Intervals:**  gf_summary( ... , fun.data = mean_cl_boot )
 
-**Confidence Crossbars:** gf_summary( ... , fun.data = mean_cl_boot, grom = "crossbar")
+**Confidence Crossbars:** gf_summary( ... , fun.data = mean_cl_boot, geom = "crossbar")
 
 **Specified Min & Max:** gf_summary(... , fun = "mean", fun.min = "min", fun.max = "max")
 

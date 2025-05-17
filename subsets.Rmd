@@ -59,7 +59,7 @@ In order to subset categorical data, you'll want to specify certain categories.
 
 **Multiple categories:** variable %in% c("Item 1", "Item 2", "Item 3")
 
-**EXcluding categories:** variable != "Category Name"
+**Excluding categories:** variable != "Category Name"
 
 ```{r}
 gf_point(hwy~displ, data = subset(mpg, class == "compact"), color = ~manufacturer, show.legend = FALSE) %>%

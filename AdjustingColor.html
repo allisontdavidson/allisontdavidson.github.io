@@ -4,6 +4,16 @@
 
 <head>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RD69HW2Y5X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RD69HW2Y5X');
+</script>
+
 <meta charset="utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
@@ -35,8 +45,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -385,22 +393,7 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fa fa-solid fa-star"></span>
-     
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="OtherGraphs.html">Other Graphs</a>
-    </li>
-    <li>
-      <a href="OtherCoolThings.html">Other Cool Websites</a>
-    </li>
-  </ul>
-</li>
+        
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -457,7 +450,7 @@ Densities</h1>
 <p>Bars and densities have color altered using the fill = “ColorName”
 command. The plot below shows the difference between trying to alter the
 color vs. fill of various plots. To alter the fill color, specify the
-color name, hex code, or rbg code.</p>
+color name, hex code, or rgb code.</p>
 <p><strong>Example:</strong> gf_plot(Y ~ X, data = Dataset, fill =
 “ColorName”)</p>
 <pre class="r"><code>bar.color = gf_bar(~species, data = penguins, color = &quot;#b715e5&quot;) %&gt;%
@@ -898,7 +891,7 @@ color = ~Var)</p>
 which “fills” by a variable built into the function (so you don’t
 specify fill, but rather the first variable in the command will be the
 “fill” variable).</p>
-<p><strong>Raster (note slightly atyipcal ordering of
+<p><strong>Raster (note slightly atypical ordering of
 variables):</strong> gf_raster(FillVar ~ X + Y , data = Dataset)</p>
 <pre class="r"><code>gf_tile(location~month, data = temps_months, fill=~mean) %&gt;%
   gf_refine(coord_fixed()) %&gt;%
@@ -999,7 +992,7 @@ like rainbow(5) or terrain.colors(7))</p>
 <h3><span class="header-section-number">6.2.1</span> Adjusting
 midpoint</h3>
 <p>In particular if you are using diverging scales, you may not want to
-use the default midpoint value. Luckily - we have the abiltiy to choose
+use the default midpoint value. Luckily - we have the ability to choose
 our own midpoint (or divergent point) value.</p>
 <p>The examples below show a variety of midpoint values and how the
 color scale adjusts based on the midpoint.</p>
@@ -1123,7 +1116,7 @@ href="https://jmsallan.netlify.app/blog/the-brewer-palettes/">post</a>
 displays the palettes in an aesthetically pleasing way.</p>
 <p>Note: hue &amp; grey only work for discrete. Brewer works for
 continuous but is called distiller instead.</p>
-<p>To reverse a palette, note that the default direciton is -1, so to
+<p>To reverse a palette, note that the default direction is -1, so to
 reverse use direction = 1. Alternatively, you can just use trans =
 “reverse”.</p>
 <p><strong>Example:</strong> scale_fill_distiller(palette =
@@ -1161,9 +1154,9 @@ scale_fill_distiller(palette = “Spectral”, trans = “reverse”)</p>
 discrete variables, you can specify the palette with option = “magma”.
 To reverse a palette, you can still use trans = “reverse” but you can
 also specify the direction. Note that the default direction is 1 (as
-opposed to the distiller package where the default direciton = -1). So
+opposed to the distiller package where the default direction = -1). So
 to reverse a palette using viridis, use direction = -1.</p>
-<p><strong>Example (no further specificaitons needed):</strong>
+<p><strong>Example (no further specifications needed):</strong>
 gf_refine(scale_fill_viridis())</p>
 <p><strong>Example specifying option:</strong> scale_fill_viridis(option
 = “magma”)</p>
@@ -1385,9 +1378,10 @@ gf_tile(State~YEAR, data = measles, fill = ~Count) %&gt;%
                                  values = positions,
                                  breaks = seq(from = 0, to= 3000, by=500))) %&gt;%
   gf_theme(legend.position = &quot;bottom&quot;, legend.title.position = &quot;bottom&quot;,
-           legend.title = element_text(hjust = 0.5), legend.key.width = unit(1, &quot;null&quot;)) %&gt;%
+           legend.title = element_text(hjust = 0.5), legend.key.width = unit(1, &quot;null&quot;),
+           axis.text.y = element_text(size = 6)) %&gt;%
   gf_labs(y = &quot;&quot;, fill=&quot;Cases per 100,000&quot;) +
-  annotate(geom = &quot;text&quot;, y = 48, x = 1964, label = &quot;Vaccine&quot;, hjust = 0, fontface = &quot;bold&quot;, size = 5)</code></pre>
+  annotate(geom = &quot;text&quot;, y = 48, x = 1964, label = &quot;Vaccine&quot;, hjust = 0, fontface = &quot;bold&quot;, size = 5) </code></pre>
 <p><img src="AdjustingColor_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 </div>
 </div>

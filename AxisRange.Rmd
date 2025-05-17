@@ -235,11 +235,11 @@ gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 
 
 ## Exapanding Visual Range
 
-In addition to all methods of adjusting the axis ranges, we can also adjust the plot field using the exapnd option in scale\_\*\_continuous or scale\_\*\_discrete.
+In addition to all methods of adjusting the axis ranges, we can also adjust the plot field using the expand option in scale\_\*\_continuous or scale\_\*\_discrete.
 
 **Example (discrete):** scale_x_discrete(expand = expansion(add = 2))
 
-**Example (continuous):** scale_y_continuous(exapnd = expansion(add = 10))
+**Example (continuous):** scale_y_continuous(expand = expansion(add = 10))
 
 ```{r}
 gf_boxplot(Salary~Gender, data = SalaryGender, color = ~as.factor(PhD), width = 0.4, position= position_dodge(.5)) %>%

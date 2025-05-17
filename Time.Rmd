@@ -109,7 +109,7 @@ gf_linerange(StartSpeed+EndSpeed~Time, data = Kershaw2, size = 2, alpha = 0.6, c
 
 If you want to pass a date/time value into R, you can use something like as.POSIXct("YYYY-MM-DD") or as.Date("YYYY-MM-DD").
 
-Alternatively, you can extract items of a date using year(), month(), day(), hour(), minute() etc. commands and subset based on those. Below are a few alternatives to subsetting time varaibles.
+Alternatively, you can extract items of a date using year(), month(), day(), hour(), minute() etc. commands and subset based on those. Below are a few alternatives to subsetting time variables.
 
 ```{r, warning=FALSE}
 gf_line(births~date, data = subset(Birthdays, year(date) == 1985), stat = "summary") %>%
@@ -302,7 +302,7 @@ gf_tile(strftime(date, format = "%V")~weekdays(date, abbreviate = TRUE), data = 
   gf_labs(title = "Default Weekday Order is Alphabetical")
 ```
 
-Here you can see we at least fixed the weekday order using the ordered factor wday within the dataset.  Alteternatively, I could have created a weekday factor and then specified the order I wanted.  This was just easier since they did that work for us.
+Here you can see we at least fixed the weekday order using the ordered factor wday within the dataset.  Alternatively, I could have created a weekday factor and then specified the order I wanted.  This was just easier since they did that work for us.
 
 ```{r}
 gf_tile(strftime(date, format = "%V")~wday, data = Births2015, fill = ~births) %>%
@@ -328,7 +328,7 @@ gf_tile(WeekOfMonth~wday, data = ShiftedBirths, fill = ~births) %>%
 ```
 
 
-Next, I wanted to shorten the labels for days of the week so I could read them a little better.  Many other ways we coudl have done this, I just chose to shorten to 1ish characters which seemed fine for me.  I also wanted to just practice putting the full Month labels (if we ever wanted full month labels) - so I updated those too.
+Next, I wanted to shorten the labels for days of the week so I could read them a little better.  Many other ways we could have done this, I just chose to shorten to 1ish characters which seemed fine for me.  I also wanted to just practice putting the full Month labels (if we ever wanted full month labels) - so I updated those too.
 
 ```{r}
 gf_tile(WeekOfMonth~wday, data = ShiftedBirths, fill = ~births) %>%
