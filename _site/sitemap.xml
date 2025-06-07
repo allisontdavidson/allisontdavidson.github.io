@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+ <!-- Home Page -->
+  <url>
+    <loc>https://allisontdavidson.github.io/index.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Refinements Pages -->
+
+  <!-- Title Labels -->
+  <url>
+    <loc>https://allisontdavidson.github.io/TitleLabels.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Categorical & Numeric Display -->
+  <url>
+    <loc>https://allisontdavidson.github.io/CatAndNumDisplay.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Axis Range, Breaks, and Ordering -->
+  <url>
+    <loc>https://allisontdavidson.github.io/AxisRange.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Subsets -->
+  <url>
+    <loc>https://allisontdavidson.github.io/subsets.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Themes -->
+  <url>
+    <loc>https://allisontdavidson.github.io/themes.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Facets -->
+  <url>
+    <loc>https://allisontdavidson.github.io/facets.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Legends -->
+  <url>
+    <loc>https://allisontdavidson.github.io/Legends.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Annotations -->
+  <url>
+    <loc>https://allisontdavidson.github.io/Annotations.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Position Adjustments -->
+  <url>
+    <loc>https://allisontdavidson.github.io/Position.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Adding Summary Stats -->
+  <url>
+    <loc>https://allisontdavidson.github.io/SummaryStats.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Non-Color Aesthetics -->
+  <url>
+    <loc>https://allisontdavidson.github.io/NonColorAesthetics.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Adjusting Color -->
+  <url>
+    <loc>https://allisontdavidson.github.io/AdjustingColor.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Picking Colors & Palettes -->
+  <url>
+    <loc>https://allisontdavidson.github.io/PickingColors.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Interactivity -->
+  <url>
+    <loc>https://allisontdavidson.github.io/Interactivity.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Time -->
+  <url>
+    <loc>https://allisontdavidson.github.io/Time.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Wrangling Data -->
+  <url>
+    <loc>https://allisontdavidson.github.io/WranglingDataIntro.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Markdown Help -->
+  <url>
+    <loc>https://allisontdavidson.github.io/markdown.html</loc>
+    <lastmod>2025-05-17</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+ </urlset>
