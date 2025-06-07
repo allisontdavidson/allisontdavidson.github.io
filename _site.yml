@@ -2,8 +2,8 @@ name: "Data Visualization"
 navbar:
   title: "Data Visualization"
   left:
-    - text: "Intro"
-      href: index.html
+    #- text: "Intro"
+    #  href: index.html
     - text: "Refinements"
       menu:
         - text: "Title Labels (Big/Outer/Axis)"
